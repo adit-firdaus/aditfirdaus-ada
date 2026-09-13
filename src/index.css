@@ -1,10 +1,14 @@
-:root {
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", system-ui, sans-serif;
-  color-scheme: light dark;
+html,
+body,
+#root {
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
-* {
-  box-sizing: border-box;
+html {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", system-ui, sans-serif;
+  color-scheme: light dark;
 }
 
 body {
@@ -15,10 +19,27 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--may-color-bg, #f2f2f7);
   color: var(--may-color-text, #1c1c1e);
+  overflow-x: hidden;
 }
 
 #root {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+.may-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--may-color-bg, #f2f2f7);
+  color: var(--may-color-text, #1c1c1e);
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  font: inherit;
 }

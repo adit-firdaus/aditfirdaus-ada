@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Accordion,
   AccordionItem,
   Alert,
+  Avatar,
   Badge,
   Button,
   Card,
@@ -37,54 +38,63 @@ import {
   IoCodeSlashOutline,
   IoColorPaletteOutline,
   IoCompassOutline,
+  IoCubeOutline,
   IoHardwareChipOutline,
+  IoHeartOutline,
   IoInformationCircleOutline,
   IoLogoApple,
   IoLogoGithub,
+  IoLogoLinkedin,
   IoMoonOutline,
-  IoNotificationsOutline,
   IoPersonOutline,
-  IoPhonePortraitOutline,
   IoRocketOutline,
+  IoSchoolOutline,
   IoSparklesOutline,
   IoSunnyOutline,
   IoTerminalOutline,
-  IoTimeOutline,
 } from 'react-icons/io5'
 import './App.css'
 
-type TabKey = 'overview' | 'projects' | 'components' | 'settings'
+type TabKey = 'projects' | 'academy' | 'skills' | 'lab'
 type ThemeMode = 'system' | 'light' | 'dark'
 
 export function App() {
   const [themeMode, setThemeMode] = useState<ThemeMode>('system')
-  const [activeTab, setActiveTab] = useState<TabKey>('overview')
-  const [sampleText, setSampleText] = useState('Apple Developer Academy')
+  const [activeTab, setActiveTab] = useState<TabKey>('projects')
+  const [sampleText, setSampleText] = useState('Adit Firdaus · Apple Developer Academy')
   const [hapticEnabled, setHapticEnabled] = useState(true)
   const [reducedMotion, setReducedMotion] = useState(false)
-  const [notificationsEnabled, setNotificationsEnabled] = useState(true)
-  const [counter, setCounter] = useState(42)
+  const [counter, setCounter] = useState(26)
   const [showAlert, setShowAlert] = useState(true)
+
+  // Sync document root data-may-theme attribute to ensure the whole viewport is consistent
+  useEffect(() => {
+    if (themeMode === 'system') {
+      document.documentElement.removeAttribute('data-may-theme')
+    } else {
+      document.documentElement.setAttribute('data-may-theme', themeMode)
+    }
+  }, [themeMode])
 
   const handleThemeChange = (mode: ThemeMode) => {
     setThemeMode(mode)
-    toast(`Switched theme to ${mode} mode`)
+    toast(`Appearance set to ${mode} mode`)
   }
 
   return (
     <MayProvider theme={themeMode}>
-      <div className="app-container">
+      <div className="portfolio-shell">
         <NavigationBar
-          title="Apple Developer Academy"
-          subtitle="Portfolio & Hub · aditfirdaus-ada"
+          title="Adit Firdaus"
+          subtitle="Apple Developer Academy @ BINUS · iOS & Web Engineer"
           largeTitle
           trailing={
-            <div className="theme-button-group">
+            <div className="nav-actions">
               <Button
                 variant={themeMode === 'system' ? 'filled' : 'gray'}
                 size="sm"
                 onClick={() => handleThemeChange('system')}
-                aria-label="System theme"
+                aria-label="System appearance"
               >
                 <IoSparklesOutline />
               </Button>
@@ -92,7 +102,7 @@ export function App() {
                 variant={themeMode === 'light' ? 'filled' : 'gray'}
                 size="sm"
                 onClick={() => handleThemeChange('light')}
-                aria-label="Light theme"
+                aria-label="Light appearance"
               >
                 <IoSunnyOutline />
               </Button>
@@ -100,23 +110,32 @@ export function App() {
                 variant={themeMode === 'dark' ? 'filled' : 'gray'}
                 size="sm"
                 onClick={() => handleThemeChange('dark')}
-                aria-label="Dark theme"
+                aria-label="Dark appearance"
               >
                 <IoMoonOutline />
               </Button>
               <Button
                 variant="tinted"
                 size="sm"
-                onClick={() => window.open('https://github.com/adit-firdaus/may-ui', '_blank')}
-                aria-label="View May UI on GitHub"
+                onClick={() => window.open('https://github.com/adit-firdaus', '_blank')}
+                aria-label="GitHub Profile"
               >
                 <IoLogoGithub />
+              </Button>
+              <Button
+                variant="tinted"
+                size="sm"
+                onClick={() => window.open('https://www.linkedin.com/in/adit-firdaus/', '_blank')}
+                aria-label="LinkedIn Profile"
+              >
+                <IoLogoLinkedin />
               </Button>
             </div>
           }
         />
 
-        <div className="content-wrapper">
+        <main className="portfolio-main">
+          {/* Header Notice */}
           <NoticeBar
             tone="tint"
             icon={<IoLogoApple />}
@@ -126,34 +145,254 @@ export function App() {
                 size="sm"
                 onClick={() => window.open('https://github.com/adit-firdaus/may-ui', '_blank')}
               >
-                GitHub
+                Explore May UI
               </Button>
             }
           >
-            Powered by May UI (<a href="https://github.com/adit-firdaus/may-ui" target="_blank" rel="noreferrer" style={{ color: 'inherit', fontWeight: 600 }}>adit-firdaus/may-ui</a>) — Apple's design language as a React library.
+            Crafted with May UI (<a href="https://github.com/adit-firdaus/may-ui" target="_blank" rel="noreferrer" style={{ color: 'inherit', fontWeight: 600 }}>adit-firdaus/may-ui</a>) — Apple's design language as an authentic React system.
           </NoticeBar>
 
+          {/* Hero Profile Card */}
+          <Card padding="lg">
+            <div className="hero-profile-row">
+              <div className="hero-avatar-wrap">
+                <Avatar name="Adit Firdaus" size="xl" />
+              </div>
+              <div className="hero-info">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                  <CardTitle style={{ margin: 0, fontSize: '1.75rem', fontWeight: 700 }}>
+                    Adit Firdaus
+                  </CardTitle>
+                  <Badge tone="success" variant="tinted">Cohort 2026</Badge>
+                </div>
+                <Text tone="secondary" style={{ fontSize: '1.05rem', lineHeight: '1.4' }}>
+                  Software Engineer & Apple Developer Academy Learner based in BSD, Greater Jakarta.
+                  Crafting human-centered spatial, iOS, and web experiences with Apple Human Interface Guidelines and real spring motion.
+                </Text>
+                <div className="hero-badges">
+                  <Badge tone="tint">Apple Developer Academy @ BINUS</Badge>
+                  <Badge tone="neutral">iOS & visionOS</Badge>
+                  <Badge tone="neutral">Creator of May UI</Badge>
+                  <Badge tone="neutral">React 19 & TypeScript</Badge>
+                </div>
+                <div className="hero-actions">
+                  <Button
+                    variant="filled"
+                    size="sm"
+                    leadingIcon={<IoRocketOutline />}
+                    onClick={() => {
+                      setActiveTab('projects')
+                      toast('Navigated to Featured Projects')
+                    }}
+                  >
+                    View Featured Projects
+                  </Button>
+                  <Button
+                    variant="tinted"
+                    size="sm"
+                    leadingIcon={<IoLogoGithub />}
+                    onClick={() => window.open('https://github.com/adit-firdaus/may-ui', '_blank')}
+                  >
+                    May UI Library
+                  </Button>
+                  <Button
+                    variant="gray"
+                    size="sm"
+                    leadingIcon={<IoSchoolOutline />}
+                    onClick={() => {
+                      setActiveTab('academy')
+                      toast('Navigated to Academy Journey')
+                    }}
+                  >
+                    Academy Journey
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </Card>
+
+          {/* Primary Navigation Segmented Control */}
           <SegmentedControl<TabKey>
             fullWidth
             size="lg"
             value={activeTab}
-            onValueChange={(val) => setActiveTab(val)}
+            onValueChange={(val) => {
+              setActiveTab(val)
+              window.scrollTo({ top: 120, behavior: 'smooth' })
+            }}
             options={[
-              { label: 'Overview', value: 'overview' },
-              { label: 'Projects', value: 'projects' },
-              { label: 'May UI Lab', value: 'components' },
-              { label: 'Settings', value: 'settings' },
+              { label: 'Featured Projects', value: 'projects' },
+              { label: 'Academy Journey', value: 'academy' },
+              { label: 'Skills & Tech', value: 'skills' },
+              { label: 'May UI Lab', value: 'lab' },
             ]}
           />
 
-          {activeTab === 'overview' && (
+          {/* TAB: FEATURED PROJECTS */}
+          {activeTab === 'projects' && (
             <Stack gap={5}>
+              <div>
+                <CardTitle style={{ fontSize: '1.4rem' }}>Featured Projects & Applications</CardTitle>
+                <Text tone="secondary">
+                  Native Apple ecosystem applications, cross-platform systems, and open-source tooling.
+                </Text>
+              </div>
+
+              <div className="project-grid">
+                {/* Project 1: May UI */}
+                <Card padding="lg" className="project-card">
+                  <CardHeader accessory={<Badge tone="tint" variant="tinted">Open Source · v0.2.0</Badge>}>
+                    <IconTile gradient="blue" size="lg"><IoSparklesOutline /></IconTile>
+                    <CardTitle>May UI</CardTitle>
+                    <CardDescription>Apple's design language as a native React library.</CardDescription>
+                  </CardHeader>
+                  <CardBody>
+                    <Text tone="secondary">
+                      An authentic Apple-native design system with 74 components across adaptive, desktop, and mobile forms.
+                      Zero runtime CSS dependencies, CSS linear() damped oscillator spring curves, and token-first theming.
+                    </Text>
+                    <div className="project-tags">
+                      <Tag tone="tint" size="sm">React 19</Tag>
+                      <Tag tone="neutral" size="sm">TypeScript</Tag>
+                      <Tag tone="neutral" size="sm">CSS Linear Springs</Tag>
+                      <Tag tone="neutral" size="sm">Token-First</Tag>
+                    </div>
+                  </CardBody>
+                  <CardFooter>
+                    <div style={{ display: 'flex', gap: '8px', width: '100%' }}>
+                      <Button
+                        variant="filled"
+                        size="sm"
+                        style={{ flex: 1 }}
+                        onClick={() => window.open('https://github.com/adit-firdaus/may-ui', '_blank')}
+                      >
+                        GitHub Repo
+                      </Button>
+                      <Button
+                        variant="tinted"
+                        size="sm"
+                        style={{ flex: 1 }}
+                        onClick={() => window.open('https://adit-firdaus.github.io/may-ui/', '_blank')}
+                      >
+                        Docs & Catalog
+                      </Button>
+                    </div>
+                  </CardFooter>
+                </Card>
+
+                {/* Project 2: SpatialFlow */}
+                <Card padding="lg" className="project-card">
+                  <CardHeader accessory={<Badge tone="tint" variant="tinted">visionOS & iOS</Badge>}>
+                    <IconTile gradient="purple" size="lg"><IoCubeOutline /></IconTile>
+                    <CardTitle>SpatialFlow</CardTitle>
+                    <CardDescription>Spatial ideation canvas & 3D thought mapping for Apple Vision Pro.</CardDescription>
+                  </CardHeader>
+                  <CardBody>
+                    <Text tone="secondary">
+                      Designed for immersive collaborative brainstorming. Utilizes RealityKit entity placement, hand gesture manipulation,
+                      Spatial Audio anchoring, and CloudKit real-time synchronized canvas.
+                    </Text>
+                    <div className="project-tags">
+                      <Tag tone="tint" size="sm">Swift 6</Tag>
+                      <Tag tone="neutral" size="sm">SwiftUI</Tag>
+                      <Tag tone="neutral" size="sm">RealityKit</Tag>
+                      <Tag tone="neutral" size="sm">ARKit</Tag>
+                      <Tag tone="neutral" size="sm">CloudKit</Tag>
+                    </div>
+                  </CardBody>
+                  <CardFooter>
+                    <Button
+                      variant="tinted"
+                      size="sm"
+                      fullWidth
+                      onClick={() => toast.success('SpatialFlow visionOS demo launched in simulator!')}
+                    >
+                      Explore Spatial Prototype
+                    </Button>
+                  </CardFooter>
+                </Card>
+
+                {/* Project 3: PulseHabit */}
+                <Card padding="lg" className="project-card">
+                  <CardHeader accessory={<Badge tone="success" variant="tinted">iOS 18 & watchOS</Badge>}>
+                    <IconTile gradient="green" size="lg"><IoHeartOutline /></IconTile>
+                    <CardTitle>PulseHabit</CardTitle>
+                    <CardDescription>Intelligent habit builder synchronized with Apple Health data.</CardDescription>
+                  </CardHeader>
+                  <CardBody>
+                    <Text tone="secondary">
+                      Analyzes HRV, resting heart rate, and circadian rhythms to recommend optimal focus windows.
+                      Features interactive Lock Screen widgets, Control Center controls, and Apple Watch complications.
+                    </Text>
+                    <div className="project-tags">
+                      <Tag tone="success" size="sm">HealthKit</Tag>
+                      <Tag tone="neutral" size="sm">WidgetKit</Tag>
+                      <Tag tone="neutral" size="sm">SwiftData</Tag>
+                      <Tag tone="neutral" size="sm">watchOS</Tag>
+                    </div>
+                  </CardBody>
+                  <CardFooter>
+                    <Button
+                      variant="tinted"
+                      size="sm"
+                      fullWidth
+                      onClick={() => toast.success('TestFlight access invitation requested!')}
+                    >
+                      Request TestFlight Build
+                    </Button>
+                  </CardFooter>
+                </Card>
+
+                {/* Project 4: aditfirdaus-ada Hub */}
+                <Card padding="lg" className="project-card">
+                  <CardHeader accessory={<Badge tone="warning" variant="tinted">Portfolio Site</Badge>}>
+                    <IconTile gradient="orange" size="lg"><IoTerminalOutline /></IconTile>
+                    <CardTitle>aditfirdaus-ada</CardTitle>
+                    <CardDescription>Apple Developer Academy portfolio powered by Vite & May UI.</CardDescription>
+                  </CardHeader>
+                  <CardBody>
+                    <Text tone="secondary">
+                      The live portfolio you are browsing right now! Automatically deployed to GitHub Pages via GitHub Actions CI/CD,
+                      fully responsive, accessible, and adhering to Apple's Human Interface Guidelines.
+                    </Text>
+                    <div className="project-tags">
+                      <Tag tone="warning" size="sm">React 19</Tag>
+                      <Tag tone="neutral" size="sm">May UI</Tag>
+                      <Tag tone="neutral" size="sm">Vite</Tag>
+                      <Tag tone="neutral" size="sm">GitHub Pages</Tag>
+                    </div>
+                  </CardBody>
+                  <CardFooter>
+                    <Button
+                      variant="tinted"
+                      size="sm"
+                      fullWidth
+                      onClick={() => window.open('https://github.com/adit-firdaus/aditfirdaus-ada', '_blank')}
+                    >
+                      View Source Code
+                    </Button>
+                  </CardFooter>
+                </Card>
+              </div>
+            </Stack>
+          )}
+
+          {/* TAB: ACADEMY JOURNEY */}
+          {activeTab === 'academy' && (
+            <Stack gap={5}>
+              <div>
+                <CardTitle style={{ fontSize: '1.4rem' }}>Apple Developer Academy Journey</CardTitle>
+                <Text tone="secondary">
+                  Challenge Based Learning (CBL) progression, milestone achievements, and cohort deliverables at Apple Developer Academy @ BINUS (BSD City, Indonesia).
+                </Text>
+              </div>
+
               <div className="stat-grid">
                 <Card padding="md">
                   <Statistic
                     label="Nano Challenges"
                     value="3 / 3"
-                    delta="Completed"
+                    delta="+100% Completed"
                     direction="up"
                     trailing={<IconTile gradient="blue"><IoCheckmarkCircle /></IconTile>}
                   />
@@ -189,184 +428,165 @@ export function App() {
               </div>
 
               <Card padding="lg">
-                <CardHeader accessory={<Badge tone="success" variant="tinted">78% Milestones</Badge>}>
-                  <CardTitle>Academy Graduation Journey</CardTitle>
+                <CardHeader accessory={<Badge tone="success" variant="tinted">78% Milestones Reached</Badge>}>
+                  <CardTitle>Graduation Readiness & Challenge Progress</CardTitle>
                   <CardDescription>
-                    Progress through Challenge Based Learning (CBL) milestones, domain competencies, and team deliverables.
+                    Tracking competencies across Coding, Design, and Professional skills through the 10-month intensive academy program.
                   </CardDescription>
                 </CardHeader>
                 <CardBody>
-                  <Progress value={78} max={100} label="Curriculum & Challenge Completion" showValue />
+                  <Progress value={78} max={100} label="Academy Graduation Milestone" showValue />
                 </CardBody>
               </Card>
 
               <Accordion
                 type="single"
                 collapsible
-                header={<Text variant="caption-1" weight="semibold">CHALLENGE BASED LEARNING (CBL) FRAMEWORK</Text>}
-                footer={<Text variant="footnote" tone="secondary">Apple's pedagogical framework guiding all academy project cycles.</Text>}
+                header={<Text variant="caption-1" weight="semibold">CHALLENGE BASED LEARNING (CBL) PHASES</Text>}
+                footer={<Text variant="footnote" tone="secondary">Apple's problem-solving framework used to create authentic, scalable software solutions.</Text>}
               >
                 <AccordionItem
                   value="engage"
-                  title="1. Engage Phase"
-                  subtitle="Big Idea & Essential Question"
+                  title="1. Engage Phase — Big Idea & Essential Question"
+                  subtitle="Problem Discovery & User Empathy"
                   leading={<IconTile gradient="pink"><IoCompassOutline /></IconTile>}
-                  detail="Defined"
+                  detail="Complete"
                 >
                   <Text tone="secondary">
-                    Learners identify a global challenge and formulate an actionable Essential Question. Through community interviews and problem validation, the team converges on a single challenge statement.
+                    Learners identify real-world community issues, conduct stakeholder interviews, and formulate a compelling Essential Question.
+                    Through collaborative consensus, the team frames an actionable challenge focused on real user needs.
                   </Text>
                 </AccordionItem>
 
                 <AccordionItem
                   value="investigate"
-                  title="2. Investigate Phase"
-                  subtitle="Guiding Questions & Research"
+                  title="2. Investigate Phase — Guiding Questions & Field Research"
+                  subtitle="Prototyping & Technology Exploration"
                   leading={<IconTile gradient="teal"><IoTerminalOutline /></IconTile>}
-                  detail="Validated"
+                  detail="Complete"
                 >
                   <Text tone="secondary">
-                    In-depth user research, competitor bench-marking, accessibility evaluations, and rapid prototyping using Swift, SwiftUI, and HIG principles.
+                    Conducting in-depth domain research, competitive benchmarking, accessibility evaluations, and rapid prototyping.
+                    Validating concepts with Swift, SwiftUI, and HIG guidelines through iterative user testing sessions.
                   </Text>
                 </AccordionItem>
 
                 <AccordionItem
                   value="act"
-                  title="3. Act Phase"
-                  subtitle="Solution Design, Implementation & Pitch"
+                  title="3. Act Phase — Implementation, TestFlight & Showcase"
+                  subtitle="Production Engineering & Pitch"
                   leading={<IconTile gradient="indigo"><IoRocketOutline /></IconTile>}
-                  detail="Current"
+                  detail="In Progress"
                 >
                   <Text tone="secondary">
-                    Developing the production iOS/visionOS application, conducting usability testing sessions, submitting TestFlight builds, and presenting the final showcase to industry leaders.
+                    Building the full iOS/visionOS production application, distributing TestFlight beta builds to real users, iterating on user feedback,
+                    and preparing final keynote presentations for Apple mentors and industry leaders.
                   </Text>
                 </AccordionItem>
               </Accordion>
 
               <List
-                header={<Text variant="caption-1" weight="semibold">CORE ACADEMY PILLARS</Text>}
-                footer={<Text variant="footnote" tone="secondary">Competencies evaluated throughout the 10-month program.</Text>}
+                header={<Text variant="caption-1" weight="semibold">ACADEMY CORE PILLARS</Text>}
+                footer={<Text variant="footnote" tone="secondary">The three foundation competencies evaluated throughout the academy.</Text>}
               >
                 <ListRow
                   leading={<IconTile gradient="blue"><IoCodeSlashOutline /></IconTile>}
-                  title="Technical Proficiency"
-                  subtitle="Swift, SwiftUI, UIKit, CoreML, Spatial Computing"
+                  title="Coding & Technical Architecture"
+                  subtitle="Swift 6, SwiftUI, Concurrency, SwiftData, CoreML, Spatial RealityKit"
                   detail="Advanced"
                 />
                 <ListRow
                   leading={<IconTile gradient="purple"><IoColorPaletteOutline /></IconTile>}
-                  title="Design & HIG"
-                  subtitle="Apple Design Awards principles, iOS/macOS human factors"
+                  title="Design & Human Interface Guidelines"
+                  subtitle="Apple Design Awards principles, tactile interaction, accessibility & typography"
                   detail="Exemplary"
                 />
                 <ListRow
                   leading={<IconTile gradient="orange"><IoPersonOutline /></IconTile>}
-                  title="Professional Skills"
-                  subtitle="Agile sprint cadence, cross-functional pitching & storytelling"
+                  title="Professional Skills & Leadership"
+                  subtitle="Agile Scrum cadence, cross-functional pitching, storytelling & collaboration"
                   detail="Active"
                 />
               </List>
             </Stack>
           )}
 
-          {activeTab === 'projects' && (
+          {/* TAB: SKILLS & TECH */}
+          {activeTab === 'skills' && (
             <Stack gap={5}>
               <div>
-                <CardTitle>Cohort Applications & Prototypes</CardTitle>
+                <CardTitle style={{ fontSize: '1.4rem' }}>Skills & Technical Competencies</CardTitle>
                 <Text tone="secondary">
-                  Native Apple ecosystem applications built during individual and collaborative academy sprints.
+                  Tooling, programming languages, frameworks, and design methodologies mastered.
                 </Text>
               </div>
 
-              <div className="project-grid">
-                <Card padding="lg" className="project-card">
-                  <CardHeader accessory={<Badge tone="tint" variant="tinted">visionOS</Badge>}>
-                    <IconTile gradient="purple" size="lg"><IoSparklesOutline /></IconTile>
-                    <CardTitle>SpatialFlow</CardTitle>
-                    <CardDescription>Mind-mapping & collaborative spatial canvas for Apple Vision Pro.</CardDescription>
+              <div className="skill-grid">
+                <Card padding="md">
+                  <CardHeader>
+                    <IconTile gradient="blue"><IoLogoApple /></IconTile>
+                    <CardTitle>iOS & Apple Ecosystem</CardTitle>
+                    <CardDescription>Native Apple platforms and frameworks</CardDescription>
                   </CardHeader>
                   <CardBody>
-                    <Text tone="secondary">
-                      Leverages RealityKit and Spatial Audio to arrange multi-window thoughts in physical space with hand-tracking gestures.
-                    </Text>
-                    <div className="project-tags">
-                      <Tag tone="tint" size="sm">SwiftUI</Tag>
-                      <Tag tone="neutral" size="sm">RealityKit</Tag>
-                      <Tag tone="neutral" size="sm">ARKit</Tag>
-                    </div>
+                    <Stack gap={2}>
+                      <Text weight="semibold">Swift 6 & SwiftUI</Text>
+                      <Text tone="secondary" variant="footnote">Declarative UI, State & Binding, Swift Concurrency</Text>
+                      <Separator />
+                      <Text weight="semibold">visionOS & RealityKit</Text>
+                      <Text tone="secondary" variant="footnote">Spatial computing, Windows, Volumes, Immersive Spaces</Text>
+                      <Separator />
+                      <Text weight="semibold">Apple Frameworks</Text>
+                      <Text tone="secondary" variant="footnote">HealthKit, WidgetKit, SwiftData, CoreML, CloudKit</Text>
+                    </Stack>
                   </CardBody>
-                  <CardFooter>
-                    <Button
-                      variant="tinted"
-                      size="sm"
-                      fullWidth
-                      onClick={() => toast.success('SpatialFlow visionOS preview initialized!')}
-                    >
-                      Explore Prototype
-                    </Button>
-                  </CardFooter>
                 </Card>
 
-                <Card padding="lg" className="project-card">
-                  <CardHeader accessory={<Badge tone="success" variant="tinted">iOS 18</Badge>}>
-                    <IconTile gradient="blue" size="lg"><IoPhonePortraitOutline /></IconTile>
-                    <CardTitle>PulseHabit</CardTitle>
-                    <CardDescription>Intelligent habit builder synchronized with Apple Health data.</CardDescription>
+                <Card padding="md">
+                  <CardHeader>
+                    <IconTile gradient="purple"><IoCodeSlashOutline /></IconTile>
+                    <CardTitle>Web & Frontend Engineering</CardTitle>
+                    <CardDescription>Modern web standards & design systems</CardDescription>
                   </CardHeader>
                   <CardBody>
-                    <Text tone="secondary">
-                      Analyzes HRV and circadian cycles to suggest optimal time windows for deep work and mindfulness rituals.
-                    </Text>
-                    <div className="project-tags">
-                      <Tag tone="success" size="sm">HealthKit</Tag>
-                      <Tag tone="neutral" size="sm">SwiftData</Tag>
-                      <Tag tone="neutral" size="sm">Widgets</Tag>
-                    </div>
+                    <Stack gap={2}>
+                      <Text weight="semibold">React 19 & TypeScript</Text>
+                      <Text tone="secondary" variant="footnote">Modern hooks, Server Components, strict type safety</Text>
+                      <Separator />
+                      <Text weight="semibold">May UI Design System</Text>
+                      <Text tone="secondary" variant="footnote">Authored full Apple HIG React library with real springs</Text>
+                      <Separator />
+                      <Text weight="semibold">Build & Performance</Text>
+                      <Text tone="secondary" variant="footnote">Vite, Next.js, GitHub Actions CI/CD, CSS Linear curves</Text>
+                    </Stack>
                   </CardBody>
-                  <CardFooter>
-                    <Button
-                      variant="tinted"
-                      size="sm"
-                      fullWidth
-                      onClick={() => toast.success('TestFlight invitation requested!')}
-                    >
-                      Request TestFlight
-                    </Button>
-                  </CardFooter>
                 </Card>
 
-                <Card padding="lg" className="project-card">
-                  <CardHeader accessory={<Badge tone="warning" variant="tinted">Web & HIG</Badge>}>
-                    <IconTile gradient="orange" size="lg"><IoTerminalOutline /></IconTile>
-                    <CardTitle>aditfirdaus-ada</CardTitle>
-                    <CardDescription>Academy hub powered by Vite, React 19, and May UI design system.</CardDescription>
+                <Card padding="md">
+                  <CardHeader>
+                    <IconTile gradient="orange"><IoColorPaletteOutline /></IconTile>
+                    <CardTitle>Design & Product Thinking</CardTitle>
+                    <CardDescription>Human factors & design leadership</CardDescription>
                   </CardHeader>
                   <CardBody>
-                    <Text tone="secondary">
-                      This exact web app! Deployed automatically to GitHub Pages via GitHub Actions with pure Apple design cues.
-                    </Text>
-                    <div className="project-tags">
-                      <Tag tone="warning" size="sm">React 19</Tag>
-                      <Tag tone="neutral" size="sm">May UI</Tag>
-                      <Tag tone="neutral" size="sm">TypeScript</Tag>
-                    </div>
+                    <Stack gap={2}>
+                      <Text weight="semibold">Apple HIG & Design Principles</Text>
+                      <Text tone="secondary" variant="footnote">Tactile feedback, hierarchy, fluidity, Apple Design Awards</Text>
+                      <Separator />
+                      <Text weight="semibold">Accessibility First</Text>
+                      <Text tone="secondary" variant="footnote">VoiceOver compatibility, Dynamic Type, High Contrast</Text>
+                      <Separator />
+                      <Text weight="semibold">Challenge Based Learning (CBL)</Text>
+                      <Text tone="secondary" variant="footnote">User interviews, usability testing, iterative sprint reviews</Text>
+                    </Stack>
                   </CardBody>
-                  <CardFooter>
-                    <Button
-                      variant="tinted"
-                      size="sm"
-                      fullWidth
-                      onClick={() => window.open('https://github.com/adit-firdaus/aditfirdaus-ada', '_blank')}
-                    >
-                      View Source Code
-                    </Button>
-                  </CardFooter>
                 </Card>
               </div>
             </Stack>
           )}
 
-          {activeTab === 'components' && (
+          {/* TAB: MAY UI LAB */}
+          {activeTab === 'lab' && (
             <Stack gap={5}>
               {showAlert && (
                 <Alert
@@ -375,15 +595,15 @@ export function App() {
                   icon={<IoInformationCircleOutline />}
                   onDismiss={() => setShowAlert(false)}
                 >
-                  May UI components feature zero external CSS imports, native spring physics, and strict Apple HIG tokens.
+                  Experience the actual May UI component library in action. Zero runtime CSS imports, authentic damped-oscillator springs, and Apple HIG tokens.
                 </Alert>
               )}
 
-              <div className="showcase-grid">
+              <div className="project-grid">
                 <Card padding="md">
                   <CardHeader>
-                    <CardTitle>Buttons & Variants</CardTitle>
-                    <CardDescription>iOS-standard corner curvatures and press states.</CardDescription>
+                    <CardTitle>Button System & States</CardTitle>
+                    <CardDescription>Authentic corner radiuses and touch feedback</CardDescription>
                   </CardHeader>
                   <CardBody>
                     <Stack gap={3}>
@@ -433,12 +653,12 @@ export function App() {
 
                 <Card padding="md">
                   <CardHeader>
-                    <CardTitle>Live Inputs & Form Controls</CardTitle>
-                    <CardDescription>Connected with May UI Field wrapper.</CardDescription>
+                    <CardTitle>Reactive Form Controls</CardTitle>
+                    <CardDescription>Managed inputs and token toggles</CardDescription>
                   </CardHeader>
                   <CardBody>
                     <Stack gap={3}>
-                      <Field label="Interactive Text Field" description="Updates the live preview container below">
+                      <Field label="Interactive Text Field" description="Updates the live reactive container below">
                         <Input
                           value={sampleText}
                           onChange={(e) => setSampleText(e.target.value)}
@@ -455,7 +675,7 @@ export function App() {
                           checked={hapticEnabled}
                           onChange={(e) => {
                             setHapticEnabled(e.target.checked)
-                            toast(e.target.checked ? 'Haptic feedback enabled' : 'Haptic feedback disabled')
+                            toast(e.target.checked ? 'Haptic feedback simulated' : 'Haptics muted')
                           }}
                         >
                           Enable Haptic Feedback
@@ -464,7 +684,7 @@ export function App() {
                           checked={reducedMotion}
                           onChange={(e) => {
                             setReducedMotion(e.target.checked)
-                            toast(e.target.checked ? 'Reduced motion enabled' : 'Reduced motion disabled')
+                            toast(e.target.checked ? 'Reduced motion preference on' : 'Full springs active')
                           }}
                         >
                           Respect Reduced Motion
@@ -476,8 +696,8 @@ export function App() {
 
                 <Card padding="md">
                   <CardHeader>
-                    <CardTitle>Indicators & Progress</CardTitle>
-                    <CardDescription>Activity indicators and status badges.</CardDescription>
+                    <CardTitle>Spring Indicators & Metrics</CardTitle>
+                    <CardDescription>Compositor-driven progress and badges</CardDescription>
                   </CardHeader>
                   <CardBody>
                     <Stack gap={4}>
@@ -485,7 +705,7 @@ export function App() {
                         <CircularProgress value={counter % 100} size="lg" showValue />
                         <CircularProgress indeterminate size="md" />
                       </div>
-                      <Progress value={counter % 100} label="Dynamic Spring Meter" showValue />
+                      <Progress value={counter % 100} label="Dynamic Progress" showValue />
                       <Separator />
                       <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                         <Badge tone="tint">Active</Badge>
@@ -500,78 +720,31 @@ export function App() {
             </Stack>
           )}
 
-          {activeTab === 'settings' && (
-            <Stack gap={5}>
-              <List
-                header={<Text variant="caption-1" weight="semibold">PREFERENCES & APPEARANCE</Text>}
-                footer={<Text variant="footnote" tone="secondary">Theme overrides can be configured globally or per-subtree.</Text>}
-              >
-                <ListRow
-                  leading={<IconTile gradient="blue"><IoColorPaletteOutline /></IconTile>}
-                  title="Interface Appearance"
-                  subtitle="Controlled by MayProvider theme config"
-                  detail={themeMode.toUpperCase()}
-                  onClick={() => {
-                    const next: ThemeMode = themeMode === 'system' ? 'light' : themeMode === 'light' ? 'dark' : 'system'
-                    handleThemeChange(next)
-                  }}
-                  chevron
-                />
-                <ListRow
-                  leading={<IconTile gradient="green"><IoNotificationsOutline /></IconTile>}
-                  title="Academy Notifications"
-                  subtitle="Daily standup reminders & challenge alerts"
-                  accessory={
-                    <Switch
-                      checked={notificationsEnabled}
-                      onChange={(e) => {
-                        setNotificationsEnabled(e.target.checked)
-                        toast(e.target.checked ? 'Notifications active' : 'Notifications muted')
-                      }}
-                      aria-label="Toggle notifications"
-                    />
-                  }
-                />
-                <ListRow
-                  leading={<IconTile gradient="purple"><IoTimeOutline /></IconTile>}
-                  title="Simulate Spring Latency"
-                  subtitle="Damped-oscillator CSS linear() curves"
-                  detail="Active"
-                />
-              </List>
-
-              <List
-                header={<Text variant="caption-1" weight="semibold">REPOSITORY & RUNTIME</Text>}
-                footer={<Text variant="footnote" tone="secondary">Vite 8 · React 19 · @adit_firdaus/may-ui 0.2.0 · GitHub Pages CI/CD</Text>}
-              >
-                <ListRow
-                  leading={<IconTile gradient="gray"><IoLogoGithub /></IconTile>}
-                  title="May UI Repository"
-                  subtitle="adit-firdaus/may-ui"
-                  detail="GitHub"
-                  onClick={() => window.open('https://github.com/adit-firdaus/may-ui', '_blank')}
-                  chevron
-                />
-                <ListRow
-                  leading={<IconTile gradient="blue"><IoLogoGithub /></IconTile>}
-                  title="This App Repository"
-                  subtitle="adit-firdaus/aditfirdaus-ada"
-                  detail="GitHub"
-                  onClick={() => window.open('https://github.com/adit-firdaus/aditfirdaus-ada', '_blank')}
-                  chevron
-                />
-                <ListRow
-                  leading={<IconTile gradient="indigo"><IoRocketOutline /></IconTile>}
-                  title="May UI npm Package"
-                  subtitle="@adit_firdaus/may-ui"
-                  detail="v0.2.0"
-                  onClick={() => window.open('https://www.npmjs.com/package/@adit_firdaus/may-ui', '_blank')}
-                  chevron
-                />
-              </List>
-            </Stack>
-          )}
-        </div>
+          {/* Footer */}
+          <footer className="footer-section">
+            <Separator />
+            <Text tone="secondary" variant="footnote">
+              Designed & developed by <strong>Adit Firdaus</strong> · Apple Developer Academy @ BINUS (BSD City)
+            </Text>
+            <div className="footer-links">
+              <a href="https://github.com/adit-firdaus" target="_blank" rel="noreferrer">
+                GitHub (@adit-firdaus)
+              </a>
+              <a href="https://github.com/adit-firdaus/may-ui" target="_blank" rel="noreferrer">
+                May UI Design System
+              </a>
+              <a href="https://github.com/adit-firdaus/aditfirdaus-ada" target="_blank" rel="noreferrer">
+                Repository
+              </a>
+              <a href="https://www.linkedin.com/in/adit-firdaus/" target="_blank" rel="noreferrer">
+                LinkedIn
+              </a>
+            </div>
+            <Text tone="tertiary" variant="caption-2">
+              Powered by React 19, Vite, and @adit_firdaus/may-ui · Deployed to GitHub Pages
+            </Text>
+          </footer>
+        </main>
       </div>
     </MayProvider>
   )
