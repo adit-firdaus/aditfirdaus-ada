@@ -1,8 +1,6 @@
 :root {
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", system-ui, sans-serif;
   color-scheme: light dark;
-  margin: 0;
-  padding: 0;
 }
 
 * {
@@ -15,15 +13,8 @@ body {
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f2f2f7;
-  color: #1c1c1e;
-}
-
-@media (prefers-color-scheme: dark) {
-  body {
-    background-color: #000000;
-    color: #f2f2f7;
-  }
+  background-color: var(--may-color-bg, #f2f2f7);
+  color: var(--may-color-text, #1c1c1e);
 }
 
 #root {
