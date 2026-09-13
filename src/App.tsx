@@ -13,6 +13,7 @@ import {
   CardTitle,
   Checkbox,
   CircularProgress,
+  Field,
   IconTile,
   Input,
   List,
@@ -22,11 +23,13 @@ import {
   NoticeBar,
   Progress,
   SegmentedControl,
+  Separator,
   Stack,
   Statistic,
   Switch,
   Tag,
   Text,
+  toast,
 } from '@adit_firdaus/may-ui'
 import {
   IoAppsOutline,
@@ -63,6 +66,11 @@ export function App() {
   const [counter, setCounter] = useState(42)
   const [showAlert, setShowAlert] = useState(true)
 
+  const handleThemeChange = (mode: ThemeMode) => {
+    setThemeMode(mode)
+    toast(`Switched theme to ${mode} mode`)
+  }
+
   return (
     <MayProvider theme={themeMode}>
       <div className="app-container">
@@ -75,7 +83,7 @@ export function App() {
               <Button
                 variant={themeMode === 'system' ? 'filled' : 'gray'}
                 size="sm"
-                onClick={() => setThemeMode('system')}
+                onClick={() => handleThemeChange('system')}
                 aria-label="System theme"
               >
                 <IoSparklesOutline />
@@ -83,7 +91,7 @@ export function App() {
               <Button
                 variant={themeMode === 'light' ? 'filled' : 'gray'}
                 size="sm"
-                onClick={() => setThemeMode('light')}
+                onClick={() => handleThemeChange('light')}
                 aria-label="Light theme"
               >
                 <IoSunnyOutline />
@@ -91,7 +99,7 @@ export function App() {
               <Button
                 variant={themeMode === 'dark' ? 'filled' : 'gray'}
                 size="sm"
-                onClick={() => setThemeMode('dark')}
+                onClick={() => handleThemeChange('dark')}
                 aria-label="Dark theme"
               >
                 <IoMoonOutline />
@@ -99,8 +107,8 @@ export function App() {
               <Button
                 variant="tinted"
                 size="sm"
-                onClick={() => window.open('https://github.com/adit-firdaus/aditfirdaus-ada', '_blank')}
-                aria-label="View on GitHub"
+                onClick={() => window.open('https://github.com/adit-firdaus/may-ui', '_blank')}
+                aria-label="View May UI on GitHub"
               >
                 <IoLogoGithub />
               </Button>
@@ -116,13 +124,13 @@ export function App() {
               <Button
                 variant="plain"
                 size="sm"
-                onClick={() => window.open('https://adit-firdaus.github.io/may-ui/', '_blank')}
+                onClick={() => window.open('https://github.com/adit-firdaus/may-ui', '_blank')}
               >
-                Docs
+                GitHub
               </Button>
             }
           >
-            Built with May UI — Apple-native React design system with genuine iOS 26 springs and tokens.
+            Powered by May UI (<a href="https://github.com/adit-firdaus/may-ui" target="_blank" rel="noreferrer" style={{ color: 'inherit', fontWeight: 600 }}>adit-firdaus/may-ui</a>) — Apple's design language as a React library.
           </NoticeBar>
 
           <SegmentedControl<TabKey>
@@ -288,7 +296,12 @@ export function App() {
                     </div>
                   </CardBody>
                   <CardFooter>
-                    <Button variant="tinted" size="sm" fullWidth onClick={() => alert('SpatialFlow prototype launched')}>
+                    <Button
+                      variant="tinted"
+                      size="sm"
+                      fullWidth
+                      onClick={() => toast.success('SpatialFlow visionOS preview initialized!')}
+                    >
                       Explore Prototype
                     </Button>
                   </CardFooter>
@@ -311,7 +324,12 @@ export function App() {
                     </div>
                   </CardBody>
                   <CardFooter>
-                    <Button variant="tinted" size="sm" fullWidth onClick={() => alert('PulseHabit TestFlight build requested')}>
+                    <Button
+                      variant="tinted"
+                      size="sm"
+                      fullWidth
+                      onClick={() => toast.success('TestFlight invitation requested!')}
+                    >
                       Request TestFlight
                     </Button>
                   </CardFooter>
@@ -369,16 +387,44 @@ export function App() {
                   </CardHeader>
                   <CardBody>
                     <Stack gap={3}>
-                      <Button variant="filled" fullWidth onClick={() => setCounter(c => c + 1)}>
+                      <Button
+                        variant="filled"
+                        fullWidth
+                        onClick={() => {
+                          const next = counter + 1
+                          setCounter(next)
+                          toast.success(`Counter increased to ${next}`)
+                        }}
+                      >
                         Filled Button ({counter})
                       </Button>
-                      <Button variant="tinted" fullWidth onClick={() => setCounter(c => c + 5)}>
+                      <Button
+                        variant="tinted"
+                        fullWidth
+                        onClick={() => {
+                          const next = counter + 5
+                          setCounter(next)
+                          toast(`Counter jumped by +5 to ${next}`)
+                        }}
+                      >
                         Tinted Button (+5)
                       </Button>
-                      <Button variant="gray" fullWidth onClick={() => setCounter(0)}>
+                      <Button
+                        variant="gray"
+                        fullWidth
+                        onClick={() => {
+                          setCounter(0)
+                          toast('Counter reset to 0')
+                        }}
+                      >
                         Gray Reset Button
                       </Button>
-                      <Button variant="plain" tone="danger" fullWidth onClick={() => alert('Destructive action triggered')}>
+                      <Button
+                        variant="plain"
+                        tone="danger"
+                        fullWidth
+                        onClick={() => toast.danger('Destructive action triggered')}
+                      >
                         Plain Destructive Button
                       </Button>
                     </Stack>
@@ -387,30 +433,39 @@ export function App() {
 
                 <Card padding="md">
                   <CardHeader>
-                    <CardTitle>Live Inputs & Feedback</CardTitle>
-                    <CardDescription>Synchronized reactive input controls.</CardDescription>
+                    <CardTitle>Live Inputs & Form Controls</CardTitle>
+                    <CardDescription>Connected with May UI Field wrapper.</CardDescription>
                   </CardHeader>
                   <CardBody>
                     <Stack gap={3}>
-                      <Input
-                        value={sampleText}
-                        onChange={(e) => setSampleText(e.target.value)}
-                        placeholder="Type anything..."
-                      />
+                      <Field label="Interactive Text Field" description="Updates the live preview container below">
+                        <Input
+                          value={sampleText}
+                          onChange={(e) => setSampleText(e.target.value)}
+                          placeholder="Type anything..."
+                        />
+                      </Field>
                       <div className="interactive-preview-box">
-                        <Text variant="caption-1" tone="secondary">LIVE ECHO</Text>
+                        <Text variant="caption-1" tone="secondary">LIVE PREVIEW</Text>
                         <Text weight="semibold">{sampleText || '(Empty string)'}</Text>
                       </div>
+                      <Separator />
                       <Stack gap={2}>
                         <Switch
                           checked={hapticEnabled}
-                          onChange={(e) => setHapticEnabled(e.target.checked)}
+                          onChange={(e) => {
+                            setHapticEnabled(e.target.checked)
+                            toast(e.target.checked ? 'Haptic feedback enabled' : 'Haptic feedback disabled')
+                          }}
                         >
                           Enable Haptic Feedback
                         </Switch>
                         <Checkbox
                           checked={reducedMotion}
-                          onChange={(e) => setReducedMotion(e.target.checked)}
+                          onChange={(e) => {
+                            setReducedMotion(e.target.checked)
+                            toast(e.target.checked ? 'Reduced motion enabled' : 'Reduced motion disabled')
+                          }}
                         >
                           Respect Reduced Motion
                         </Checkbox>
@@ -422,7 +477,7 @@ export function App() {
                 <Card padding="md">
                   <CardHeader>
                     <CardTitle>Indicators & Progress</CardTitle>
-                    <CardDescription>Activity indicators and metrics.</CardDescription>
+                    <CardDescription>Activity indicators and status badges.</CardDescription>
                   </CardHeader>
                   <CardBody>
                     <Stack gap={4}>
@@ -431,6 +486,7 @@ export function App() {
                         <CircularProgress indeterminate size="md" />
                       </div>
                       <Progress value={counter % 100} label="Dynamic Spring Meter" showValue />
+                      <Separator />
                       <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                         <Badge tone="tint">Active</Badge>
                         <Badge tone="success">Success</Badge>
@@ -457,7 +513,7 @@ export function App() {
                   detail={themeMode.toUpperCase()}
                   onClick={() => {
                     const next: ThemeMode = themeMode === 'system' ? 'light' : themeMode === 'light' ? 'dark' : 'system'
-                    setThemeMode(next)
+                    handleThemeChange(next)
                   }}
                   chevron
                 />
@@ -468,7 +524,10 @@ export function App() {
                   accessory={
                     <Switch
                       checked={notificationsEnabled}
-                      onChange={(e) => setNotificationsEnabled(e.target.checked)}
+                      onChange={(e) => {
+                        setNotificationsEnabled(e.target.checked)
+                        toast(e.target.checked ? 'Notifications active' : 'Notifications muted')
+                      }}
                       aria-label="Toggle notifications"
                     />
                   }
@@ -476,8 +535,8 @@ export function App() {
                 <ListRow
                   leading={<IconTile gradient="purple"><IoTimeOutline /></IconTile>}
                   title="Simulate Spring Latency"
-                  subtitle="Spring physics easing curves"
-                  detail="Damped Linear"
+                  subtitle="Damped-oscillator CSS linear() curves"
+                  detail="Active"
                 />
               </List>
 
@@ -487,15 +546,23 @@ export function App() {
               >
                 <ListRow
                   leading={<IconTile gradient="gray"><IoLogoGithub /></IconTile>}
-                  title="GitHub Repository"
+                  title="May UI Repository"
+                  subtitle="adit-firdaus/may-ui"
+                  detail="GitHub"
+                  onClick={() => window.open('https://github.com/adit-firdaus/may-ui', '_blank')}
+                  chevron
+                />
+                <ListRow
+                  leading={<IconTile gradient="blue"><IoLogoGithub /></IconTile>}
+                  title="This App Repository"
                   subtitle="adit-firdaus/aditfirdaus-ada"
-                  detail="Public"
+                  detail="GitHub"
                   onClick={() => window.open('https://github.com/adit-firdaus/aditfirdaus-ada', '_blank')}
                   chevron
                 />
                 <ListRow
                   leading={<IconTile gradient="indigo"><IoRocketOutline /></IconTile>}
-                  title="May UI Package"
+                  title="May UI npm Package"
                   subtitle="@adit_firdaus/may-ui"
                   detail="v0.2.0"
                   onClick={() => window.open('https://www.npmjs.com/package/@adit_firdaus/may-ui', '_blank')}
