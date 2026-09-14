@@ -543,6 +543,11 @@ export function App() {
         <NavigationBar
           title={profile.knownAs}
           subtitle={profile.title}
+          /* The iOS large title: it sits left and full-size at the top of the
+             page and collapses into the inline bar title as you scroll. With
+             no scrollRef the bar listens on the window, which is what a
+             whole-page scroll like this one wants. */
+          largeTitle
           sticky
           trailing={
             <Stack direction="row" gap={2} align="center">
@@ -576,6 +581,7 @@ export function App() {
             </Stack>
           }
         />
+
 
         <main className="site-main">
           <Tabs value={tab} onValueChange={(v) => go(v as TabKey)} variant="pill" size="md">

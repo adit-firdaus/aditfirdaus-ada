@@ -24,7 +24,19 @@ body {
 .site-main {
   max-width: 980px;
   margin: 0 auto;
-  padding: 20px 20px 0;
+  padding-inline: 20px;
+}
+
+/* NavigationBar renders with `display: contents`, so its sticky bar takes its
+   containing block from whatever wraps the component. Wrapping it in a div of
+   its own height would therefore unstick it the moment that div scrolls away —
+   it has to stay a direct child of the tall column, and the page's measure has
+   to be applied to its parts instead. */
+.site > .may-nav-bar .may-nav-bar__bar,
+.site > .may-nav-bar .may-nav-bar__large {
+  max-width: 980px;
+  margin-inline: auto;
+  padding-inline: 20px;
 }
 
 .hero-copy {
