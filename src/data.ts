@@ -315,3 +315,95 @@ export const projects: Project[] = [
     links: [{ label: 'Play — adit-firdaus.itch.io/pops', href: 'https://adit-firdaus.itch.io/pops' }],
   },
 ]
+
+export type Publication = {
+  kind: 'Package' | 'Game' | 'Talk' | 'Code'
+  title: string
+  venue: string
+  year: string
+  detail: string
+  logo?: string
+  href: string
+}
+
+/**
+ * Released work rather than academic papers — packages, games and public
+ * presentations. Add journal or conference entries here if any are published.
+ */
+export const publications: Publication[] = [
+  {
+    kind: 'Package',
+    title: '@adit_firdaus/may-ui — v0.2.0',
+    venue: 'npm · MIT licence',
+    year: '2026',
+    detail:
+      '74 React components reproducing Apple’s design language, with spring curves sampled into CSS linear() and a --may-* token layer. Ships typed .d.ts per entry.',
+    logo: 'mayui',
+    href: 'https://www.npmjs.com/package/@adit_firdaus/may-ui',
+  },
+  {
+    kind: 'Game',
+    title: 'DELIS — Digital Education, Learning and Information System',
+    venue: 'itch.io · Android · MIT code, CC BY 4.0 assets',
+    year: '28 Sep 2021',
+    detail:
+      'Rhythm game teaching Indonesian regional culture through traditional folk songs, released openly so other educators can build on it.',
+    logo: 'delis',
+    href: 'https://adit-firdaus.itch.io/delis',
+  },
+  {
+    kind: 'Game',
+    title: 'LOSARY — Local Sea Delivery',
+    venue: 'itch.io · Windows and Android',
+    year: '2021',
+    detail: 'Rhythm game about a cargo ship crossing open water. Built by a team of two that I led.',
+    logo: 'losary',
+    href: 'https://adit-firdaus.itch.io/losary',
+  },
+  {
+    kind: 'Game',
+    title: 'SOURCE',
+    venue: 'itch.io · Windows',
+    year: '2022',
+    detail:
+      'First-person exploration built around Drone Assembly — a robotics simulation where components trade against a fixed space and power budget.',
+    logo: 'source',
+    href: 'https://adit-firdaus.itch.io/source',
+  },
+  {
+    kind: 'Game',
+    title: 'POPs',
+    venue: 'itch.io · Android',
+    year: '2022',
+    detail: 'A deliberately minimal bubble-popping game, made as a calm outlet for stress.',
+    logo: 'pops',
+    href: 'https://adit-firdaus.itch.io/pops',
+  },
+  {
+    kind: 'Game',
+    title: 'NexSpace',
+    venue: 'itch.io · HTML5 · Educational',
+    year: '2022',
+    detail: 'A browser-based educational project built in Unity and published for the open web.',
+    href: 'https://adit-firdaus.itch.io/nexspace',
+  },
+  {
+    kind: 'Talk',
+    title: 'SMK Prestasi Prima — KKSI 2021 Game Development: D.E.L.I.S',
+    venue: 'National vocational programme · YouTube',
+    year: '2021',
+    detail: 'Public presentation of the DELIS project, where I am credited as Game Designer 2.',
+    logo: 'prestasiprima',
+    href: 'https://www.youtube.com/watch?v=8n4ZecDWeG8',
+  },
+  {
+    kind: 'Code',
+    title: '45 public repositories',
+    venue: 'GitHub · github.com/adit-firdaus',
+    year: '2021 — Present',
+    detail:
+      'Design systems, games, agent tooling, and web infrastructure — including the source of this site.',
+    logo: 'github',
+    href: 'https://github.com/adit-firdaus',
+  },
+]

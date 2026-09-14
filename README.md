@@ -1,47 +1,58 @@
-# Portfolio & CV — Raditya Rakha Firdaus Muliyoto (Adit Firdaus)
+# Adit Firdaus — portfolio & CV
 
-A live site that is also a print master. Every page on screen is one physical sheet of
-paper, so `⌘P → Save as PDF` produces the submission documents for the
-**Apple Developer Academy Indonesia** application with no separate export step.
+A personal site built on [May UI](https://github.com/adit-firdaus/may-ui), my own
+React design system. It is a website first; printing it produces the two PDFs the
+**Apple Developer Academy Indonesia** application asks for.
 
 **Live:** https://adit-firdaus.github.io/aditfirdaus-ada/
 
-## The two documents
+## The site
 
-| Document | Deep link | Pages |
+Five tabs, each deep-linkable by hash:
+
+| Tab | `#hash` | What is there |
 |---|---|---|
-| Portfolio — 5 projects | `?doc=portfolio` (default) | cover + 5 |
-| Curriculum Vitae | `?doc=cv` | 2 |
+| Overview | `#overview` | Intro, stats, current roles, skills |
+| Projects | `#projects` | The five portfolio projects in full |
+| Experience | `#experience` | Work, education, awards, leadership |
+| Publications | `#publications` | Packages, released games, talks, open source |
+| Get in Touch | `#contact` | Contact links and the two print actions |
 
-Paper size is switchable at `?paper=a4` (default) or `?paper=letter`. The choice drives
-both the on-screen sheet and the `@page` box, so preview and print always agree.
+## The documents
 
-## Printing
+The printable CV and portfolio are separate components in
+[`src/Documents.tsx`](src/Documents.tsx). They never render on screen — the print
+stylesheet hides the site and reveals whichever document `data-print` on `<body>`
+names, so the paper output never depends on which tab is open.
 
-Press **Print / Save as PDF**, then in the browser dialog:
+| Document | Reach it | Pages |
+|---|---|---|
+| Curriculum Vitae | **CV** button, or `?print=cv` | 2 |
+| Portfolio | **Portfolio** button, or `?print=portfolio` | cover + 5 |
 
-- **Margins: None** — the sheets carry their own 16 mm margin, and the portfolio cover bleeds to the edge.
-- **Background graphics: on** — otherwise the cover prints white.
+Paper is switchable between A4 and US Letter; the choice sets both the on-screen
+sheet size and the `@page` box, so preview and print agree.
 
-Save the files under the names the Academy asks for:
+In the browser print dialog choose **Margins: None** and switch **Background
+graphics** on, then save as:
 
 ```
 RadityaRakhaFirdausMuliyoto_CV_Academy.pdf
 RadityaRakhaFirdausMuliyoto_Portfolio_Academy.pdf
 ```
 
-## Editing the content
+## Editing
 
-All copy lives in [`src/data.ts`](src/data.ts) — profile, experience, education, awards,
-skills and the five projects. Nothing else needs touching to change what the documents say.
-Project images are plain files in [`public/media`](public/media).
-
-Layout is [`src/App.css`](src/App.css); the one rule that matters is that a `.sheet` is a
-page, sized from `--sheet-w` / `--sheet-h`, which `App.tsx` sets next to the matching
-`@page size`. In print a sheet gets a fixed height and `break-after: page`, so one sheet
-can never spill onto a second page.
-
-The interface chrome is built on [May UI](https://github.com/adit-firdaus/may-ui).
+- [`src/data.ts`](src/data.ts) — every word: profile, experience, education, awards,
+  skills, projects, publications. The site and both documents read from it.
+- [`public/logo`](public/logo) — organisation and project marks as 256px squares,
+  each taken from its owner's own site. `Mark` falls back to May UI's initials
+  avatar when an entry has no `logo`.
+- [`public/media`](public/media) — project screenshots.
+- [`src/App.css`](src/App.css) — site layout, then the paper block. A `.sheet` is a
+  page, sized from `--sheet-w`/`--sheet-h`; in print it takes a fixed height and
+  `break-after: page` so one sheet can never spill onto two. The same block retunes
+  May UI's `--may-*` space and text tokens to print scale.
 
 ## Develop
 

@@ -1,54 +1,47 @@
-import { useState, type ReactNode } from 'react'
+import { useEffect, useState } from 'react'
 import {
-  Avatar,
   Badge,
   Button,
   Card,
+  CardBody,
   CardDescription,
+  CardFooter,
+  CardHeader,
   CardTitle,
   DescriptionItem,
   Descriptions,
+  Grid,
   Heading,
-  IconTile,
   List,
   ListRow,
   MayHost,
   MayProvider,
   NavigationBar,
+  NoticeBar,
   Separator,
   Stack,
   Statistic,
-  Tag,
+  Tab,
+  TabList,
+  TabPanel,
+  Tabs,
   Text,
   toast,
 } from '@adit_firdaus/may-ui'
 import {
+  IoArrowForward,
+  IoBriefcaseOutline,
   IoDocumentTextOutline,
+  IoLibraryOutline,
   IoLogoGithub,
   IoLogoLinkedin,
   IoMailOutline,
+  IoPersonOutline,
   IoPrintOutline,
-  IoRocketOutline,
+  IoSchoolOutline,
+  IoSparklesOutline,
 } from 'react-icons/io5'
-import type { IconType } from 'react-icons'
-import {
-  SiAndroid,
-  SiDocker,
-  SiDart,
-  SiFlutter,
-  SiGithubactions,
-  SiItchdotio,
-  SiJavascript,
-  SiNestjs,
-  SiNodedotjs,
-  SiPostgresql,
-  SiPython,
-  SiReact,
-  SiSharp,
-  SiStrapi,
-  SiTypescript,
-  SiUnity,
-} from 'react-icons/si'
+import { SiItchdotio } from 'react-icons/si'
 import {
   awards,
   education,
@@ -56,340 +49,23 @@ import {
   extracurricular,
   profile,
   projects,
+  publications,
   skills,
-  type Project,
 } from './data'
+import { PrintDocuments } from './Documents'
+import { Mark, TechTag } from './ui'
+import { asset } from './paths'
 import './App.css'
 
-type DocKey = 'portfolio' | 'cv'
-type PaperKey = 'a4' | 'letter'
+const TABS = [
+  { value: 'overview', label: 'Overview', icon: <IoPersonOutline /> },
+  { value: 'projects', label: 'Projects', icon: <IoSparklesOutline /> },
+  { value: 'experience', label: 'Experience', icon: <IoBriefcaseOutline /> },
+  { value: 'publications', label: 'Publications', icon: <IoLibraryOutline /> },
+  { value: 'contact', label: 'Get in Touch', icon: <IoMailOutline /> },
+] as const
 
-const PAPER: Record<PaperKey, { css: string; width: string; height: string }> = {
-  a4: { css: 'A4 portrait', width: '210mm', height: '297mm' },
-  letter: { css: 'Letter portrait', width: '8.5in', height: '11in' },
-}
-
-/** Official marks live in public/logo as 256px squares; tech marks come from simple-icons. */
-const logoUrl = (name: string) => `${import.meta.env.BASE_URL}logo/${name}.png`
-const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`
-
-const TECH: Record<string, IconType> = {
-  TypeScript: SiTypescript,
-  JavaScript: SiJavascript,
-  'C#': SiSharp,
-  Dart: SiDart,
-  Python: SiPython,
-  'React 19': SiReact,
-  Flutter: SiFlutter,
-  Unity: SiUnity,
-  Android: SiAndroid,
-  'Node.js': SiNodedotjs,
-  NestJS: SiNestjs,
-  Strapi: SiStrapi,
-  PostgreSQL: SiPostgresql,
-  Docker: SiDocker,
-  'GitHub Actions': SiGithubactions,
-}
-
-function TechTag({ label, tone = 'neutral' }: { label: string; tone?: 'neutral' | 'tint' }) {
-  const Icon = TECH[label]
-  return (
-    <Tag size="sm" tone={tone} leadingIcon={Icon ? <Icon /> : undefined}>
-      {label}
-    </Tag>
-  )
-}
-
-/** A real mark when one exists; May UI's initials avatar when it does not. */
-function Mark({ logo, name, size = 'sm' }: { logo?: string; name: string; size?: 'sm' | 'md' | 'lg' }) {
-  return (
-    <Avatar
-      shape="square"
-      size={size}
-      name={name}
-      src={logo ? logoUrl(logo) : undefined}
-      alt={logo ? `${name} logo` : undefined}
-    />
-  )
-}
-
-function Sheet({ children, className = '' }: { children: ReactNode; className?: string }) {
-  return <article className={`sheet ${className}`}>{children}</article>
-}
-
-function SheetFoot({ label }: { label: string }) {
-  return (
-    <footer className="sheet-foot">
-      <Text variant="caption-2" tone="tertiary">
-        {profile.legalName}
-      </Text>
-      <Text variant="caption-2" tone="tertiary">
-        {label}
-      </Text>
-    </footer>
-  )
-}
-
-/* ------------------------------------------------------------------ CV -- */
-
-function CurriculumVitae() {
-  return (
-    <>
-      <Sheet>
-        <Stack direction="row" justify="between" align="start" gap={6}>
-          <Stack direction="row" gap={4} align="center">
-            <Avatar name={profile.knownAs} size="xl" shape="square" hue="blue" />
-            <Stack gap={0}>
-              <Heading level={1} size="title-1" weight="bold">
-                {profile.legalName}
-              </Heading>
-              <Text variant="subheadline" tone="secondary">
-                known as <strong>{profile.knownAs}</strong>
-              </Text>
-              <Text variant="footnote" tone="tertiary">
-                {profile.title}
-              </Text>
-            </Stack>
-          </Stack>
-          <Stack gap={0} align="end" className="cv-contact">
-            <Text variant="footnote" tone="secondary">
-              {profile.email}
-            </Text>
-            <Text variant="footnote" tone="secondary">
-              {profile.phone}
-            </Text>
-            <Text variant="footnote" tone="secondary">
-              {profile.location}
-            </Text>
-            {profile.links.map((l) => (
-              <Text key={l.href} variant="footnote" tone="tint">
-                <a href={l.href}>{l.label}</a>
-              </Text>
-            ))}
-          </Stack>
-        </Stack>
-
-        <Separator />
-
-        <Card variant="grouped" padding="md">
-          <Text variant="callout">{profile.objective}</Text>
-        </Card>
-
-        <List variant="inset" header="Experience">
-          {experience.map((job) => (
-            <ListRow
-              key={`${job.org}-${job.period}`}
-              leading={<Mark logo={job.logo} name={job.org} />}
-              title={
-                <Text variant="headline" weight="semibold">
-                  {job.role}
-                </Text>
-              }
-              subtitle={
-                <Stack gap={0}>
-                  <Text variant="footnote" tone="secondary">
-                    {job.org}
-                    {job.place ? ` · ${job.place}` : ''}
-                  </Text>
-                  {job.points.map((p) => (
-                    <Text key={p} variant="caption-1" tone="tertiary">
-                      {p}
-                    </Text>
-                  ))}
-                </Stack>
-              }
-              detail={
-                <Text variant="caption-1" tone="tertiary">
-                  {job.period}
-                </Text>
-              }
-            />
-          ))}
-        </List>
-
-        <SheetFoot label="Curriculum Vitae — page 1 of 2" />
-      </Sheet>
-
-      <Sheet>
-        <List variant="inset" header="Education">
-          {education.map((e) => (
-            <ListRow
-              key={e.school}
-              leading={<Mark logo={e.logo} name={e.school} />}
-              title={
-                <Text variant="headline" weight="semibold">
-                  {e.school}
-                </Text>
-              }
-              subtitle={
-                <Text variant="footnote" tone="secondary">
-                  {e.detail} · {e.place}
-                </Text>
-              }
-              detail={
-                <Text variant="caption-1" tone="tertiary">
-                  {e.period}
-                </Text>
-              }
-            />
-          ))}
-        </List>
-
-        <List variant="inset" header="Awards & Recognition">
-          {awards.map((a) => (
-            <ListRow
-              key={a.title}
-              leading={<Mark logo={a.logo} name={a.title} />}
-              title={
-                <Text variant="headline" weight="semibold">
-                  {a.title}
-                </Text>
-              }
-              subtitle={
-                <Text variant="footnote" tone="secondary">
-                  {a.detail}
-                </Text>
-              }
-              detail={
-                <Text variant="caption-1" tone="tertiary">
-                  {a.year}
-                </Text>
-              }
-            />
-          ))}
-        </List>
-
-        <List variant="inset" header="Extra-curricular & Leadership">
-          {extracurricular.map((x) => (
-            <ListRow
-              key={x.role}
-              leading={<Mark logo={x.logo} name={x.org} />}
-              title={
-                <Text variant="headline" weight="semibold">
-                  {x.role}
-                </Text>
-              }
-              subtitle={
-                <Stack gap={0}>
-                  <Text variant="footnote" tone="secondary">
-                    {x.org}
-                  </Text>
-                  <Text variant="caption-1" tone="tertiary">
-                    {x.detail}
-                  </Text>
-                </Stack>
-              }
-              detail={
-                <Text variant="caption-1" tone="tertiary">
-                  {x.period}
-                </Text>
-              }
-            />
-          ))}
-        </List>
-
-        <List variant="inset" header="Skills">
-          {skills.map((s) => (
-            <ListRow
-              key={s.group}
-              title={
-                <Text variant="headline" weight="semibold">
-                  {s.group}
-                </Text>
-              }
-              subtitle={
-                <Stack direction="row" gap={1} wrap>
-                  {s.items.map((i) => (
-                    <TechTag key={i} label={i} />
-                  ))}
-                </Stack>
-              }
-            />
-          ))}
-        </List>
-
-        <SheetFoot label="Curriculum Vitae — page 2 of 2" />
-      </Sheet>
-    </>
-  )
-}
-
-/* ----------------------------------------------------------- Portfolio -- */
-
-function ProjectSheet({ project, index, total }: { project: Project; index: number; total: number }) {
-  return (
-    <Sheet>
-      <Stack direction="row" align="center" justify="between" gap={4}>
-        <Stack direction="row" align="center" gap={3}>
-          {project.logo ? (
-            <Mark logo={project.logo} name={project.name} size="lg" />
-          ) : (
-            <IconTile gradient="orange" size="lg">
-              <IoRocketOutline />
-            </IconTile>
-          )}
-          <Stack gap={0}>
-            <CardTitle>{project.name}</CardTitle>
-            <CardDescription>{project.tagline}</CardDescription>
-          </Stack>
-        </Stack>
-        <Stack direction="row" gap={2} align="center">
-          {project.award && (
-            <Badge tone="success" variant="tinted">
-              {project.award}
-            </Badge>
-          )}
-          <Badge tone="neutral" variant="tinted">
-            {project.year}
-          </Badge>
-          <Text variant="title-2" tone="tertiary" weight="bold">
-            {project.n}
-          </Text>
-        </Stack>
-      </Stack>
-
-      <Separator />
-
-      <figure className="pj-figure">
-        <img src={asset(project.image)} alt={project.imageAlt} />
-        <figcaption>
-          <Text variant="caption-2" tone="tertiary">
-            {project.imageAlt}
-          </Text>
-        </figcaption>
-      </figure>
-
-      <Text variant="callout">{project.summary}</Text>
-
-      <Descriptions variant="inset" layout="stacked" columns={2}>
-        <DescriptionItem label="Type" value={project.kind} />
-        <DescriptionItem label="My role" value={project.role} />
-      </Descriptions>
-
-      <Descriptions variant="inset" layout="stacked" columns={1}>
-        <DescriptionItem label="Impact" value={project.impact} />
-        <DescriptionItem label="What I learned" value={project.learned} />
-      </Descriptions>
-
-      <Stack direction="row" justify="between" align="end" gap={6} className="pj-foot-row">
-        <Stack direction="row" gap={1} wrap>
-          {project.stack.map((t) => (
-            <TechTag key={t} label={t} />
-          ))}
-        </Stack>
-        <Stack gap={0} align="end" className="pj-links">
-          {project.links.map((l) => (
-            <Text key={l.href} variant="caption-1" tone="tint">
-              <a href={l.href}>{l.label}</a>
-            </Text>
-          ))}
-        </Stack>
-      </Stack>
-
-      <SheetFoot label={`Portfolio — project ${index + 1} of ${total}`} />
-    </Sheet>
-  )
-}
+type TabKey = (typeof TABS)[number]['value']
 
 const STATS = [
   { label: 'Public repositories', value: '45' },
@@ -398,171 +74,555 @@ const STATS = [
   { label: 'May UI components', value: '74' },
 ]
 
-function Portfolio() {
+const PAPER = {
+  a4: { css: 'A4 portrait', width: '210mm', height: '297mm' },
+  letter: { css: 'Letter portrait', width: '8.5in', height: '11in' },
+}
+
+type PaperKey = keyof typeof PAPER
+
+const isTab = (v: string): v is TabKey => TABS.some((t) => t.value === v)
+
+/* -------------------------------------------------------------- panels -- */
+
+function Overview({ onGo }: { onGo: (tab: TabKey) => void }) {
+  const current = experience.filter((j) => j.period.includes('Present'))
+
   return (
-    <>
-      <MayProvider theme="dark">
-        <Sheet className="cover">
-          <Text variant="caption-1" tone="tertiary" weight="semibold">
-            APPLE DEVELOPER ACADEMY INDONESIA — APPLICATION
-          </Text>
-
-          <Stack gap={4}>
-            <Heading level={1} size="large-title" weight="bold" className="cover-title">
-              Portfolio
-            </Heading>
-            <Stack gap={0}>
-              <Heading level={2} size="title-3" weight="semibold">
-                {profile.legalName}
+    <Stack gap={6}>
+      <Card variant="elevated" padding="lg">
+        <Stack direction="row" gap={6} align="center" wrap className="hero">
+          <Mark logo="github" name={profile.knownAs} size="xl" />
+          <Stack gap={2} className="hero-copy">
+            <Stack direction="row" gap={2} align="center" wrap>
+              <Heading level={1} size="title-1" weight="bold">
+                {profile.knownAs}
               </Heading>
-              <Text variant="subheadline" tone="tertiary">
-                known as {profile.knownAs} · {profile.location}
-              </Text>
+              <Badge tone="tint" variant="tinted">
+                Open to the Academy
+              </Badge>
             </Stack>
-            <Text variant="body" tone="secondary" className="cover-blurb">
-              {profile.objective}
+            <Text variant="callout" tone="secondary">
+              {profile.legalName} · {profile.location}
             </Text>
+            <Text variant="body">{profile.objective}</Text>
+            <Stack direction="row" gap={2} wrap>
+              <Button variant="filled" leadingIcon={<IoSparklesOutline />} onClick={() => onGo('projects')}>
+                See the work
+              </Button>
+              <Button variant="tinted" leadingIcon={<IoMailOutline />} onClick={() => onGo('contact')}>
+                Get in touch
+              </Button>
+            </Stack>
           </Stack>
+        </Stack>
+      </Card>
 
-          <Stack direction="row" gap={4} justify="between" className="cover-stats">
-            {STATS.map((s) => (
-              <Statistic key={s.label} label={s.label} value={s.value} size="sm" />
+      <Grid minColumnWidth={180} gap={4}>
+        {STATS.map((s) => (
+          <Card key={s.label} variant="grouped" padding="md">
+            <Statistic label={s.label} value={s.value} size="lg" />
+          </Card>
+        ))}
+      </Grid>
+
+      <Stack gap={3}>
+        <Heading level={2} size="title-3" weight="semibold">
+          Where I am now
+        </Heading>
+        <List variant="inset">
+          {current.map((job) => (
+            <ListRow
+              key={job.org}
+              leading={<Mark logo={job.logo} name={job.org} size="md" />}
+              title={job.role}
+              subtitle={job.org}
+              detail={
+                <Text variant="footnote" tone="tertiary">
+                  {job.period}
+                </Text>
+              }
+            />
+          ))}
+        </List>
+      </Stack>
+
+      <Stack gap={3}>
+        <Heading level={2} size="title-3" weight="semibold">
+          What I work with
+        </Heading>
+        <Card variant="grouped" padding="md">
+          <Stack gap={4}>
+            {skills.map((group) => (
+              <Stack key={group.group} gap={2}>
+                <Text variant="footnote" tone="tertiary" weight="semibold">
+                  {group.group.toUpperCase()}
+                </Text>
+                <Stack direction="row" gap={2} wrap>
+                  {group.items.map((i) => (
+                    <TechTag key={i} label={i} size="md" />
+                  ))}
+                </Stack>
+              </Stack>
             ))}
           </Stack>
+        </Card>
+      </Stack>
+    </Stack>
+  )
+}
 
-          <List variant="plain">
-            {projects.map((p) => (
-              <ListRow
-                key={p.n}
-                leading={<Mark logo={p.logo} name={p.name} />}
-                title={
-                  <Text variant="subheadline" weight="semibold">
-                    {p.name}
-                  </Text>
-                }
-                subtitle={
-                  <Text variant="caption-1" tone="tertiary">
-                    {p.tagline}
-                  </Text>
-                }
-                detail={
-                  <Text variant="caption-2" tone="tertiary">
-                    {p.n}
-                  </Text>
-                }
-              />
-            ))}
-          </List>
+function Projects() {
+  return (
+    <Stack gap={5}>
+      <NoticeBar tone="tint" icon={<IoSparklesOutline />}>
+        Five selected projects — two competition winners, one design system, and the games that started it.
+      </NoticeBar>
 
-          <Stack direction="row" gap={4} wrap className="cover-contact">
-            <Text variant="caption-1" tone="tertiary">
-              {profile.email}
-            </Text>
-            {profile.links.map((l) => (
-              <Text key={l.href} variant="caption-1" tone="tint">
-                <a href={l.href}>{l.label}</a>
-              </Text>
-            ))}
-          </Stack>
-        </Sheet>
-      </MayProvider>
+      {projects.map((p) => (
+        <Card key={p.n} variant="elevated" padding="none" className="project">
+          <img className="project-shot" src={asset(p.image)} alt={p.imageAlt} />
+          <CardHeader
+            accessory={
+              <Stack direction="row" gap={2} align="center">
+                {p.award && (
+                  <Badge tone="success" variant="tinted">
+                    {p.award}
+                  </Badge>
+                )}
+                <Badge tone="neutral" variant="tinted">
+                  {p.year}
+                </Badge>
+              </Stack>
+            }
+          >
+            <Stack direction="row" gap={3} align="center">
+              <Mark logo={p.logo} name={p.name} size="lg" />
+              <Stack gap={0}>
+                <CardTitle>{p.name}</CardTitle>
+                <CardDescription>{p.tagline}</CardDescription>
+              </Stack>
+            </Stack>
+          </CardHeader>
 
-      {projects.map((p, i) => (
-        <ProjectSheet key={p.n} project={p} index={i} total={projects.length} />
+          <CardBody>
+            <Stack gap={4}>
+              <Text variant="body">{p.summary}</Text>
+              <Descriptions variant="inset" layout="stacked" columns={2}>
+                <DescriptionItem label="Type" value={p.kind} />
+                <DescriptionItem label="My role" value={p.role} />
+              </Descriptions>
+              <Descriptions variant="inset" layout="stacked" columns={1}>
+                <DescriptionItem label="Impact" value={p.impact} />
+                <DescriptionItem label="What I learned" value={p.learned} />
+              </Descriptions>
+              <Stack direction="row" gap={2} wrap>
+                {p.stack.map((t) => (
+                  <TechTag key={t} label={t} />
+                ))}
+              </Stack>
+            </Stack>
+          </CardBody>
+
+          <CardFooter>
+            <Stack direction="row" gap={2} wrap>
+              {p.links.map((l) => (
+                <Button
+                  key={l.href}
+                  size="sm"
+                  variant="tinted"
+                  trailingIcon={<IoArrowForward />}
+                  onClick={() => window.open(l.href, '_blank', 'noreferrer')}
+                >
+                  {l.label}
+                </Button>
+              ))}
+            </Stack>
+          </CardFooter>
+        </Card>
       ))}
-    </>
+    </Stack>
+  )
+}
+
+function Experience() {
+  return (
+    <Stack gap={6}>
+      <Stack gap={3}>
+        <Heading level={2} size="title-3" weight="semibold">
+          Experience
+        </Heading>
+        <List variant="inset">
+          {experience.map((job) => (
+            <ListRow
+              key={`${job.org}-${job.period}`}
+              leading={<Mark logo={job.logo} name={job.org} size="md" />}
+              title={job.role}
+              subtitle={
+                <Stack gap={1}>
+                  <Text variant="footnote" tone="secondary">
+                    {job.org}
+                    {job.place ? ` · ${job.place}` : ''}
+                  </Text>
+                  {job.points.map((p) => (
+                    <Text key={p} variant="footnote" tone="tertiary">
+                      {p}
+                    </Text>
+                  ))}
+                </Stack>
+              }
+              detail={
+                <Text variant="footnote" tone="tertiary">
+                  {job.period}
+                </Text>
+              }
+            />
+          ))}
+        </List>
+      </Stack>
+
+      <Stack gap={3}>
+        <Heading level={2} size="title-3" weight="semibold">
+          <IoSchoolOutline /> Education
+        </Heading>
+        <List variant="inset">
+          {education.map((e) => (
+            <ListRow
+              key={e.school}
+              leading={<Mark logo={e.logo} name={e.school} size="md" />}
+              title={e.school}
+              subtitle={`${e.detail} · ${e.place}`}
+              detail={
+                <Text variant="footnote" tone="tertiary">
+                  {e.period}
+                </Text>
+              }
+            />
+          ))}
+        </List>
+      </Stack>
+
+      <Stack gap={3}>
+        <Heading level={2} size="title-3" weight="semibold">
+          Awards & recognition
+        </Heading>
+        <List variant="inset">
+          {awards.map((a) => (
+            <ListRow
+              key={a.title}
+              leading={<Mark logo={a.logo} name={a.title} size="md" />}
+              title={a.title}
+              subtitle={a.detail}
+              detail={
+                <Text variant="footnote" tone="tertiary">
+                  {a.year}
+                </Text>
+              }
+            />
+          ))}
+        </List>
+      </Stack>
+
+      <Stack gap={3}>
+        <Heading level={2} size="title-3" weight="semibold">
+          Extra-curricular & leadership
+        </Heading>
+        <List variant="inset">
+          {extracurricular.map((x) => (
+            <ListRow
+              key={x.role}
+              leading={<Mark logo={x.logo} name={x.org} size="md" />}
+              title={x.role}
+              subtitle={
+                <Stack gap={1}>
+                  <Text variant="footnote" tone="secondary">
+                    {x.org}
+                  </Text>
+                  <Text variant="footnote" tone="tertiary">
+                    {x.detail}
+                  </Text>
+                </Stack>
+              }
+              detail={
+                <Text variant="footnote" tone="tertiary">
+                  {x.period}
+                </Text>
+              }
+            />
+          ))}
+        </List>
+      </Stack>
+    </Stack>
+  )
+}
+
+function Publications() {
+  const groups = ['Package', 'Game', 'Talk', 'Code'] as const
+  const heading: Record<(typeof groups)[number], string> = {
+    Package: 'Packages',
+    Game: 'Released games',
+    Talk: 'Talks & presentations',
+    Code: 'Open source',
+  }
+
+  return (
+    <Stack gap={6}>
+      <NoticeBar tone="neutral" icon={<IoLibraryOutline />}>
+        Things I have put into the world — published packages, released games and public presentations,
+        each with a link you can open.
+      </NoticeBar>
+
+      {groups.map((kind) => {
+        const items = publications.filter((p) => p.kind === kind)
+        if (!items.length) return null
+        return (
+          <Stack key={kind} gap={3}>
+            <Heading level={2} size="title-3" weight="semibold">
+              {heading[kind]}
+            </Heading>
+            <List variant="inset">
+              {items.map((p) => (
+                <ListRow
+                  key={p.href}
+                  leading={<Mark logo={p.logo} name={p.title} size="md" />}
+                  title={p.title}
+                  subtitle={
+                    <Stack gap={1}>
+                      <Text variant="footnote" tone="secondary">
+                        {p.venue}
+                      </Text>
+                      <Text variant="footnote" tone="tertiary">
+                        {p.detail}
+                      </Text>
+                    </Stack>
+                  }
+                  detail={
+                    <Text variant="footnote" tone="tertiary">
+                      {p.year}
+                    </Text>
+                  }
+                  chevron
+                  onClick={() => window.open(p.href, '_blank', 'noreferrer')}
+                />
+              ))}
+            </List>
+          </Stack>
+        )
+      })}
+    </Stack>
+  )
+}
+
+function Contact({ onPrint }: { onPrint: (doc: 'cv' | 'portfolio') => void }) {
+  return (
+    <Stack gap={6}>
+      <Card variant="elevated" padding="lg">
+        <Stack gap={4}>
+          <Heading level={2} size="title-2" weight="bold">
+            Get in touch
+          </Heading>
+          <Text variant="body" tone="secondary">
+            I read every message. The fastest way to reach me is email — say what you are building and I
+            will reply with something useful.
+          </Text>
+          <Stack direction="row" gap={2} wrap>
+            <Button
+              variant="filled"
+              leadingIcon={<IoMailOutline />}
+              onClick={() => window.open(`mailto:${profile.email}`)}
+            >
+              {profile.email}
+            </Button>
+            <Button
+              variant="tinted"
+              leadingIcon={<IoLogoLinkedin />}
+              onClick={() => window.open('https://www.linkedin.com/in/adit-firdaus/', '_blank', 'noreferrer')}
+            >
+              LinkedIn
+            </Button>
+            <Button
+              variant="gray"
+              leadingIcon={<IoLogoGithub />}
+              onClick={() => window.open('https://github.com/adit-firdaus', '_blank', 'noreferrer')}
+            >
+              GitHub
+            </Button>
+            <Button
+              variant="gray"
+              leadingIcon={<SiItchdotio />}
+              onClick={() => window.open('https://adit-firdaus.itch.io/', '_blank', 'noreferrer')}
+            >
+              itch.io
+            </Button>
+          </Stack>
+        </Stack>
+      </Card>
+
+      <Stack gap={3}>
+        <Heading level={2} size="title-3" weight="semibold">
+          Take a copy with you
+        </Heading>
+        <Text variant="footnote" tone="secondary">
+          Both documents are typeset for paper by this site itself. Choose one, then pick{' '}
+          <strong>Save as PDF</strong> in the print dialog — margins <strong>None</strong>, background
+          graphics <strong>on</strong>.
+        </Text>
+        <Grid minColumnWidth={260} gap={4}>
+          <Card variant="grouped" padding="md">
+            <Stack gap={3}>
+              <Stack gap={0}>
+                <CardTitle>Curriculum Vitae</CardTitle>
+                <CardDescription>Two pages — experience, education, awards, skills.</CardDescription>
+              </Stack>
+              <Button variant="filled" leadingIcon={<IoDocumentTextOutline />} onClick={() => onPrint('cv')}>
+                Print CV
+              </Button>
+            </Stack>
+          </Card>
+          <Card variant="grouped" padding="md">
+            <Stack gap={3}>
+              <Stack gap={0}>
+                <CardTitle>Portfolio</CardTitle>
+                <CardDescription>Cover plus five projects, one per page.</CardDescription>
+              </Stack>
+              <Button variant="filled" leadingIcon={<IoPrintOutline />} onClick={() => onPrint('portfolio')}>
+                Print portfolio
+              </Button>
+            </Stack>
+          </Card>
+        </Grid>
+      </Stack>
+    </Stack>
   )
 }
 
 /* ----------------------------------------------------------------- App -- */
 
-/** Deep-linkable: ?doc=cv&paper=letter opens straight to that document. */
-function initial<T extends string>(key: string, allowed: readonly T[], fallback: T): T {
-  const value = new URLSearchParams(window.location.search).get(key) as T | null
-  return value && allowed.includes(value) ? value : fallback
-}
-
 export function App() {
-  const [doc, setDoc] = useState<DocKey>(() => initial('doc', ['portfolio', 'cv'] as const, 'portfolio'))
-  const [paper, setPaper] = useState<PaperKey>(() => initial('paper', ['a4', 'letter'] as const, 'a4'))
-  const sheet = PAPER[paper]
+  const [tab, setTab] = useState<TabKey>(() => {
+    const hash = window.location.hash.replace('#', '')
+    return isTab(hash) ? hash : 'overview'
+  })
+  const [paper, setPaper] = useState<PaperKey>('a4')
 
-  const fileName =
-    doc === 'cv'
-      ? 'RadityaRakhaFirdausMuliyoto_CV_Academy'
-      : 'RadityaRakhaFirdausMuliyoto_Portfolio_Academy'
+  useEffect(() => {
+    window.history.replaceState(null, '', `#${tab}`)
+  }, [tab])
 
-  const print = () => {
-    toast(`Set margins to None and enable background graphics, then save as ${fileName}.pdf`)
+  /* ?print=cv / ?print=portfolio preselects the paper target, which makes the
+     print output reachable from a plain link. */
+  useEffect(() => {
+    const target = new URLSearchParams(window.location.search).get('print')
+    if (target === 'cv' || target === 'portfolio') document.body.dataset.print = target
+  }, [])
+
+  const go = (next: TabKey) => {
+    setTab(next)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  /**
+   * The website never prints. `data-print` chooses which hidden document the
+   * print stylesheet reveals, so the output does not depend on the open tab.
+   */
+  const print = (doc: 'cv' | 'portfolio') => {
+    document.body.dataset.print = doc
+    const name =
+      doc === 'cv'
+        ? 'RadityaRakhaFirdausMuliyoto_CV_Academy'
+        : 'RadityaRakhaFirdausMuliyoto_Portfolio_Academy'
+    toast(`Save as ${name}.pdf — margins None, background graphics on`)
     window.print()
   }
 
   return (
-    <MayProvider theme="light">
+    <MayProvider theme="system">
       <MayHost />
 
-      {/* Paper geometry lives in one place: the page box and the on-screen sheet. */}
       <style>{`
-        @page { size: ${sheet.css}; margin: 0; }
-        :root { --sheet-w: ${sheet.width}; --sheet-h: ${sheet.height}; }
+        @page { size: ${PAPER[paper].css}; margin: 0; }
+        :root { --sheet-w: ${PAPER[paper].width}; --sheet-h: ${PAPER[paper].height}; }
       `}</style>
 
-      <div className="no-print">
+      <div className="site">
         <NavigationBar
           title={profile.knownAs}
           subtitle={profile.title}
           sticky
           trailing={
-            <Stack direction="row" gap={2} align="center" wrap>
+            <Stack direction="row" gap={2} align="center">
               <Button
                 size="sm"
-                variant={doc === 'portfolio' ? 'filled' : 'gray'}
-                leadingIcon={<IoRocketOutline />}
-                onClick={() => setDoc('portfolio')}
+                variant={paper === 'a4' ? 'tinted' : 'plain'}
+                onClick={() => setPaper('a4')}
+                aria-label="A4 paper"
               >
-                Portfolio
-              </Button>
-              <Button
-                size="sm"
-                variant={doc === 'cv' ? 'filled' : 'gray'}
-                leadingIcon={<IoDocumentTextOutline />}
-                onClick={() => setDoc('cv')}
-              >
-                CV
-              </Button>
-              <Button size="sm" variant={paper === 'a4' ? 'tinted' : 'plain'} onClick={() => setPaper('a4')}>
                 A4
               </Button>
               <Button
                 size="sm"
                 variant={paper === 'letter' ? 'tinted' : 'plain'}
                 onClick={() => setPaper('letter')}
+                aria-label="US Letter paper"
               >
                 Letter
               </Button>
-              <Button size="sm" variant="filled" leadingIcon={<IoPrintOutline />} onClick={print}>
-                Print / Save as PDF
+              <Button size="sm" variant="filled" leadingIcon={<IoDocumentTextOutline />} onClick={() => print('cv')}>
+                CV
+              </Button>
+              <Button
+                size="sm"
+                variant="tinted"
+                leadingIcon={<IoPrintOutline />}
+                onClick={() => print('portfolio')}
+              >
+                Portfolio
               </Button>
             </Stack>
           }
         />
-        <Stack direction="row" gap={3} className="quicklinks" wrap align="center">
-          <Tag size="sm" tone="neutral" leadingIcon={<IoMailOutline />}>
-            {profile.email}
-          </Tag>
-          <Tag size="sm" tone="neutral" leadingIcon={<IoLogoLinkedin />}>
-            in/adit-firdaus
-          </Tag>
-          <Tag size="sm" tone="neutral" leadingIcon={<IoLogoGithub />}>
-            adit-firdaus
-          </Tag>
-          <Tag size="sm" tone="neutral" leadingIcon={<SiItchdotio />}>
-            adit-firdaus.itch.io
-          </Tag>
-        </Stack>
+
+        <main className="site-main">
+          <Tabs value={tab} onValueChange={(v) => go(v as TabKey)} variant="pill" size="md">
+            <TabList fullWidth>
+              {TABS.map((t) => (
+                <Tab key={t.value} value={t.value} icon={t.icon}>
+                  {t.label}
+                </Tab>
+              ))}
+            </TabList>
+
+            <TabPanel value="overview">
+              <Overview onGo={go} />
+            </TabPanel>
+            <TabPanel value="projects">
+              <Projects />
+            </TabPanel>
+            <TabPanel value="experience">
+              <Experience />
+            </TabPanel>
+            <TabPanel value="publications">
+              <Publications />
+            </TabPanel>
+            <TabPanel value="contact">
+              <Contact onPrint={print} />
+            </TabPanel>
+          </Tabs>
+
+          <Separator />
+
+          <footer className="site-foot">
+            <Text variant="footnote" tone="tertiary">
+              {profile.legalName} · {profile.location}
+            </Text>
+            <Text variant="footnote" tone="tertiary">
+              Built with May UI — a design system of mine.
+            </Text>
+          </footer>
+        </main>
       </div>
 
-      <main className="stage">{doc === 'cv' ? <CurriculumVitae /> : <Portfolio />}</main>
+      <PrintDocuments />
     </MayProvider>
   )
 }

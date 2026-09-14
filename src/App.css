@@ -1,15 +1,13 @@
 /* ---------------------------------------------------------------------
-   Paper geometry, and nothing else.
+   Two layouts live here.
 
-   May UI draws every component here. This file does two jobs: it makes a
-   .sheet behave like a physical page, and it retunes May UI's --may-*
-   tokens down to print scale inside that page — the design system is
-   token-first, so compressing it for paper is a variable change, not a
-   rewrite of its CSS.
+   The site is the website: normal responsive flow, May UI in whatever
+   theme the reader's OS is in. The sheets are the printable CV and
+   portfolio — hidden on screen, revealed only by the print stylesheet,
+   which is why the paper output never depends on which tab is open.
    --------------------------------------------------------------------- */
 
 :root {
-  --stage: #f0f0f3;
   --pad: 15mm;
   --serif: ui-serif, 'New York', 'Iowan Old Style', Georgia, serif;
 }
@@ -18,23 +16,45 @@ html,
 body {
   margin: 0;
   padding: 0;
-  background: var(--stage);
+  background: var(--may-color-bg);
 }
 
-/* ------------------------------------------------------- screen chrome -- */
+/* --------------------------------------------------------------- site -- */
 
-.quicklinks {
-  max-width: 1180px;
+.site-main {
+  max-width: 980px;
   margin: 0 auto;
-  padding: 10px 24px 14px;
+  padding: 20px 20px 0;
 }
 
-.stage {
+.hero-copy {
+  flex: 1 1 320px;
+  min-width: 0;
+}
+
+.project {
+  overflow: hidden;
+}
+
+.project-shot {
+  display: block;
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  background: var(--may-color-fill-tertiary);
+}
+
+.site-foot {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
-  padding: 28px 16px 72px;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 20px 0 64px;
+}
+
+/* The documents are print-only; they must never reach the screen. */
+.print-docs {
+  display: none;
 }
 
 /* -------------------------------------------------------------- sheet -- */
@@ -159,14 +179,22 @@ body {
     background: #fff;
   }
 
-  .no-print {
+  /* The website itself is never printed. */
+  .site {
     display: none !important;
   }
 
-  .stage {
+  /* data-print picks the document; a bare Cmd+P still yields the CV. */
+  .print-docs {
     display: block;
-    padding: 0;
-    gap: 0;
+  }
+  .print-doc {
+    display: none;
+  }
+  body:not([data-print]) .print-cv,
+  body[data-print='cv'] .print-cv,
+  body[data-print='portfolio'] .print-portfolio {
+    display: block;
   }
 
   .sheet {
@@ -179,6 +207,7 @@ body {
     break-after: page;
     page-break-after: always;
   }
+  .print-doc > div > .sheet:last-child,
   .sheet:last-child {
     break-after: auto;
     page-break-after: auto;
@@ -205,14 +234,11 @@ body {
 
 /* ------------------------------------------------------ small screens -- */
 
-/* The paper is the design, so scale the whole stage instead of reflowing it. */
-@media screen and (max-width: 940px) {
-  .stage {
-    zoom: 0.62;
+@media screen and (max-width: 640px) {
+  .site-main {
+    padding: 12px 12px 0;
   }
-}
-@media screen and (max-width: 620px) {
-  .stage {
-    zoom: 0.42;
+  .project-shot {
+    height: 200px;
   }
 }
