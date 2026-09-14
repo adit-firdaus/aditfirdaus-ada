@@ -318,7 +318,10 @@ const STATS = [
 ]
 
 function Portfolio() {
-  const { profile, projects } = useData()
+  const { profile, projects: all } = useData()
+  /* The Academy allows five projects, so the document takes the five marked
+     for it while the site shows everything. */
+  const projects = all.filter((p) => p.academy)
   return (
     <>
       <MayProvider theme={{ mode: 'dark' }}>

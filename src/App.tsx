@@ -202,11 +202,11 @@ function Projects() {
                       </CardDescription>
                     </Stack>
                     <Stack direction="row" gap={2} wrap>
-                      {p.repo && (
-                        <Badge tone="tint" variant="tinted">
-                          Open source
-                        </Badge>
-                      )}
+                      {/* Public means the source can be read; private work is
+                          described here but never linked to a repository. */}
+                      <Badge tone={p.visibility === 'public' ? 'tint' : 'neutral'} variant="tinted">
+                        {p.visibility === 'public' ? 'Public' : 'Private'}
+                      </Badge>
                       {p.award && (
                         <Badge tone="success" variant="tinted">
                           <Ed p={`projects.${p.id}.award`}>{p.award}</Ed>

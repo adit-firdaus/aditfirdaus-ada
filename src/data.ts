@@ -331,6 +331,13 @@ export type Project = {
   award?: string
   /** The public repository, when there is one. Drives the open-source tag. */
   repo?: string
+  /** Whether the source can be read. Private work is described, never linked. */
+  visibility?: 'public' | 'private'
+  /**
+   * Carried into the printed portfolio. The Academy allows five projects, so
+   * the site can grow past that while the document stays within the rule.
+   */
+  academy?: boolean
   image: string
   imageAlt: string
   kind: string
@@ -344,9 +351,234 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    id: 'may-ui',
-    repo: 'https://github.com/adit-firdaus/may-ui',
+    id: 'smartschool',
     n: '01',
+    name: 'SmartSchool',
+    visibility: 'private',
+    tagline: 'One platform for everything a school runs on',
+    year: '2026 · Ongoing',
+    image: 'media/smartschool.jpg',
+    imageAlt: 'SmartSchool — school management platform',
+    kind: 'Work · Hi Klik, for an education client',
+    role: 'Sole engineer — architecture and every service, 717 commits',
+    summary:
+      'A school runs on more than a timetable, so SmartSchool carries the lot: messaging, attendance, grades, classwork, finance, admin timetabling and a canteen that takes orders and payments — on the web and as a Flutter progressive web app for phones.',
+    impact:
+      'Built and maintained alone across a Bun monorepo with its own internal packages for the database, the UI, the API contract, translations, push and storage. Migrations are gated at boot and a smoke suite runs against the real thing, so a bad deploy stops before it reaches a school rather than after.',
+    learned:
+      'That being the only engineer on something schools depend on daily changes what you build. The boot-time migration gate and the smoke suite exist because there is nobody else to catch a mistake — the system has to catch it for me.',
+    stack: ['TypeScript', 'Next.js', 'tRPC', 'Drizzle ORM', 'PostgreSQL', 'Better Auth', 'Inngest', 'Flutter'],
+    links: [],
+  },
+  {
+    id: 'agent-lockdown',
+    n: '02',
+    name: 'Agent Lockdown',
+    visibility: 'private',
+    tagline: 'A cybersecurity competition you play rather than read',
+    year: '2026',
+    image: 'media/lockdown.jpg',
+    imageAlt: 'Agent Lockdown — CTF competition platform',
+    kind: 'Work · Hexcore Labs',
+    role: 'Sole author of both halves — 380 of 381 web commits, and the Unity client',
+    summary:
+      'Competitors browse events and leaderboards, then drop into a full-screen multiplayer game where the security challenges actually live. Organisers run their own tenant: schedules, branding, participants.',
+    impact:
+      'Two products that have to agree — a Next.js platform and a Unity 6 game embedded in it — written end to end by one person, including the netcode, the JavaScript-to-Unity bridge and the map loading that joins them.',
+    learned:
+      'Where a web app ends and a game begins is a design decision, not a technical one. Getting the bridge between them right mattered more than anything inside either side.',
+    stack: ['TypeScript', 'Next.js', 'C#', 'Unity', 'WebGL', 'Phaser', 'Drizzle ORM', 'PostgreSQL', 'Cloudflare'],
+    links: [],
+  },
+  {
+    id: 'arlo-ai',
+    n: '03',
+    name: 'Arlo AI',
+    visibility: 'private',
+    tagline: 'An assistant that answers customers, and says where it got the answer',
+    year: '2026 · Ongoing',
+    image: 'media/arlo.jpg',
+    imageAlt: 'Arlo AI — customer service assistant',
+    kind: 'Work · Autobricks AI',
+    role: 'Lead contributor — messaging connectors and channel integrations',
+    summary:
+      'A workspace points Arlo at its own documents and website; Arlo then answers customers on whatever channel they arrived through, quoting the passage it relied on and handing over to a person when it should.',
+    impact:
+      'Answers are grounded in the workspace\u2019s own material through pgvector search, and every tenant is separated by row-level security rather than by application code remembering to filter. The citation and the handover are what make it safe to put in front of a customer.',
+    learned:
+      'An assistant that cannot show its source is not trustworthy, and one that cannot admit defeat is worse. Both are product decisions long before they are model decisions.',
+    stack: ['TypeScript', 'TanStack Start', 'React', 'PostgreSQL', 'pgvector', 'Supabase', 'Zod'],
+    links: [],
+  },
+  {
+    id: 'altc',
+    n: '04',
+    name: 'altc',
+    visibility: 'private',
+    tagline: 'A coding workspace that keeps running when you close it',
+    year: '2026 · Ongoing',
+    image: 'media/altc.jpg',
+    imageAlt: 'altc — local-first coding workspace',
+    kind: 'Self-initiated',
+    role: 'Sole author — server, three clients, and the agent protocol between them',
+    summary:
+      'One Bun process owns the terminals, the database and the coding-agent sessions; the web app, a Go desktop shell and a Flutter client are all just windows onto it. Terminals are detached, so they outlive the app that opened them.',
+    impact:
+      'Around 195 commits across a server, a web SPA, a Wails desktop shell and a Flutter client, with an Agent Client Protocol supervisor driving Claude, Codex and OpenCode sessions, and 40-odd architecture notes written alongside the code.',
+    learned:
+      'Local-first is mostly a question about ownership: who holds the process, and what survives a restart. Once terminals outlive the UI, everything above them gets simpler.',
+    stack: ['TypeScript', 'Go', 'Hono', 'SQLite', 'React', 'TanStack Start', 'Flutter', 'Wails'],
+    links: [],
+  },
+  {
+    id: 'gmc-uncaged',
+    n: '05',
+    name: 'Uncaged Thyrios 2026',
+    visibility: 'private',
+    tagline: 'Registration for a school event, in production',
+    year: '2026',
+    image: 'media/uncaged.jpg',
+    imageAlt: 'Uncaged Thyrios 2026 — event poster',
+    kind: 'Work · Global Multimedia Creative School',
+    role: 'Sole author — landing page, school portal and committee admin',
+    summary:
+      'A bilingual landing page, school registration, a portal for the schools taking part and an admin panel for the committee, live at uncaged.globalmultimedia.sch.id with a Flutter shell for Android.',
+    impact:
+      'Carries a build gate of its own that fails the bundle if server code ever leaks into the client, forward-only migrations, and audit-logged admin boundaries — discipline usually skipped on a project this size.',
+    learned:
+      'A check that fails the build is worth more than a rule nobody remembers. The server-code audit caught things review would have waved through.',
+    stack: ['TypeScript', 'TanStack Start', 'React', 'Tailwind CSS', 'Drizzle ORM', 'PostgreSQL', 'Better Auth', 'Flutter'],
+    links: [],
+  },
+  {
+    id: 'webxr',
+    n: '06',
+    name: 'WebXR Apartment Preview',
+    visibility: 'private',
+    tagline: 'Walk through a flat before it is built, with no app to install',
+    year: '2026',
+    image: 'media/webxr.jpg',
+    imageAlt: 'WebXR apartment preview — panoramic living room',
+    kind: 'Work · Hi Klik',
+    role: 'Sole author — viewer, editor and dashboard',
+    summary:
+      'Buyers tour a unit in the browser on a phone, and staff build those tours themselves through an editor and dashboard rather than filing a ticket with a 3D team.',
+    impact:
+      'Mobile-first from the start: touch movement through an on-screen stick, panoramas streamed from object storage, and no install step between a listing and a walkthrough.',
+    learned:
+      'Three-dimensional work on the web lives or dies on the phone. Deciding that first ruled out most of the obvious approaches, which saved rebuilding it later.',
+    stack: ['TypeScript', 'Next.js', 'Three.js', 'React', 'Drizzle ORM', 'PostgreSQL', 'Neon', 'Tailwind CSS'],
+    links: [],
+  },
+  {
+    id: 'audition',
+    n: '07',
+    name: 'Audition',
+    visibility: 'private',
+    tagline: 'A rhythm-game engine written from scratch',
+    year: '2024',
+    image: 'media/audition.jpg',
+    imageAlt: 'Audition — Unity rhythm-game engine',
+    kind: 'Self-initiated',
+    role: 'Sole author',
+    summary:
+      'Not a rhythm game so much as the machinery under one: a chart format, a chart player, note sequences and generators, note skins, beat lines, scoring and a leaderboard, across lobby, menu and player scenes.',
+    impact:
+      'Twenty-six C# systems that together make new songs a data problem rather than a programming one — the point of an engine, and the part most rhythm games skip by hard-coding.',
+    learned:
+      'Building the engine rather than the game teaches you where the timing really lives. Everything hard about rhythm games is in the few milliseconds around the note.',
+    stack: ['C#', 'Unity', 'HLSL shaders'],
+    links: [],
+  },
+  {
+    id: 'onecn',
+    n: '08',
+    name: 'onecn',
+    visibility: 'public',
+    repo: 'https://github.com/adit-firdaus/onecn',
+    tagline: 'Every shadcn/ui component, in one install',
+    year: '2026',
+    image: 'media/onecn.jpg',
+    imageAlt: 'onecn — shadcn/ui as one package',
+    kind: 'Self-initiated · Open source',
+    role: 'Sole author',
+    summary:
+      'shadcn/ui is copied in component by component through a CLI. onecn publishes the whole set as one installable package with per-component subpath exports and its CSS variables already shipped.',
+    impact:
+      'Published to npm as @coolaf/onecn with Storybook, a changelog, CI and a contributing guide — a small package, but a finished one rather than a gist.',
+    learned:
+      'The annoyance worth packaging is usually the one you hit on every new project. This one took an afternoon to name and a week to make properly shippable.',
+    stack: ['TypeScript', 'React', 'Tailwind CSS', 'Storybook', 'Biome', 'GitHub Actions'],
+    links: [{ label: 'npm — @coolaf/onecn', href: 'https://www.npmjs.com/package/@coolaf/onecn' }],
+  },
+  {
+    id: 'dmcp',
+    n: '09',
+    name: 'dmcp',
+    visibility: 'public',
+    repo: 'https://github.com/adit-firdaus/dmcp',
+    tagline: 'One MCP server that stands in front of all the others',
+    year: '2026',
+    image: 'media/dmcp.jpg',
+    imageAlt: 'dmcp — dynamic MCP meta-server',
+    kind: 'Self-initiated · Open source',
+    role: 'Sole author',
+    summary:
+      'Registers, proxies and aggregates the tools of many child MCP servers at runtime, so an agent sees one surface instead of a dozen: stdio, HTTP and SSE transports, tool chaining that passes output along, and a fallback server when one goes down.',
+    impact:
+      'Per-call credential injection, SQLite logs and metrics, and a dmcpctl command line — the operational parts that decide whether a proxy is usable in anger.',
+    learned:
+      'Aggregating tools is easy; deciding what happens when one of them is down is the actual design. The fallback path shaped the rest.',
+    stack: ['TypeScript', 'Hono', 'SQLite', 'Drizzle ORM', 'Docker'],
+    links: [{ label: 'Source — github.com/adit-firdaus/dmcp', href: 'https://github.com/adit-firdaus/dmcp' }],
+  },
+  {
+    id: 'ctfd-sdk',
+    n: '10',
+    name: 'ctfd-sdk',
+    visibility: 'public',
+    repo: 'https://github.com/Hexcore-Labs/ctfd-sdk',
+    tagline: 'A typed client for the CTFd competition API',
+    year: '2026',
+    image: 'media/ctfdsdk.jpg',
+    imageAlt: 'ctfd-sdk — TypeScript SDK for CTFd',
+    kind: 'Work · Hexcore Labs · Open source',
+    role: 'Sole author',
+    summary:
+      'Covers challenges, users, teams, submissions and awards, with both API-token and session authentication, written for server-side use from Next.js server actions.',
+    impact:
+      'Published as @hexcore-labs/ctfd-sdk with no runtime dependencies at all — small enough to read in one sitting, which is the point of an SDK.',
+    learned:
+      'A good SDK is mostly subtraction. Zero dependencies was a constraint that kept making the API simpler.',
+    stack: ['TypeScript'],
+    links: [{ label: 'Source — github.com/Hexcore-Labs/ctfd-sdk', href: 'https://github.com/Hexcore-Labs/ctfd-sdk' }],
+  },
+  {
+    id: 'autobricks-desktop',
+    n: '11',
+    name: 'Autobricks Desktop',
+    visibility: 'private',
+    tagline: 'Setting up an agent runtime, without the terminal',
+    year: '2026',
+    image: 'media/abdesktop.jpg',
+    imageAlt: 'Autobricks Desktop — Go and Wails onboarding app',
+    kind: 'Work · Autobricks AI',
+    role: 'Sole author',
+    summary:
+      'Walks a user through standing up the Hermes agent runtime — Docker, WSL, the install script, a Telegram bot, Google Workspace OAuth — as a checklist that knows which operating system it is on and actually checks each step rather than trusting the user.',
+    impact:
+      'A Go backend bound straight to a React frontend through Wails, with the Windows and Linux branches covered by unit tests, since those are exactly the paths that cannot be tried by hand on a Mac.',
+    learned:
+      'Onboarding is a product. Every step that checks itself is a support conversation that never happens.',
+    stack: ['Go', 'Wails', 'React', 'TypeScript', 'Tailwind CSS', 'Docker'],
+    links: [],
+  },
+  {
+    id: 'may-ui',
+    academy: true,
+    visibility: 'public',
+    repo: 'https://github.com/adit-firdaus/may-ui',
+    n: '12',
     name: 'May UI',
     logo: 'mayui',
     tagline: 'Apple’s design language as a React library',
@@ -369,8 +601,10 @@ export const projects: Project[] = [
   },
   {
     id: 'source',
+    academy: true,
+    visibility: 'public',
     repo: 'https://github.com/adit-firdaus/Source',
-    n: '02',
+    n: '13',
     name: 'SOURCE',
     logo: 'source',
     tagline: 'Assemble a drone. Find water. Make us multiplanetary.',
@@ -391,8 +625,10 @@ export const projects: Project[] = [
   },
   {
     id: 'delis',
+    academy: true,
+    visibility: 'public',
     repo: 'https://github.com/adit-firdaus/Delis',
-    n: '03',
+    n: '14',
     name: 'DELIS',
     logo: 'delis',
     tagline: 'Digital Education, Learning and Information System',
@@ -415,8 +651,10 @@ export const projects: Project[] = [
   },
   {
     id: 'losary',
+    academy: true,
+    visibility: 'public',
     repo: 'https://github.com/adit-firdaus/Losary',
-    n: '04',
+    n: '15',
     name: 'LOSARY',
     logo: 'losary',
     tagline: 'Local Sea Delivery — a rhythm game about a cargo ship',
@@ -437,7 +675,9 @@ export const projects: Project[] = [
   },
   {
     id: 'pops',
-    n: '05',
+    academy: true,
+    visibility: 'private',
+    n: '16',
     name: 'POPs',
     logo: 'pops',
     tagline: 'Unlimited bubbles, for when something has to break',
