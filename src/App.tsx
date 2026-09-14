@@ -58,7 +58,7 @@ const STATS = [
   { label: 'Games Published', value: '5' },
   /* Counted off the technologies list below, so relabelling can never leave a
      figure describing the thing it used to describe. */
-  { label: 'Technologies Used', value: '24' },
+  { label: 'Technologies Used', value: '47' },
 ]
 
 const PAPER = {

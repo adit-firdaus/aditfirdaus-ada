@@ -74,7 +74,6 @@ export const experience: Job[] = [
     id: 'pt-altern-digital-technologies',
     role: 'Founder & Chief Executive Officer',
     org: 'PT Altern Digital Technologies',
-    logo: 'altern',
     period: 'Mar 2023 — Present',
     points: [
       'Founded a studio delivering custom software, web platforms and IT consulting.',
@@ -238,40 +237,65 @@ export const extracurricular: Extracurricular[] = [
 ]
 
 /**
- * Taken from a scan of the 29 repositories Adit actually wrote — forks
- * excluded, since a forked codebase says nothing about what he works in.
- * Inngest and BullMQ are the exception: both come from work that is not
- * public, so no scan could have found them.
+ * Built from a scan of every repository the account can reach — 251 of them,
+ * across his own work and the Autobricks, Hexcore, Hi Klik, Mastah and HiDigi
+ * organisations — counting languages by bytes and reading each manifest for
+ * its real dependencies. What is listed is what actually appears in the code,
+ * not what sounds good.
  */
 export const skills = [
   {
     id: 'languages',
     group: 'Languages',
-    items: ['TypeScript', 'JavaScript', 'Go', 'C#', 'Dart', 'Python'],
+    items: ['TypeScript', 'JavaScript', 'C#', 'Dart', 'Go', 'Python'],
   },
   {
-    id: 'interface',
-    group: 'Interface',
-    items: ['React', 'Flutter', 'Tailwind CSS', 'Vite', 'Storybook'],
-  },
-  { id: 'games-xr', group: 'Games & XR', items: ['Unity', 'Three.js', 'HLSL shaders'] },
-  {
-    id: 'platform',
-    group: 'Platform',
+    id: 'web-front-end',
+    group: 'Web Front End',
     items: [
+      'React',
       'Next.js',
       'TanStack Start',
       'TanStack Query',
-      'Hono',
-      'Drizzle ORM',
-      'PostgreSQL',
-      'Redis',
-      'BullMQ',
-      'Inngest',
-      'Docker',
-      'GitHub Actions',
+      'Tailwind CSS',
+      'Ant Design',
+      'Vite',
+      'Storybook',
     ],
   },
+  {
+    id: 'web-backend',
+    group: 'Web Backend',
+    items: ['NestJS', 'tRPC', 'Hono', 'Express', 'Better Auth', 'Inngest', 'BullMQ'],
+  },
+  {
+    id: 'games-xr',
+    group: 'Games & XR',
+    items: ['Unity', 'Three.js', 'Phaser', 'WebGL', 'HLSL shaders'],
+  },
+  { id: 'desktop', group: 'Desktop', items: ['Wails', 'Tauri', 'Electron'] },
+  { id: 'mobile', group: 'Mobile', items: ['Flutter'] },
+  {
+    id: 'infra',
+    group: 'Infra',
+    items: ['Docker', 'Cloudflare', 'Vercel', 'Nginx', 'WireGuard'],
+  },
+  {
+    id: 'database',
+    group: 'Database',
+    items: [
+      'PostgreSQL',
+      'MySQL',
+      'SQLite',
+      'Drizzle ORM',
+      'Prisma',
+      'Redis',
+      'Neon',
+      'Supabase',
+      'Firebase',
+    ],
+  },
+  { id: 'ci-cd', group: 'CI/CD', items: ['GitHub Actions', 'Docker', 'Vitest', 'Biome'] },
 ]
 
 export type Project = {
