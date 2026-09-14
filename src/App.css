@@ -1,25 +1,17 @@
 /* ---------------------------------------------------------------------
-   Paper-first stylesheet.
+   Paper geometry, and nothing else.
 
-   One rule governs everything: a .sheet is a physical page. Its width and
-   height come from --sheet-w / --sheet-h, which App.tsx sets alongside the
-   matching @page size. Screen preview and printed PDF therefore agree.
+   May UI draws every component here. This file does two jobs: it makes a
+   .sheet behave like a physical page, and it retunes May UI's --may-*
+   tokens down to print scale inside that page — the design system is
+   token-first, so compressing it for paper is a variable change, not a
+   rewrite of its CSS.
    --------------------------------------------------------------------- */
 
 :root {
-  --ink: #1d1d1f;
-  --ink-2: #46464a;
-  --ink-3: #6e6e73;
-  --rule: #d9d9de;
-  --rule-soft: #ececf0;
-  --accent: #0066cc;
-  --paper: #ffffff;
   --stage: #f0f0f3;
-
+  --pad: 15mm;
   --serif: ui-serif, 'New York', 'Iowan Old Style', Georgia, serif;
-  --sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Inter, system-ui, sans-serif;
-
-  --pad: 16mm;
 }
 
 html,
@@ -29,468 +21,134 @@ body {
   background: var(--stage);
 }
 
-/* ------------------------------------------------------------ toolbar -- */
+/* ------------------------------------------------------- screen chrome -- */
 
-.toolbar {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  background: rgba(250, 250, 252, 0.82);
-  backdrop-filter: saturate(180%) blur(20px);
-  -webkit-backdrop-filter: saturate(180%) blur(20px);
-  border-bottom: 1px solid var(--rule-soft);
-}
-
-.toolbar-inner {
+.quicklinks {
   max-width: 1180px;
   margin: 0 auto;
-  padding: 12px 24px 8px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  flex-wrap: wrap;
+  padding: 10px 24px 14px;
 }
-
-.toolbar-id {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.25;
-  font-family: var(--sans);
-}
-.toolbar-id strong {
-  font-size: 15px;
-  letter-spacing: -0.01em;
-  color: var(--ink);
-}
-.toolbar-id span {
-  font-size: 12px;
-  color: var(--ink-3);
-}
-
-.toolbar-controls {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.toolbar-hint {
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 0 24px 12px;
-  font-family: var(--sans);
-  font-size: 12px;
-  color: var(--ink-3);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.toolbar-hint code {
-  font-size: 11.5px;
-  background: var(--rule-soft);
-  border-radius: 4px;
-  padding: 1px 5px;
-}
-
-/* -------------------------------------------------------------- stage -- */
 
 .stage {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 24px;
-  padding: 32px 16px 72px;
+  padding: 28px 16px 72px;
 }
+
+/* -------------------------------------------------------------- sheet -- */
 
 .sheet {
   box-sizing: border-box;
   width: var(--sheet-w);
   min-height: var(--sheet-h);
   padding: var(--pad);
-  background: var(--paper);
-  color: var(--ink);
-  font-family: var(--sans);
-  font-size: 9.6pt;
-  line-height: 1.5;
+  background: var(--may-color-bg, #fff);
+  color: var(--may-color-text);
   position: relative;
   display: flex;
   flex-direction: column;
+  gap: 3mm;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 12px 32px rgba(0, 0, 0, 0.1);
   border-radius: 2px;
+
+  /* Retune May UI to paper: iOS touch spacing is generous for a screen and
+     wasteful on A4. Type steps down about 15%, spacing about 40%. */
+  --may-space-1: 2px;
+  --may-space-2: 3px;
+  --may-space-3: 5px;
+  --may-space-4: 7px;
+  --may-space-5: 10px;
+  --may-space-6: 12px;
+  --may-space-8: 20px;
+  --may-space-10: 26px;
+  --may-space-12: 30px;
+
+  --may-text-large-title: 40px;
+  --may-text-title-1: 25px;
+  --may-text-title-2: 20px;
+  --may-text-title-3: 17px;
+  --may-text-headline: 12.5px;
+  --may-text-body: 12.5px;
+  --may-text-callout: 12px;
+  --may-text-subheadline: 11.5px;
+  --may-text-footnote: 10.5px;
+  --may-text-caption-1: 10px;
+  --may-text-caption-2: 9px;
+
+  --may-card-pad: 10px;
+  --may-row-min-h: 0px;
+  --may-list-leading-w: 26px;
 }
 
 .sheet a {
-  color: var(--accent);
+  color: inherit;
   text-decoration: none;
 }
 
 .sheet-foot {
   margin-top: auto;
-  padding-top: 8mm;
+  padding-top: 6mm;
   display: flex;
   justify-content: space-between;
-  font-size: 7.4pt;
-  color: var(--ink-3);
-  letter-spacing: 0.02em;
 }
 
 /* ----------------------------------------------------------------- CV -- */
 
-.cv-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 12mm;
-  padding-bottom: 5mm;
-  border-bottom: 2px solid var(--ink);
-}
-
-.cv-name {
-  margin: 0;
-  font-size: 22pt;
-  line-height: 1.06;
-  letter-spacing: -0.02em;
-  font-weight: 700;
-  max-width: 95mm;
-}
-
-.cv-known {
-  margin: 2.5mm 0 0;
-  font-size: 9.4pt;
-  color: var(--ink-2);
-  max-width: 95mm;
-}
-
 .cv-contact {
-  list-style: none;
-  margin: 0;
-  padding: 0;
   text-align: right;
-  font-size: 8.4pt;
-  color: var(--ink-2);
-  line-height: 1.65;
-}
-
-.cv-block {
-  margin-top: 6mm;
-}
-
-.cv-h2 {
-  margin: 0 0 3mm;
-  font-size: 8pt;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-}
-
-.cv-objective {
-  margin: 0;
-  font-family: var(--serif);
-  font-size: 10.6pt;
-  line-height: 1.5;
-  color: var(--ink);
-}
-
-.entry {
-  padding: 2.6mm 0;
-  border-top: 1px solid var(--rule-soft);
-  break-inside: avoid;
-}
-.cv-block .entry:first-of-type {
-  border-top: none;
-  padding-top: 0;
-}
-
-.entry-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 8mm;
-}
-
-.entry-title {
-  margin: 0;
-  font-size: 9.8pt;
-  font-weight: 650;
-  letter-spacing: -0.005em;
-}
-.entry-org {
-  font-weight: 500;
-  color: var(--ink-2);
-}
-.entry-place {
-  font-weight: 400;
-  color: var(--ink-3);
-}
-
-.entry-period {
   flex: none;
-  font-size: 8.2pt;
-  color: var(--ink-3);
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-
-.entry-points {
-  margin: 1mm 0 0;
-  padding-left: 4.2mm;
-  color: var(--ink-2);
-  font-size: 9pt;
-}
-.entry-points li {
-  margin: 0.6mm 0;
-}
-
-.entry-note {
-  margin: 0.8mm 0 0;
-  color: var(--ink-2);
-  font-size: 9pt;
-}
-
-.skills {
-  margin: 0;
-}
-.skill-row {
-  display: flex;
-  gap: 5mm;
-  padding: 1.9mm 0;
-  border-top: 1px solid var(--rule-soft);
-}
-.skill-row:first-child {
-  border-top: none;
-  padding-top: 0;
-}
-.skill-row dt {
-  flex: 0 0 32mm;
-  font-weight: 650;
-  font-size: 9pt;
-}
-.skill-row dd {
-  margin: 0;
-  color: var(--ink-2);
-  font-size: 9pt;
 }
 
 /* ---------------------------------------------------- portfolio cover -- */
 
 .cover {
-  background: #000;
-  color: #f5f5f7;
   justify-content: space-between;
-  padding: 20mm var(--pad);
-}
-.cover a {
-  color: #9ecbff;
-}
-
-.cover-kicker {
-  margin: 0;
-  font-size: 8pt;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: #86868b;
+  padding: 18mm var(--pad);
+  gap: 0;
 }
 
 .cover-title {
-  margin: 0;
-  font-size: 46pt;
-  line-height: 0.98;
   letter-spacing: -0.03em;
-  font-weight: 700;
-  /* Solid, not gradient-clipped text: background-clip:text leaks its box into PDF. */
-  color: #f5f5f7;
-}
-
-.cover-name {
-  margin: 6mm 0 0;
-  font-size: 15pt;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  color: #f5f5f7;
-}
-.cover-known {
-  margin: 1mm 0 0;
-  font-size: 10pt;
-  color: #86868b;
+  line-height: 1;
 }
 
 .cover-blurb {
-  margin: 8mm 0 0;
   max-width: 135mm;
   font-family: var(--serif);
-  font-size: 11pt;
-  line-height: 1.55;
-  color: #d2d2d7;
 }
 
-.cover-index {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  border-top: 1px solid #2c2c2e;
-}
-.cover-index li {
-  display: grid;
-  grid-template-columns: 12mm 42mm 1fr;
-  align-items: baseline;
-  gap: 4mm;
-  padding: 2.6mm 0;
-  border-bottom: 1px solid #2c2c2e;
-}
-.cover-index span {
-  color: #86868b;
-  font-size: 8.4pt;
-  font-variant-numeric: tabular-nums;
-}
-.cover-index strong {
-  font-size: 10pt;
-  font-weight: 620;
-}
-.cover-index em {
-  font-style: normal;
-  font-size: 8.6pt;
-  color: #a1a1a6;
-}
-
-.cover-contact {
-  list-style: none;
-  margin: 7mm 0 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2mm 6mm;
-  font-size: 8.2pt;
-  color: #a1a1a6;
+.cover-stats {
+  padding: 5mm 0;
 }
 
 /* ------------------------------------------------- portfolio projects -- */
 
-.pj-head {
-  display: grid;
-  grid-template-columns: 14mm 1fr auto;
-  align-items: baseline;
-  gap: 4mm;
-  padding-bottom: 3.5mm;
-  border-bottom: 2px solid var(--ink);
-}
-.pj-n {
-  font-size: 16pt;
-  font-weight: 700;
-  color: var(--rule);
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.02em;
-}
-.pj-name {
-  margin: 0;
-  font-size: 19pt;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
-}
-.pj-tagline {
-  margin: 1mm 0 0;
-  font-size: 9.6pt;
-  color: var(--ink-2);
-}
-.pj-year {
-  font-size: 8.4pt;
-  color: var(--ink-3);
-  white-space: nowrap;
-}
-
 .pj-figure {
-  margin: 5mm 0 0;
+  margin: 0;
 }
 .pj-figure img {
   display: block;
   width: 100%;
-  height: 72mm;
+  height: 66mm;
   object-fit: cover;
-  border-radius: 2.5mm;
-  background: var(--rule-soft);
+  border-radius: var(--may-radius-lg, 10px);
+  background: var(--may-color-fill-tertiary);
 }
 .pj-figure figcaption {
-  margin-top: 1.8mm;
-  font-size: 7.6pt;
-  color: var(--ink-3);
-}
-
-.pj-summary {
-  margin: 5mm 0 0;
-  font-family: var(--serif);
-  font-size: 11pt;
-  line-height: 1.5;
-}
-
-.pj-meta {
-  margin-top: 5mm;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6mm;
-  padding: 3.5mm 0;
-  border-top: 1px solid var(--rule);
-  border-bottom: 1px solid var(--rule);
-}
-.pj-meta p {
-  margin: 1mm 0 0;
-  font-size: 9pt;
-  color: var(--ink);
-}
-
-.pj-label {
-  font-size: 7.4pt;
-  font-weight: 700;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-  color: var(--ink-3);
-}
-
-.pj-block {
-  margin-top: 4.5mm;
-}
-.pj-block p {
-  margin: 1.2mm 0 0;
-  font-size: 9.3pt;
-  line-height: 1.52;
-  color: var(--ink-2);
+  margin-top: 1.5mm;
 }
 
 .pj-foot-row {
-  margin-top: 5mm;
-  padding-top: 3.5mm;
-  border-top: 1px solid var(--rule-soft);
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 8mm;
+  margin-top: 2mm;
 }
-
-.pj-stack {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.6mm;
-}
-.pj-stack li {
-  font-size: 7.8pt;
-  color: var(--ink-2);
-  background: var(--rule-soft);
-  border-radius: 999px;
-  padding: 0.9mm 2.4mm;
-}
-
 .pj-links {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  text-align: right;
-  font-size: 8.4pt;
-  line-height: 1.6;
   flex: none;
+  text-align: right;
+}
+.pj-links a {
+  color: var(--may-color-tint);
 }
 
 /* -------------------------------------------------------------- print -- */
@@ -526,16 +184,22 @@ body {
     page-break-after: auto;
   }
 
-  /* Keep the dark cover and the tag pills dark on paper. */
-  .cover,
-  .pj-stack li,
-  .pj-figure img {
+  /* May UI separates surfaces by fill rather than by border, so every one of
+     its greys has to survive the print pipeline. */
+  .sheet,
+  .sheet * {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
 
-  .sheet a {
-    color: var(--accent);
+  /* Entry animations use fill-mode:both and start at opacity 0 — Tag is one.
+     A print snapshot never runs them, so the element would hold its first
+     keyframe and vanish. Paper wants the settled state, never the motion. */
+  .sheet *,
+  .sheet *::before,
+  .sheet *::after {
+    animation: none !important;
+    transition: none !important;
   }
 }
 

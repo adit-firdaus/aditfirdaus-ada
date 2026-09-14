@@ -14,7 +14,6 @@ export const profile = {
     { label: 'linkedin.com/in/adit-firdaus', href: 'https://www.linkedin.com/in/adit-firdaus/' },
     { label: 'github.com/adit-firdaus', href: 'https://github.com/adit-firdaus' },
     { label: 'adit-firdaus.itch.io', href: 'https://adit-firdaus.itch.io/' },
-    { label: 'aditfirdaus.com', href: 'https://aditfirdaus.com' },
   ],
   objective:
     'I build things people can feel — rhythm games that teach Indonesian folk songs, a React design system that reproduces Apple’s motion physics, and AI tooling for cybersecurity education. I want to spend the next nine months at the Apple Developer Academy turning that range into depth on Apple platforms, and learning to design with a team instead of alone.',
@@ -23,6 +22,8 @@ export const profile = {
 export type Job = {
   role: string
   org: string
+  /** File in public/logo, without extension. Omit when no official mark exists. */
+  logo?: string
   place?: string
   period: string
   points: string[]
@@ -32,6 +33,7 @@ export const experience: Job[] = [
   {
     role: 'Software Engineer',
     org: 'Autobricks AI',
+    logo: 'autobricks',
     place: 'Remote',
     period: '2026 — Present',
     points: [
@@ -42,6 +44,7 @@ export const experience: Job[] = [
   {
     role: 'Software Developer',
     org: 'Hexcore Labs Pte. Ltd.',
+    logo: 'hexcore',
     place: 'Singapore',
     period: 'Dec 2025 — Present',
     points: [
@@ -58,6 +61,7 @@ export const experience: Job[] = [
   {
     role: 'Founder & Chief Executive Officer',
     org: 'PT Altern Digital Technologies',
+    logo: 'altern',
     period: 'Mar 2023 — Present',
     points: [
       'Founded a studio delivering custom software, web platforms and IT consulting.',
@@ -73,12 +77,14 @@ export const experience: Job[] = [
   {
     role: 'Flutter Developer',
     org: 'Global Multimedia School',
+    logo: 'gmcs',
     period: 'Jul 2023 — Jul 2024',
     points: ['Built cross-platform mobile applications in Flutter for the school’s own products.'],
   },
   {
     role: 'XR Developer',
     org: 'PT Halo Industri Digital (HiDigi)',
+    logo: 'hidigi',
     period: 'Oct 2022 — Jul 2024',
     points: [
       'Developed extended-reality experiences — 3D interaction, spatial interfaces and real-time rendering.',
@@ -87,6 +93,7 @@ export const experience: Job[] = [
   {
     role: 'Multimedia Intern',
     org: 'Floramis',
+    logo: 'floramis',
     place: 'Singapore · Remote',
     period: 'Aug — Oct 2024',
     points: ['Produced multimedia assets for a Singapore-based team while working remotely from Indonesia.'],
@@ -96,24 +103,28 @@ export const experience: Job[] = [
 export const education = [
   {
     school: 'Nexford University',
+    logo: 'nexford',
     place: 'United States · Online',
     detail: 'Current programme',
     period: 'Present',
   },
   {
     school: 'Global Multimedia Creative School',
+    logo: 'gmcs',
     place: 'Indonesia',
     detail: 'Multimedia · Grades 10–12',
     period: '2022 — 2025',
   },
   {
     school: 'SMK Prestasi Prima',
+    logo: 'prestasiprima',
     place: 'Jakarta, Indonesia',
     detail: 'Game Development — KKSI 2021 national programme',
     period: '2021',
   },
   {
     school: 'MTsN 2 Jepara',
+    logo: 'mtsn2jepara',
     place: 'Jepara, Indonesia',
     detail: 'Lower secondary',
     period: 'to 2020',
@@ -123,21 +134,25 @@ export const education = [
 export const awards = [
   {
     title: '3rd Place — KKSI 2021 National Game Development',
+    logo: 'prestasiprima',
     detail: 'For LOSARY, a two-person team I led as project leader.',
     year: 'Dec 2021',
   },
   {
     title: '2nd Winner — GACCI 2022',
+    logo: 'binus',
     detail: 'Bina Nusantara University (BINUS) creative competition.',
     year: 'Nov 2022',
   },
   {
     title: '3rd Place — Lomba Cipta Game Edukasi Pelatihan Vokasi',
+    logo: 'kemnaker',
     detail: 'Ministry of Manpower, Republic of Indonesia (Kemnaker), for SOURCE.',
     year: 'Jul 2022',
   },
   {
     title: 'Registrant — BINUS High School Programming Competition',
+    logo: 'binus',
     detail: 'Representing Global Multimedia Creative School.',
     year: '2024 — 2025',
   },
@@ -147,18 +162,21 @@ export const extracurricular = [
   {
     role: 'Marketing Communications',
     org: 'Lions Clubs International, District 307-B1',
+    logo: 'lions',
     period: 'Jul 2025 — Present',
     detail: 'Communications for a volunteer service organisation across the district.',
   },
   {
     role: 'Participant, Madrasah Vlog Competition 2020',
     org: 'MTsN 2 Jepara',
+    logo: 'mtsn2jepara',
     period: '2020',
     detail: 'Entrant no. 444 — my first public piece of creative work.',
   },
   {
     role: 'Open-source maintainer',
     org: 'github.com/adit-firdaus',
+    logo: 'github',
     period: '2021 — Present',
     detail: '45 public repositories spanning design systems, games, agent tooling and web infrastructure.',
   },
@@ -175,8 +193,12 @@ export const skills = [
 export type Project = {
   n: string
   name: string
+  /** Official mark in public/logo; falls back to an IconTile when absent. */
+  logo?: string
   tagline: string
   year: string
+  /** Short award ribbon shown on the project sheet. */
+  award?: string
   image: string
   imageAlt: string
   kind: string
@@ -192,6 +214,7 @@ export const projects: Project[] = [
   {
     n: '01',
     name: 'May UI',
+    logo: 'mayui',
     tagline: 'Apple’s design language as a React library',
     year: '2026 · Ongoing',
     image: 'media/mayui.jpg',
@@ -213,8 +236,10 @@ export const projects: Project[] = [
   {
     n: '02',
     name: 'SOURCE',
+    logo: 'source',
     tagline: 'Assemble a drone. Find water. Make us multiplanetary.',
     year: '2022',
+    award: '3rd place · Kemnaker RI',
     image: 'media/source.jpg',
     imageAlt: 'SOURCE title screen — a modular drone hovering above an alien ridge at dusk',
     kind: 'Competition entry · Vocational training programme',
@@ -231,6 +256,7 @@ export const projects: Project[] = [
   {
     n: '03',
     name: 'DELIS',
+    logo: 'delis',
     tagline: 'Digital Education, Learning and Information System',
     year: '2021',
     image: 'media/delis.jpg',
@@ -252,8 +278,10 @@ export const projects: Project[] = [
   {
     n: '04',
     name: 'LOSARY',
+    logo: 'losary',
     tagline: 'Local Sea Delivery — a rhythm game about a cargo ship',
     year: '2021',
+    award: '3rd place · KKSI 2021',
     image: 'media/losary.jpg',
     imageAlt: 'LOSARY — a container ship crossing open sea under a low sun',
     kind: 'GROUP PROJECT · Two-person team',
@@ -270,6 +298,7 @@ export const projects: Project[] = [
   {
     n: '05',
     name: 'POPs',
+    logo: 'pops',
     tagline: 'Unlimited bubbles, for when something has to break',
     year: '2022',
     image: 'media/pops.jpg',

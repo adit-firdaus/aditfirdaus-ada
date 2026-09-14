@@ -1,6 +1,54 @@
-import { useState } from 'react'
-import { Button, MayProvider, SegmentedControl } from '@adit_firdaus/may-ui'
-import { IoDownloadOutline, IoLogoGithub, IoPrintOutline } from 'react-icons/io5'
+import { useState, type ReactNode } from 'react'
+import {
+  Avatar,
+  Badge,
+  Button,
+  Card,
+  CardDescription,
+  CardTitle,
+  DescriptionItem,
+  Descriptions,
+  Heading,
+  IconTile,
+  List,
+  ListRow,
+  MayHost,
+  MayProvider,
+  NavigationBar,
+  Separator,
+  Stack,
+  Statistic,
+  Tag,
+  Text,
+  toast,
+} from '@adit_firdaus/may-ui'
+import {
+  IoDocumentTextOutline,
+  IoLogoGithub,
+  IoLogoLinkedin,
+  IoMailOutline,
+  IoPrintOutline,
+  IoRocketOutline,
+} from 'react-icons/io5'
+import type { IconType } from 'react-icons'
+import {
+  SiAndroid,
+  SiDocker,
+  SiDart,
+  SiFlutter,
+  SiGithubactions,
+  SiItchdotio,
+  SiJavascript,
+  SiNestjs,
+  SiNodedotjs,
+  SiPostgresql,
+  SiPython,
+  SiReact,
+  SiSharp,
+  SiStrapi,
+  SiTypescript,
+  SiUnity,
+} from 'react-icons/si'
 import {
   awards,
   education,
@@ -16,23 +64,68 @@ import './App.css'
 type DocKey = 'portfolio' | 'cv'
 type PaperKey = 'a4' | 'letter'
 
-const PAPER: Record<PaperKey, { label: string; css: string; width: string; height: string }> = {
-  a4: { label: 'A4', css: 'A4 portrait', width: '210mm', height: '297mm' },
-  letter: { label: 'US Letter', css: 'Letter portrait', width: '8.5in', height: '11in' },
+const PAPER: Record<PaperKey, { css: string; width: string; height: string }> = {
+  a4: { css: 'A4 portrait', width: '210mm', height: '297mm' },
+  letter: { css: 'Letter portrait', width: '8.5in', height: '11in' },
 }
 
+/** Official marks live in public/logo as 256px squares; tech marks come from simple-icons. */
+const logoUrl = (name: string) => `${import.meta.env.BASE_URL}logo/${name}.png`
 const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`
 
-/** One physical page. Everything inside is sized in mm/in so screen matches paper. */
-function Sheet({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+const TECH: Record<string, IconType> = {
+  TypeScript: SiTypescript,
+  JavaScript: SiJavascript,
+  'C#': SiSharp,
+  Dart: SiDart,
+  Python: SiPython,
+  'React 19': SiReact,
+  Flutter: SiFlutter,
+  Unity: SiUnity,
+  Android: SiAndroid,
+  'Node.js': SiNodedotjs,
+  NestJS: SiNestjs,
+  Strapi: SiStrapi,
+  PostgreSQL: SiPostgresql,
+  Docker: SiDocker,
+  'GitHub Actions': SiGithubactions,
+}
+
+function TechTag({ label, tone = 'neutral' }: { label: string; tone?: 'neutral' | 'tint' }) {
+  const Icon = TECH[label]
+  return (
+    <Tag size="sm" tone={tone} leadingIcon={Icon ? <Icon /> : undefined}>
+      {label}
+    </Tag>
+  )
+}
+
+/** A real mark when one exists; May UI's initials avatar when it does not. */
+function Mark({ logo, name, size = 'sm' }: { logo?: string; name: string; size?: 'sm' | 'md' | 'lg' }) {
+  return (
+    <Avatar
+      shape="square"
+      size={size}
+      name={name}
+      src={logo ? logoUrl(logo) : undefined}
+      alt={logo ? `${name} logo` : undefined}
+    />
+  )
+}
+
+function Sheet({ children, className = '' }: { children: ReactNode; className?: string }) {
   return <article className={`sheet ${className}`}>{children}</article>
 }
 
-function DocFooter({ label }: { label: string }) {
+function SheetFoot({ label }: { label: string }) {
   return (
     <footer className="sheet-foot">
-      <span>{profile.legalName}</span>
-      <span>{label}</span>
+      <Text variant="caption-2" tone="tertiary">
+        {profile.legalName}
+      </Text>
+      <Text variant="caption-2" tone="tertiary">
+        {label}
+      </Text>
     </footer>
   )
 }
@@ -43,110 +136,179 @@ function CurriculumVitae() {
   return (
     <>
       <Sheet>
-        <header className="cv-head">
-          <div>
-            <h1 className="cv-name">{profile.legalName}</h1>
-            <p className="cv-known">
-              known as <strong>{profile.knownAs}</strong> — {profile.title}
-            </p>
-          </div>
-          <ul className="cv-contact">
-            <li>{profile.email}</li>
-            <li>{profile.phone}</li>
-            <li>{profile.location}</li>
+        <Stack direction="row" justify="between" align="start" gap={6}>
+          <Stack direction="row" gap={4} align="center">
+            <Avatar name={profile.knownAs} size="xl" shape="square" hue="blue" />
+            <Stack gap={0}>
+              <Heading level={1} size="title-1" weight="bold">
+                {profile.legalName}
+              </Heading>
+              <Text variant="subheadline" tone="secondary">
+                known as <strong>{profile.knownAs}</strong>
+              </Text>
+              <Text variant="footnote" tone="tertiary">
+                {profile.title}
+              </Text>
+            </Stack>
+          </Stack>
+          <Stack gap={0} align="end" className="cv-contact">
+            <Text variant="footnote" tone="secondary">
+              {profile.email}
+            </Text>
+            <Text variant="footnote" tone="secondary">
+              {profile.phone}
+            </Text>
+            <Text variant="footnote" tone="secondary">
+              {profile.location}
+            </Text>
             {profile.links.map((l) => (
-              <li key={l.href}>
+              <Text key={l.href} variant="footnote" tone="tint">
                 <a href={l.href}>{l.label}</a>
-              </li>
+              </Text>
             ))}
-          </ul>
-        </header>
+          </Stack>
+        </Stack>
 
-        <section className="cv-block">
-          <h2 className="cv-h2">Objective</h2>
-          <p className="cv-objective">{profile.objective}</p>
-        </section>
+        <Separator />
 
-        <section className="cv-block">
-          <h2 className="cv-h2">Experience</h2>
+        <Card variant="grouped" padding="md">
+          <Text variant="callout">{profile.objective}</Text>
+        </Card>
+
+        <List variant="inset" header="Experience">
           {experience.map((job) => (
-            <div className="entry" key={`${job.org}-${job.period}`}>
-              <div className="entry-top">
-                <h3 className="entry-title">
-                  {job.role} <span className="entry-org">· {job.org}</span>
-                  {job.place && <span className="entry-place"> · {job.place}</span>}
-                </h3>
-                <span className="entry-period">{job.period}</span>
-              </div>
-              <ul className="entry-points">
-                {job.points.map((p) => (
-                  <li key={p}>{p}</li>
-                ))}
-              </ul>
-            </div>
+            <ListRow
+              key={`${job.org}-${job.period}`}
+              leading={<Mark logo={job.logo} name={job.org} />}
+              title={
+                <Text variant="headline" weight="semibold">
+                  {job.role}
+                </Text>
+              }
+              subtitle={
+                <Stack gap={0}>
+                  <Text variant="footnote" tone="secondary">
+                    {job.org}
+                    {job.place ? ` · ${job.place}` : ''}
+                  </Text>
+                  {job.points.map((p) => (
+                    <Text key={p} variant="caption-1" tone="tertiary">
+                      {p}
+                    </Text>
+                  ))}
+                </Stack>
+              }
+              detail={
+                <Text variant="caption-1" tone="tertiary">
+                  {job.period}
+                </Text>
+              }
+            />
           ))}
-        </section>
+        </List>
 
-        <DocFooter label="Curriculum Vitae — page 1 of 2" />
+        <SheetFoot label="Curriculum Vitae — page 1 of 2" />
       </Sheet>
 
       <Sheet>
-        <section className="cv-block">
-          <h2 className="cv-h2">Education</h2>
+        <List variant="inset" header="Education">
           {education.map((e) => (
-            <div className="entry" key={e.school}>
-              <div className="entry-top">
-                <h3 className="entry-title">
-                  {e.school} <span className="entry-place">· {e.place}</span>
-                </h3>
-                <span className="entry-period">{e.period}</span>
-              </div>
-              <p className="entry-note">{e.detail}</p>
-            </div>
+            <ListRow
+              key={e.school}
+              leading={<Mark logo={e.logo} name={e.school} />}
+              title={
+                <Text variant="headline" weight="semibold">
+                  {e.school}
+                </Text>
+              }
+              subtitle={
+                <Text variant="footnote" tone="secondary">
+                  {e.detail} · {e.place}
+                </Text>
+              }
+              detail={
+                <Text variant="caption-1" tone="tertiary">
+                  {e.period}
+                </Text>
+              }
+            />
           ))}
-        </section>
+        </List>
 
-        <section className="cv-block">
-          <h2 className="cv-h2">Awards & Recognition</h2>
+        <List variant="inset" header="Awards & Recognition">
           {awards.map((a) => (
-            <div className="entry" key={a.title}>
-              <div className="entry-top">
-                <h3 className="entry-title">{a.title}</h3>
-                <span className="entry-period">{a.year}</span>
-              </div>
-              <p className="entry-note">{a.detail}</p>
-            </div>
+            <ListRow
+              key={a.title}
+              leading={<Mark logo={a.logo} name={a.title} />}
+              title={
+                <Text variant="headline" weight="semibold">
+                  {a.title}
+                </Text>
+              }
+              subtitle={
+                <Text variant="footnote" tone="secondary">
+                  {a.detail}
+                </Text>
+              }
+              detail={
+                <Text variant="caption-1" tone="tertiary">
+                  {a.year}
+                </Text>
+              }
+            />
           ))}
-        </section>
+        </List>
 
-        <section className="cv-block">
-          <h2 className="cv-h2">Extra-curricular & Leadership</h2>
+        <List variant="inset" header="Extra-curricular & Leadership">
           {extracurricular.map((x) => (
-            <div className="entry" key={x.role}>
-              <div className="entry-top">
-                <h3 className="entry-title">
-                  {x.role} <span className="entry-org">· {x.org}</span>
-                </h3>
-                <span className="entry-period">{x.period}</span>
-              </div>
-              <p className="entry-note">{x.detail}</p>
-            </div>
+            <ListRow
+              key={x.role}
+              leading={<Mark logo={x.logo} name={x.org} />}
+              title={
+                <Text variant="headline" weight="semibold">
+                  {x.role}
+                </Text>
+              }
+              subtitle={
+                <Stack gap={0}>
+                  <Text variant="footnote" tone="secondary">
+                    {x.org}
+                  </Text>
+                  <Text variant="caption-1" tone="tertiary">
+                    {x.detail}
+                  </Text>
+                </Stack>
+              }
+              detail={
+                <Text variant="caption-1" tone="tertiary">
+                  {x.period}
+                </Text>
+              }
+            />
           ))}
-        </section>
+        </List>
 
-        <section className="cv-block">
-          <h2 className="cv-h2">Skills</h2>
-          <dl className="skills">
-            {skills.map((s) => (
-              <div className="skill-row" key={s.group}>
-                <dt>{s.group}</dt>
-                <dd>{s.items.join(' · ')}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
+        <List variant="inset" header="Skills">
+          {skills.map((s) => (
+            <ListRow
+              key={s.group}
+              title={
+                <Text variant="headline" weight="semibold">
+                  {s.group}
+                </Text>
+              }
+              subtitle={
+                <Stack direction="row" gap={1} wrap>
+                  {s.items.map((i) => (
+                    <TechTag key={i} label={i} />
+                  ))}
+                </Stack>
+              }
+            />
+          ))}
+        </List>
 
-        <DocFooter label="Curriculum Vitae — page 2 of 2" />
+        <SheetFoot label="Curriculum Vitae — page 2 of 2" />
       </Sheet>
     </>
   )
@@ -157,97 +319,153 @@ function CurriculumVitae() {
 function ProjectSheet({ project, index, total }: { project: Project; index: number; total: number }) {
   return (
     <Sheet>
-      <div className="pj-head">
-        <span className="pj-n">{project.n}</span>
-        <div>
-          <h2 className="pj-name">{project.name}</h2>
-          <p className="pj-tagline">{project.tagline}</p>
-        </div>
-        <span className="pj-year">{project.year}</span>
-      </div>
+      <Stack direction="row" align="center" justify="between" gap={4}>
+        <Stack direction="row" align="center" gap={3}>
+          {project.logo ? (
+            <Mark logo={project.logo} name={project.name} size="lg" />
+          ) : (
+            <IconTile gradient="orange" size="lg">
+              <IoRocketOutline />
+            </IconTile>
+          )}
+          <Stack gap={0}>
+            <CardTitle>{project.name}</CardTitle>
+            <CardDescription>{project.tagline}</CardDescription>
+          </Stack>
+        </Stack>
+        <Stack direction="row" gap={2} align="center">
+          {project.award && (
+            <Badge tone="success" variant="tinted">
+              {project.award}
+            </Badge>
+          )}
+          <Badge tone="neutral" variant="tinted">
+            {project.year}
+          </Badge>
+          <Text variant="title-2" tone="tertiary" weight="bold">
+            {project.n}
+          </Text>
+        </Stack>
+      </Stack>
+
+      <Separator />
 
       <figure className="pj-figure">
         <img src={asset(project.image)} alt={project.imageAlt} />
-        <figcaption>{project.imageAlt}</figcaption>
+        <figcaption>
+          <Text variant="caption-2" tone="tertiary">
+            {project.imageAlt}
+          </Text>
+        </figcaption>
       </figure>
 
-      <p className="pj-summary">{project.summary}</p>
+      <Text variant="callout">{project.summary}</Text>
 
-      <div className="pj-meta">
-        <div>
-          <span className="pj-label">Type</span>
-          <p>{project.kind}</p>
-        </div>
-        <div>
-          <span className="pj-label">My role</span>
-          <p>{project.role}</p>
-        </div>
-      </div>
+      <Descriptions variant="inset" layout="stacked" columns={2}>
+        <DescriptionItem label="Type" value={project.kind} />
+        <DescriptionItem label="My role" value={project.role} />
+      </Descriptions>
 
-      <div className="pj-block">
-        <span className="pj-label">Impact</span>
-        <p>{project.impact}</p>
-      </div>
+      <Descriptions variant="inset" layout="stacked" columns={1}>
+        <DescriptionItem label="Impact" value={project.impact} />
+        <DescriptionItem label="What I learned" value={project.learned} />
+      </Descriptions>
 
-      <div className="pj-block">
-        <span className="pj-label">What I learned</span>
-        <p>{project.learned}</p>
-      </div>
-
-      <div className="pj-foot-row">
-        <ul className="pj-stack">
+      <Stack direction="row" justify="between" align="end" gap={6} className="pj-foot-row">
+        <Stack direction="row" gap={1} wrap>
           {project.stack.map((t) => (
-            <li key={t}>{t}</li>
+            <TechTag key={t} label={t} />
           ))}
-        </ul>
-        <ul className="pj-links">
+        </Stack>
+        <Stack gap={0} align="end" className="pj-links">
           {project.links.map((l) => (
-            <li key={l.href}>
+            <Text key={l.href} variant="caption-1" tone="tint">
               <a href={l.href}>{l.label}</a>
-            </li>
+            </Text>
           ))}
-        </ul>
-      </div>
+        </Stack>
+      </Stack>
 
-      <DocFooter label={`Portfolio — project ${index + 1} of ${total}`} />
+      <SheetFoot label={`Portfolio — project ${index + 1} of ${total}`} />
     </Sheet>
   )
 }
 
+const STATS = [
+  { label: 'Public repositories', value: '45' },
+  { label: 'Games published', value: '5' },
+  { label: 'Competition awards', value: '3' },
+  { label: 'May UI components', value: '74' },
+]
+
 function Portfolio() {
   return (
     <>
-      <Sheet className="cover">
-        <div className="cover-top">
-          <p className="cover-kicker">Apple Developer Academy Indonesia — Application</p>
-        </div>
-        <div className="cover-mid">
-          <h1 className="cover-title">Portfolio</h1>
-          <p className="cover-name">{profile.legalName}</p>
-          <p className="cover-known">known as {profile.knownAs}</p>
-          <p className="cover-blurb">{profile.objective}</p>
-        </div>
-        <div className="cover-bottom">
-          <ol className="cover-index">
+      <MayProvider theme="dark">
+        <Sheet className="cover">
+          <Text variant="caption-1" tone="tertiary" weight="semibold">
+            APPLE DEVELOPER ACADEMY INDONESIA — APPLICATION
+          </Text>
+
+          <Stack gap={4}>
+            <Heading level={1} size="large-title" weight="bold" className="cover-title">
+              Portfolio
+            </Heading>
+            <Stack gap={0}>
+              <Heading level={2} size="title-3" weight="semibold">
+                {profile.legalName}
+              </Heading>
+              <Text variant="subheadline" tone="tertiary">
+                known as {profile.knownAs} · {profile.location}
+              </Text>
+            </Stack>
+            <Text variant="body" tone="secondary" className="cover-blurb">
+              {profile.objective}
+            </Text>
+          </Stack>
+
+          <Stack direction="row" gap={4} justify="between" className="cover-stats">
+            {STATS.map((s) => (
+              <Statistic key={s.label} label={s.label} value={s.value} size="sm" />
+            ))}
+          </Stack>
+
+          <List variant="plain">
             {projects.map((p) => (
-              <li key={p.n}>
-                <span>{p.n}</span>
-                <strong>{p.name}</strong>
-                <em>{p.tagline}</em>
-              </li>
+              <ListRow
+                key={p.n}
+                leading={<Mark logo={p.logo} name={p.name} />}
+                title={
+                  <Text variant="subheadline" weight="semibold">
+                    {p.name}
+                  </Text>
+                }
+                subtitle={
+                  <Text variant="caption-1" tone="tertiary">
+                    {p.tagline}
+                  </Text>
+                }
+                detail={
+                  <Text variant="caption-2" tone="tertiary">
+                    {p.n}
+                  </Text>
+                }
+              />
             ))}
-          </ol>
-          <ul className="cover-contact">
-            <li>{profile.email}</li>
-            <li>{profile.location}</li>
+          </List>
+
+          <Stack direction="row" gap={4} wrap className="cover-contact">
+            <Text variant="caption-1" tone="tertiary">
+              {profile.email}
+            </Text>
             {profile.links.map((l) => (
-              <li key={l.href}>
+              <Text key={l.href} variant="caption-1" tone="tint">
                 <a href={l.href}>{l.label}</a>
-              </li>
+              </Text>
             ))}
-          </ul>
-        </div>
-      </Sheet>
+          </Stack>
+        </Sheet>
+      </MayProvider>
 
       {projects.map((p, i) => (
         <ProjectSheet key={p.n} project={p} index={i} total={projects.length} />
@@ -274,58 +492,74 @@ export function App() {
       ? 'RadityaRakhaFirdausMuliyoto_CV_Academy'
       : 'RadityaRakhaFirdausMuliyoto_Portfolio_Academy'
 
+  const print = () => {
+    toast(`Set margins to None and enable background graphics, then save as ${fileName}.pdf`)
+    window.print()
+  }
+
   return (
     <MayProvider theme="light">
+      <MayHost />
+
       {/* Paper geometry lives in one place: the page box and the on-screen sheet. */}
       <style>{`
         @page { size: ${sheet.css}; margin: 0; }
         :root { --sheet-w: ${sheet.width}; --sheet-h: ${sheet.height}; }
       `}</style>
 
-      <div className="toolbar no-print">
-        <div className="toolbar-inner">
-          <div className="toolbar-id">
-            <strong>{profile.knownAs}</strong>
-            <span>{profile.title}</span>
-          </div>
-
-          <div className="toolbar-controls">
-            <SegmentedControl<DocKey>
-              size="sm"
-              value={doc}
-              onValueChange={setDoc}
-              options={[
-                { label: 'Portfolio', value: 'portfolio' },
-                { label: 'CV', value: 'cv' },
-              ]}
-            />
-            <SegmentedControl<PaperKey>
-              size="sm"
-              value={paper}
-              onValueChange={setPaper}
-              options={[
-                { label: 'A4', value: 'a4' },
-                { label: 'Letter', value: 'letter' },
-              ]}
-            />
-            <Button size="sm" variant="filled" leadingIcon={<IoPrintOutline />} onClick={() => window.print()}>
-              Print / Save as PDF
-            </Button>
-            <Button
-              size="sm"
-              variant="gray"
-              leadingIcon={<IoLogoGithub />}
-              onClick={() => window.open('https://github.com/adit-firdaus', '_blank', 'noreferrer')}
-            >
-              GitHub
-            </Button>
-          </div>
-        </div>
-        <p className="toolbar-hint">
-          <IoDownloadOutline aria-hidden /> Print, then choose <strong>Save as PDF</strong> — set margins to{' '}
-          <strong>None</strong> and enable <strong>Background graphics</strong>. Save as{' '}
-          <code>{fileName}.pdf</code>.
-        </p>
+      <div className="no-print">
+        <NavigationBar
+          title={profile.knownAs}
+          subtitle={profile.title}
+          sticky
+          trailing={
+            <Stack direction="row" gap={2} align="center" wrap>
+              <Button
+                size="sm"
+                variant={doc === 'portfolio' ? 'filled' : 'gray'}
+                leadingIcon={<IoRocketOutline />}
+                onClick={() => setDoc('portfolio')}
+              >
+                Portfolio
+              </Button>
+              <Button
+                size="sm"
+                variant={doc === 'cv' ? 'filled' : 'gray'}
+                leadingIcon={<IoDocumentTextOutline />}
+                onClick={() => setDoc('cv')}
+              >
+                CV
+              </Button>
+              <Button size="sm" variant={paper === 'a4' ? 'tinted' : 'plain'} onClick={() => setPaper('a4')}>
+                A4
+              </Button>
+              <Button
+                size="sm"
+                variant={paper === 'letter' ? 'tinted' : 'plain'}
+                onClick={() => setPaper('letter')}
+              >
+                Letter
+              </Button>
+              <Button size="sm" variant="filled" leadingIcon={<IoPrintOutline />} onClick={print}>
+                Print / Save as PDF
+              </Button>
+            </Stack>
+          }
+        />
+        <Stack direction="row" gap={3} className="quicklinks" wrap align="center">
+          <Tag size="sm" tone="neutral" leadingIcon={<IoMailOutline />}>
+            {profile.email}
+          </Tag>
+          <Tag size="sm" tone="neutral" leadingIcon={<IoLogoLinkedin />}>
+            in/adit-firdaus
+          </Tag>
+          <Tag size="sm" tone="neutral" leadingIcon={<IoLogoGithub />}>
+            adit-firdaus
+          </Tag>
+          <Tag size="sm" tone="neutral" leadingIcon={<SiItchdotio />}>
+            adit-firdaus.itch.io
+          </Tag>
+        </Stack>
       </div>
 
       <main className="stage">{doc === 'cv' ? <CurriculumVitae /> : <Portfolio />}</main>
