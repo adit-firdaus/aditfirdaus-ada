@@ -326,7 +326,7 @@ const STATS = [
 function Portfolio() {
   return (
     <>
-      <MayProvider theme="dark">
+      <MayProvider theme={{ mode: 'dark' }}>
         <Sheet className="cover">
           <Text variant="caption-1" tone="tertiary" weight="semibold">
             APPLE DEVELOPER ACADEMY INDONESIA — APPLICATION
@@ -410,7 +410,7 @@ export function PrintDocuments() {
     /* One hidden wrapper: MayProvider renders its own full-height root, which
        would otherwise paint a light slab under the site. */
     <div className="print-docs">
-      <MayProvider theme="light">
+      <MayProvider theme={{ mode: 'light' }}>
         <div className="print-doc print-cv">
           <CurriculumVitae />
         </div>

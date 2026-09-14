@@ -7,10 +7,11 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "sync:may-ui": "node scripts/sync-may-ui.mjs"
   },
   "dependencies": {
-    "@adit_firdaus/may-ui": "^0.2.0",
+    "@adit_firdaus/may-ui": "file:vendor/may-ui",
     "motion": "^13.2.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",

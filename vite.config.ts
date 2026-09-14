@@ -4,14 +4,15 @@ import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 
 /**
- * May UI is both a dependency and something I am still writing, so `npm run
- * dev` builds straight from a local checkout when one sits next to this repo:
- * edit a component there and the page updates, with no build, publish or
- * version bump in between.
+ * May UI never comes from a registry here. Builds resolve it from
+ * vendor/may-ui, a path dependency holding a local build — committed, so CI
+ * resolves it too, and no release or publish stands between a library change
+ * and this site. `npm run sync:may-ui` refreshes it.
  *
- * Production builds keep using the npm package, so what I preview locally is
- * what CI deploys. Set MAY_UI_LOCAL=1 to build from the checkout as well, and
- * MAY_UI_SRC to point at a checkout somewhere other than ../../mayui.
+ * `npm run dev` goes one step further and reads the checkout's `src`, so while
+ * iterating on the library there is no vendor step at all: save a component
+ * there and this page hot-reloads. Set MAY_UI_LOCAL=1 to build that way too,
+ * and MAY_UI_SRC to point at a checkout somewhere other than ../../mayui.
  */
 const mayUi = process.env.MAY_UI_SRC ?? resolve(import.meta.dirname, '../../mayui')
 
@@ -20,7 +21,7 @@ export default defineConfig(({ command }) => {
     existsSync(resolve(mayUi, 'src/index.ts')) &&
     (command === 'serve' || process.env.MAY_UI_LOCAL === '1')
 
-  console.log(local ? `May UI: local source — ${mayUi}` : 'May UI: npm package')
+  console.log(local ? `May UI: checkout source — ${mayUi}` : 'May UI: vendor/may-ui')
 
   return {
     plugins: [react()],
@@ -28,13 +29,6 @@ export default defineConfig(({ command }) => {
     ...(local && {
       resolve: {
         alias: [
-          /* The source attaches each component's CSS itself through React 19
-             stylesheet precedence, so the published aggregate stylesheet is
-             deliberately swapped for an empty file. */
-          {
-            find: '@adit_firdaus/may-ui/styles.css',
-            replacement: resolve(import.meta.dirname, 'src/may-ui-local.css'),
-          },
           { find: /^@adit_firdaus\/may-ui$/, replacement: resolve(mayUi, 'src/index.ts') },
           {
             find: /^@adit_firdaus\/may-ui\/(desktop|mobile|examples)$/,

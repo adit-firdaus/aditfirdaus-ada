@@ -8,8 +8,10 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
-dist
-dist-ssr
+# Anchored: an unanchored `dist` would also swallow vendor/may-ui/dist,
+# which has to be committed for CI to resolve the path dependency.
+/dist
+/dist-ssr
 *.local
 
 # Editor directories and files

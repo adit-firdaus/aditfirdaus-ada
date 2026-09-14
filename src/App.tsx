@@ -533,7 +533,7 @@ export function App() {
   }
 
   return (
-    <MayProvider theme="system">
+    <MayProvider theme={{ mode: 'system' }}>
       <style>{`
         @page { size: ${PAPER[paper].css}; margin: 0; }
         :root { --sheet-w: ${PAPER[paper].width}; --sheet-h: ${PAPER[paper].height}; }

@@ -63,31 +63,37 @@ npm run build    # tsc -b && vite build
 npm run lint     # oxlint
 ```
 
-### Working on May UI at the same time
+### May UI comes from this Mac, not a registry
 
-May UI is both a dependency here and something I am still writing. `npm run dev`
-looks for a checkout at `../../mayui` and, when it finds one, builds straight
-from its `src` — edit a component there and this page updates, with no build,
-publish or version bump in between. The startup line says which source is in
-use:
+May UI never passes through npm or a GitHub release. The dependency is a path:
 
-```
-May UI: local source — /Users/af/Documents/Projects/mayui
-May UI: npm package
+```json
+"@adit_firdaus/may-ui": "file:vendor/may-ui"
 ```
 
-Production builds deliberately keep using the npm package, so what I preview
-locally is what CI deploys. Two environment variables change that:
+`vendor/may-ui` holds a build of the local checkout and is committed, which is
+the part that matters — a symlink to `~/Documents/Projects/mayui` resolves on
+this Mac and nowhere else, so CI could never build from it. `npm install`
+symlinks `node_modules/@adit_firdaus/may-ui` at that folder.
 
-| Variable | Effect |
-|---|---|
-| `MAY_UI_SRC=/path/to/mayui` | Use a checkout somewhere other than `../../mayui` |
-| `MAY_UI_LOCAL=1` | Build from the checkout too, not just serve from it |
+Refresh it after a library change that should reach the built site:
 
-The library source attaches each component's CSS itself through React 19
-stylesheet precedence, so while the alias is active the published aggregate
-`styles.css` is swapped for an empty file. Nothing in the app may depend on API
-that only the checkout has — that is why there is no `MayHost` here even though
-the published package still exports one.
+```bash
+npm run sync:may-ui          # rebuild the checkout, re-vendor, reinstall
+MAY_UI_SRC=/elsewhere npm run sync:may-ui
+```
 
-Pushing to `main` deploys to GitHub Pages via `.github/workflows/deploy.yml`.
+Day to day you do not need it. `npm run dev` aliases the package straight to
+the checkout's `src`, so editing a component there hot-reloads this page with
+no vendor step at all. The startup line says which source is in use:
+
+```
+May UI: checkout source — /Users/af/Documents/Projects/mayui
+May UI: vendor/may-ui
+```
+
+`MAY_UI_LOCAL=1` makes a production build read the checkout too.
+
+The library carries every component's CSS itself through React 19 stylesheet
+precedence, so there is no stylesheet to import and `MayProvider` takes a theme
+object — `theme={{ mode: 'system' }}`, not `theme="system"`.
