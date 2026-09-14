@@ -81,11 +81,6 @@ body {
   padding-inline: 20px;
 }
 
-.hero-copy {
-  flex: 1 1 320px;
-  min-width: 0;
-}
-
 .project {
   overflow: hidden;
 }

@@ -57,10 +57,12 @@ const TABS = [
 type TabKey = (typeof TABS)[number]['value']
 
 const STATS = [
-  { label: 'Public repositories', value: '45' },
-  { label: 'Games published', value: '5' },
-  { label: 'Competition awards', value: '3' },
-  { label: 'May UI components', value: '74' },
+  { label: 'Open Source Projects', value: '45' },
+  { label: 'Games Published', value: '5' },
+  /* Counted off the skills list and the awards list, so a relabelling never
+     leaves a figure describing the thing it used to describe. */
+  { label: 'Technologies Used', value: '24' },
+  { label: 'Awards', value: '3' },
 ]
 
 const PAPER = {
@@ -81,12 +83,10 @@ function Overview({ onGo }: { onGo: (tab: TabKey) => void }) {
   return (
     <Stack gap={6}>
       <Card variant="elevated" padding="lg">
-        <Stack direction="row" gap={6} align="center" wrap className="hero">
-          <Mark logo="github" name={profile.knownAs} size="xl" />
-          <Stack gap={2} className="hero-copy">
-            <Heading level={1} size="title-1" weight="bold">
-              <Ed p="profile.knownAs">{profile.knownAs}</Ed>
-            </Heading>
+        {/* The bar already carries the name and the portrait, so the card
+            opens straight into the introduction rather than repeating them. */}
+        <Stack gap={4} className="hero">
+          <Stack gap={2}>
             <Text variant="callout" tone="secondary">
               <Ed p="profile.location">{profile.location}</Ed>
             </Text>
@@ -98,7 +98,7 @@ function Overview({ onGo }: { onGo: (tab: TabKey) => void }) {
                 See the work
               </Button>
               <Button variant="tinted" leadingIcon={<IoMailOutline />} onClick={() => onGo('contact')}>
-                Get in touch
+                Call me
               </Button>
             </Stack>
           </Stack>
@@ -379,7 +379,7 @@ function Contact({ onPrint }: { onPrint: (doc: 'cv' | 'portfolio') => void }) {
       <Card variant="elevated" padding="lg">
         <Stack gap={4}>
           <Heading level={2} size="title-2" weight="bold">
-            Get in touch
+            Call me
           </Heading>
           <Text variant="body" tone="secondary">
             I read every message. The fastest way to reach me is email — say what you are building and I
