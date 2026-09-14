@@ -1,32 +1,55 @@
-# React + TypeScript + Vite
+# Portfolio & CV — Raditya Rakha Firdaus Muliyoto (Adit Firdaus)
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A live site that is also a print master. Every page on screen is one physical sheet of
+paper, so `⌘P → Save as PDF` produces the submission documents for the
+**Apple Developer Academy Indonesia** application with no separate export step.
 
-Currently, two official plugins are available:
+**Live:** https://adit-firdaus.github.io/aditfirdaus-ada/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## The two documents
 
-## React Compiler
+| Document | Deep link | Pages |
+|---|---|---|
+| Portfolio — 5 projects | `?doc=portfolio` (default) | cover + 5 |
+| Curriculum Vitae | `?doc=cv` | 2 |
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Paper size is switchable at `?paper=a4` (default) or `?paper=letter`. The choice drives
+both the on-screen sheet and the `@page` box, so preview and print always agree.
 
-## Expanding the Oxlint configuration
+## Printing
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+Press **Print / Save as PDF**, then in the browser dialog:
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+- **Margins: None** — the sheets carry their own 16 mm margin, and the portfolio cover bleeds to the edge.
+- **Background graphics: on** — otherwise the cover prints white.
+
+Save the files under the names the Academy asks for:
+
+```
+RadityaRakhaFirdausMuliyoto_CV_Academy.pdf
+RadityaRakhaFirdausMuliyoto_Portfolio_Academy.pdf
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## Editing the content
+
+All copy lives in [`src/data.ts`](src/data.ts) — profile, experience, education, awards,
+skills and the five projects. Nothing else needs touching to change what the documents say.
+Project images are plain files in [`public/media`](public/media).
+
+Layout is [`src/App.css`](src/App.css); the one rule that matters is that a `.sheet` is a
+page, sized from `--sheet-w` / `--sheet-h`, which `App.tsx` sets next to the matching
+`@page size`. In print a sheet gets a fixed height and `break-after: page`, so one sheet
+can never spill onto a second page.
+
+The interface chrome is built on [May UI](https://github.com/adit-firdaus/may-ui).
+
+## Develop
+
+```bash
+npm install
+npm run dev      # http://localhost:5173/aditfirdaus-ada/
+npm run build    # tsc -b && vite build
+npm run lint     # oxlint
+```
+
+Pushing to `main` deploys to GitHub Pages via `.github/workflows/deploy.yml`.

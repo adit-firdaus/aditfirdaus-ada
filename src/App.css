@@ -1,144 +1,554 @@
-.portfolio-shell {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background:
-    radial-gradient(circle at 85% 0%, color-mix(in srgb, var(--may-color-tint) 10%, transparent), transparent 36rem),
-    var(--may-color-bg);
-  transition: background 0.3s ease;
+/* ---------------------------------------------------------------------
+   Paper-first stylesheet.
+
+   One rule governs everything: a .sheet is a physical page. Its width and
+   height come from --sheet-w / --sheet-h, which App.tsx sets alongside the
+   matching @page size. Screen preview and printed PDF therefore agree.
+   --------------------------------------------------------------------- */
+
+:root {
+  --ink: #1d1d1f;
+  --ink-2: #46464a;
+  --ink-3: #6e6e73;
+  --rule: #d9d9de;
+  --rule-soft: #ececf0;
+  --accent: #0066cc;
+  --paper: #ffffff;
+  --stage: #f0f0f3;
+
+  --serif: ui-serif, 'New York', 'Iowan Old Style', Georgia, serif;
+  --sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Inter, system-ui, sans-serif;
+
+  --pad: 16mm;
 }
 
-.portfolio-main {
-  max-width: 1080px;
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--stage);
+}
+
+/* ------------------------------------------------------------ toolbar -- */
+
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(250, 250, 252, 0.82);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.toolbar-inner {
+  max-width: 1180px;
   margin: 0 auto;
-  width: 100%;
-  padding: 16px 20px 80px;
-  display: flex;
-  flex-direction: column;
-  gap: 28px;
-  flex: 1;
-}
-
-.hero-profile-row {
+  padding: 12px 24px 8px;
   display: flex;
   align-items: center;
-  gap: 20px;
+  justify-content: space-between;
+  gap: 24px;
   flex-wrap: wrap;
 }
 
-.hero-avatar-wrap {
-  flex-shrink: 0;
-}
-
-.hero-info {
+.toolbar-id {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  flex: 1;
-  min-width: 260px;
+  line-height: 1.25;
+  font-family: var(--sans);
+}
+.toolbar-id strong {
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.toolbar-id span {
+  font-size: 12px;
+  color: var(--ink-3);
 }
 
-.hero-badges {
+.toolbar-controls {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 4px;
-}
-
-.hero-actions {
-  display: flex;
-  flex-wrap: wrap;
+  align-items: center;
   gap: 10px;
-  margin-top: 8px;
-}
-
-.stat-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px;
-}
-
-.project-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 20px;
-}
-
-.project-card {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.project-tags {
-  display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 14px;
 }
 
-.skill-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
-  gap: 18px;
-}
-
-.interactive-preview-box {
-  border-radius: var(--may-radius-md);
-  padding: 16px;
-  background: var(--may-color-fill-quaternary);
+.toolbar-hint {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 24px 12px;
+  font-family: var(--sans);
+  font-size: 12px;
+  color: var(--ink-3);
   display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.nav-actions {
-  display: inline-flex;
   align-items: center;
   gap: 6px;
 }
+.toolbar-hint code {
+  font-size: 11.5px;
+  background: var(--rule-soft);
+  border-radius: 4px;
+  padding: 1px 5px;
+}
 
-.footer-section {
-  margin-top: auto;
-  padding: 32px 20px 48px;
-  text-align: center;
+/* -------------------------------------------------------------- stage -- */
+
+.stage {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 24px;
+  padding: 32px 16px 72px;
 }
 
-.footer-links {
+.sheet {
+  box-sizing: border-box;
+  width: var(--sheet-w);
+  min-height: var(--sheet-h);
+  padding: var(--pad);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 9.6pt;
+  line-height: 1.5;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 12px 32px rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+}
+
+.sheet a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.sheet-foot {
+  margin-top: auto;
+  padding-top: 8mm;
+  display: flex;
+  justify-content: space-between;
+  font-size: 7.4pt;
+  color: var(--ink-3);
+  letter-spacing: 0.02em;
+}
+
+/* ----------------------------------------------------------------- CV -- */
+
+.cv-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12mm;
+  padding-bottom: 5mm;
+  border-bottom: 2px solid var(--ink);
+}
+
+.cv-name {
+  margin: 0;
+  font-size: 22pt;
+  line-height: 1.06;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+  max-width: 95mm;
+}
+
+.cv-known {
+  margin: 2.5mm 0 0;
+  font-size: 9.4pt;
+  color: var(--ink-2);
+  max-width: 95mm;
+}
+
+.cv-contact {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-align: right;
+  font-size: 8.4pt;
+  color: var(--ink-2);
+  line-height: 1.65;
+}
+
+.cv-block {
+  margin-top: 6mm;
+}
+
+.cv-h2 {
+  margin: 0 0 3mm;
+  font-size: 8pt;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.cv-objective {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 10.6pt;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.entry {
+  padding: 2.6mm 0;
+  border-top: 1px solid var(--rule-soft);
+  break-inside: avoid;
+}
+.cv-block .entry:first-of-type {
+  border-top: none;
+  padding-top: 0;
+}
+
+.entry-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8mm;
+}
+
+.entry-title {
+  margin: 0;
+  font-size: 9.8pt;
+  font-weight: 650;
+  letter-spacing: -0.005em;
+}
+.entry-org {
+  font-weight: 500;
+  color: var(--ink-2);
+}
+.entry-place {
+  font-weight: 400;
+  color: var(--ink-3);
+}
+
+.entry-period {
+  flex: none;
+  font-size: 8.2pt;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.entry-points {
+  margin: 1mm 0 0;
+  padding-left: 4.2mm;
+  color: var(--ink-2);
+  font-size: 9pt;
+}
+.entry-points li {
+  margin: 0.6mm 0;
+}
+
+.entry-note {
+  margin: 0.8mm 0 0;
+  color: var(--ink-2);
+  font-size: 9pt;
+}
+
+.skills {
+  margin: 0;
+}
+.skill-row {
+  display: flex;
+  gap: 5mm;
+  padding: 1.9mm 0;
+  border-top: 1px solid var(--rule-soft);
+}
+.skill-row:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+.skill-row dt {
+  flex: 0 0 32mm;
+  font-weight: 650;
+  font-size: 9pt;
+}
+.skill-row dd {
+  margin: 0;
+  color: var(--ink-2);
+  font-size: 9pt;
+}
+
+/* ---------------------------------------------------- portfolio cover -- */
+
+.cover {
+  background: #000;
+  color: #f5f5f7;
+  justify-content: space-between;
+  padding: 20mm var(--pad);
+}
+.cover a {
+  color: #9ecbff;
+}
+
+.cover-kicker {
+  margin: 0;
+  font-size: 8pt;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #86868b;
+}
+
+.cover-title {
+  margin: 0;
+  font-size: 46pt;
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+  /* Solid, not gradient-clipped text: background-clip:text leaks its box into PDF. */
+  color: #f5f5f7;
+}
+
+.cover-name {
+  margin: 6mm 0 0;
+  font-size: 15pt;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #f5f5f7;
+}
+.cover-known {
+  margin: 1mm 0 0;
+  font-size: 10pt;
+  color: #86868b;
+}
+
+.cover-blurb {
+  margin: 8mm 0 0;
+  max-width: 135mm;
+  font-family: var(--serif);
+  font-size: 11pt;
+  line-height: 1.55;
+  color: #d2d2d7;
+}
+
+.cover-index {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid #2c2c2e;
+}
+.cover-index li {
+  display: grid;
+  grid-template-columns: 12mm 42mm 1fr;
+  align-items: baseline;
+  gap: 4mm;
+  padding: 2.6mm 0;
+  border-bottom: 1px solid #2c2c2e;
+}
+.cover-index span {
+  color: #86868b;
+  font-size: 8.4pt;
+  font-variant-numeric: tabular-nums;
+}
+.cover-index strong {
+  font-size: 10pt;
+  font-weight: 620;
+}
+.cover-index em {
+  font-style: normal;
+  font-size: 8.6pt;
+  color: #a1a1a6;
+}
+
+.cover-contact {
+  list-style: none;
+  margin: 7mm 0 0;
+  padding: 0;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 16px;
+  gap: 2mm 6mm;
+  font-size: 8.2pt;
+  color: #a1a1a6;
 }
 
-.footer-links a {
-  color: var(--may-color-tint);
-  text-decoration: none;
-  font-size: var(--may-text-footnote);
-  transition: opacity 0.2s ease;
+/* ------------------------------------------------- portfolio projects -- */
+
+.pj-head {
+  display: grid;
+  grid-template-columns: 14mm 1fr auto;
+  align-items: baseline;
+  gap: 4mm;
+  padding-bottom: 3.5mm;
+  border-bottom: 2px solid var(--ink);
+}
+.pj-n {
+  font-size: 16pt;
+  font-weight: 700;
+  color: var(--rule);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+.pj-name {
+  margin: 0;
+  font-size: 19pt;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+.pj-tagline {
+  margin: 1mm 0 0;
+  font-size: 9.6pt;
+  color: var(--ink-2);
+}
+.pj-year {
+  font-size: 8.4pt;
+  color: var(--ink-3);
+  white-space: nowrap;
 }
 
-.footer-links a:hover {
-  opacity: 0.7;
+.pj-figure {
+  margin: 5mm 0 0;
+}
+.pj-figure img {
+  display: block;
+  width: 100%;
+  height: 72mm;
+  object-fit: cover;
+  border-radius: 2.5mm;
+  background: var(--rule-soft);
+}
+.pj-figure figcaption {
+  margin-top: 1.8mm;
+  font-size: 7.6pt;
+  color: var(--ink-3);
 }
 
-@media (max-width: 640px) {
-  .portfolio-main {
-    padding: 12px 14px 60px;
-    gap: 20px;
+.pj-summary {
+  margin: 5mm 0 0;
+  font-family: var(--serif);
+  font-size: 11pt;
+  line-height: 1.5;
+}
+
+.pj-meta {
+  margin-top: 5mm;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6mm;
+  padding: 3.5mm 0;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+.pj-meta p {
+  margin: 1mm 0 0;
+  font-size: 9pt;
+  color: var(--ink);
+}
+
+.pj-label {
+  font-size: 7.4pt;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+.pj-block {
+  margin-top: 4.5mm;
+}
+.pj-block p {
+  margin: 1.2mm 0 0;
+  font-size: 9.3pt;
+  line-height: 1.52;
+  color: var(--ink-2);
+}
+
+.pj-foot-row {
+  margin-top: 5mm;
+  padding-top: 3.5mm;
+  border-top: 1px solid var(--rule-soft);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8mm;
+}
+
+.pj-stack {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.6mm;
+}
+.pj-stack li {
+  font-size: 7.8pt;
+  color: var(--ink-2);
+  background: var(--rule-soft);
+  border-radius: 999px;
+  padding: 0.9mm 2.4mm;
+}
+
+.pj-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-align: right;
+  font-size: 8.4pt;
+  line-height: 1.6;
+  flex: none;
+}
+
+/* -------------------------------------------------------------- print -- */
+
+@media print {
+  html,
+  body {
+    background: #fff;
   }
-  .hero-profile-row {
-    flex-direction: column;
-    align-items: flex-start;
+
+  .no-print {
+    display: none !important;
   }
-  .stat-grid {
-    grid-template-columns: 1fr;
+
+  .stage {
+    display: block;
+    padding: 0;
+    gap: 0;
   }
-  .project-grid {
-    grid-template-columns: 1fr;
+
+  .sheet {
+    /* Fixed height, not min-height: one sheet must occupy exactly one page. */
+    height: var(--sheet-h);
+    min-height: 0;
+    overflow: hidden;
+    box-shadow: none;
+    border-radius: 0;
+    break-after: page;
+    page-break-after: always;
+  }
+  .sheet:last-child {
+    break-after: auto;
+    page-break-after: auto;
+  }
+
+  /* Keep the dark cover and the tag pills dark on paper. */
+  .cover,
+  .pj-stack li,
+  .pj-figure img {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .sheet a {
+    color: var(--accent);
+  }
+}
+
+/* ------------------------------------------------------ small screens -- */
+
+/* The paper is the design, so scale the whole stage instead of reflowing it. */
+@media screen and (max-width: 940px) {
+  .stage {
+    zoom: 0.62;
+  }
+}
+@media screen and (max-width: 620px) {
+  .stage {
+    zoom: 0.42;
   }
 }
