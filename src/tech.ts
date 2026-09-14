@@ -4,12 +4,14 @@ import {
   SiBiome,
   SiCloudflare,
   SiDart,
+  SiDebian,
   SiDocker,
   SiDrizzle,
   SiElectron,
   SiExpress,
   SiFirebase,
   SiFlutter,
+  SiGithub,
   SiGithubactions,
   SiJavascript,
   SiMysql,
@@ -17,6 +19,7 @@ import {
   SiNestjs,
   SiNextdotjs,
   SiNginx,
+  SiPortainer,
   SiPostgresql,
   SiPrisma,
   SiPython,
@@ -27,8 +30,10 @@ import {
   SiSupabase,
   SiTailwindcss,
   SiTanstack,
+  SiTailscale,
   SiTauri,
   SiThreedotjs,
+  SiTraefikproxy,
   SiTrpc,
   SiTypescript,
   SiUnity,
@@ -101,7 +106,11 @@ export const TECH: Record<string, { icon?: IconType; img?: string; color?: strin
   Cloudflare: { icon: SiCloudflare, color: '#F38020' },
   Vercel: { icon: SiVercel },
   Nginx: { icon: SiNginx, color: '#009639' },
+  Traefik: { icon: SiTraefikproxy, color: '#24A1C1' },
   WireGuard: { icon: SiWireguard, color: '#88171A' },
+  Tailscale: { icon: SiTailscale },
+  Portainer: { icon: SiPortainer, color: '#13BEF9' },
+  Debian: { icon: SiDebian, color: '#A81D33' },
 
   /* Databases */
   PostgreSQL: { icon: SiPostgresql, color: '#4169E1' },
@@ -113,9 +122,14 @@ export const TECH: Record<string, { icon?: IconType; img?: string; color?: strin
   Neon: { icon: SiNeon, color: '#00E599' },
   Supabase: { icon: SiSupabase, color: '#3ECF8E' },
   Firebase: { icon: SiFirebase, color: '#FFCA28' },
+  /* pgvector has no mark of its own; it is an extension, so it borrows the
+     database it extends rather than a logo that does not exist. */
+  pgvector: { icon: SiPostgresql, color: '#4169E1' },
 
   /* CI and quality */
   'GitHub Actions': { icon: SiGithubactions, color: '#2088FF' },
   Vitest: { icon: SiVitest, color: '#6DA53F' },
+  Playwright: { icon: IoShieldOutline, color: '#2EAD33' },
+  GHCR: { icon: SiGithub },
   Biome: { icon: SiBiome, color: '#60A5FA' },
 }

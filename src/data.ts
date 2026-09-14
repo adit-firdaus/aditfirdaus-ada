@@ -65,8 +65,10 @@ export const experience: Job[] = [
   },
   {
     id: 'pt-mastah-digital-indonesia',
+    logoBg: 'white',
     role: 'Software Developer',
     org: 'PT Mastah Digital Indonesia',
+    logo: 'mastah',
     period: 'Oct — Dec 2025',
     points: ['Delivered client-facing product work on a short engagement.'],
   },
@@ -237,11 +239,14 @@ export const extracurricular: Extracurricular[] = [
 ]
 
 /**
- * Built from a scan of every repository the account can reach — 251 of them,
- * across his own work and the Autobricks, Hexcore, Hi Klik, Mastah and HiDigi
- * organisations — counting languages by bytes and reading each manifest for
- * its real dependencies. What is listed is what actually appears in the code,
- * not what sounds good.
+ * Built from two scans, not from memory.
+ *
+ * Every repository the account can reach — 251 of them, his own and the
+ * Autobricks, Hexcore, Hi Klik, Mastah and HiDigi organisations — was read for
+ * its languages by byte count and its manifests for their real dependencies.
+ * Then the eleven servers he administers were checked for what is actually
+ * running on them. Infra and Database below come from that second scan, so
+ * they are things in production rather than things on a CV.
  */
 export const skills = [
   {
@@ -278,7 +283,17 @@ export const skills = [
   {
     id: 'infra',
     group: 'Infra',
-    items: ['Docker', 'Cloudflare', 'Vercel', 'Nginx', 'WireGuard'],
+    items: [
+      'Docker',
+      'Traefik',
+      'Nginx',
+      'WireGuard',
+      'Tailscale',
+      'Portainer',
+      'Cloudflare',
+      'Vercel',
+      'Debian',
+    ],
   },
   {
     id: 'database',
@@ -290,12 +305,17 @@ export const skills = [
       'Drizzle ORM',
       'Prisma',
       'Redis',
+      'pgvector',
       'Neon',
       'Supabase',
       'Firebase',
     ],
   },
-  { id: 'ci-cd', group: 'CI/CD', items: ['GitHub Actions', 'Docker', 'Vitest', 'Biome'] },
+  {
+    id: 'ci-cd',
+    group: 'CI/CD',
+    items: ['GitHub Actions', 'Docker', 'GHCR', 'Inngest', 'Vitest', 'Playwright', 'Biome'],
+  },
 ]
 
 export type Project = {
