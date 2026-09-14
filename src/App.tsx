@@ -16,7 +16,6 @@ import {
   ListRow,
   MayProvider,
   NavigationBar,
-  NoticeBar,
   Separator,
   Stack,
   Statistic,
@@ -173,9 +172,14 @@ function Overview({ onGo }: { onGo: (tab: TabKey) => void }) {
 function Projects() {
   return (
     <Stack gap={5}>
-      <NoticeBar tone="tint" icon={<IoSparklesOutline />}>
-        Five selected projects — two competition winners, one design system, and the games that started it.
-      </NoticeBar>
+      <Stack gap={1}>
+        <Heading level={2} size="title-3" weight="semibold">
+          Selected projects
+        </Heading>
+        <Text variant="footnote" tone="secondary">
+          Two competition winners, one design system, and the games that started it.
+        </Text>
+      </Stack>
 
       {projects.map((p) => (
         <Card key={p.n} variant="elevated" padding="none" className="project">
@@ -365,10 +369,10 @@ function Publications() {
 
   return (
     <Stack gap={6}>
-      <NoticeBar tone="neutral" icon={<IoLibraryOutline />}>
-        Things I have put into the world — published packages, released games and public presentations,
-        each with a link you can open.
-      </NoticeBar>
+      <Text variant="footnote" tone="secondary">
+        Things I have put into the world — published packages, released games and public presentations.
+        Every row opens the real thing.
+      </Text>
 
       {groups.map((kind) => {
         const items = publications.filter((p) => p.kind === kind)
