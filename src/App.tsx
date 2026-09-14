@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import {
   Badge,
   Button,
@@ -220,13 +221,17 @@ function Projects() {
         ))}
       </Stack>
 
-      <Modal
-        open={open !== null}
-        onClose={() => setOpenId(null)}
-        size="lg"
-        title={open?.name}
-        description={open?.tagline}
-      >
+      {/* Portalled to <body>: the tab panel animates its own opacity, which
+          gives it a stacking context, and a dialog rendered inside it is
+          trapped under the sticky navigation bar however high its z-index. */}
+      {createPortal(
+        <Modal
+          open={open !== null}
+          onClose={() => setOpenId(null)}
+          size="lg"
+          title={open?.name}
+          description={open?.tagline}
+        >
         {open && (
           <Stack gap={5}>
             <img className="project-shot project-shot--wide" src={asset(open.image)} alt={open.imageAlt} />
@@ -264,7 +269,9 @@ function Projects() {
             </Stack>
           </Stack>
         )}
-      </Modal>
+        </Modal>,
+        document.body,
+      )}
     </>
   )
 }
