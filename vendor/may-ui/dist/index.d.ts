@@ -1647,6 +1647,7 @@ export declare interface MayTokens {
     readonly controlHSm: MayTokenValue;
     readonly controlHXs: MayTokenValue;
     readonly cyan: MayTokenValue;
+    readonly durationColor: MayTokenValue;
     readonly durationFast: MayTokenValue;
     readonly durationFollow: MayTokenValue;
     readonly durationInstant: MayTokenValue;
