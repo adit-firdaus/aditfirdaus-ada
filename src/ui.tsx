@@ -1,4 +1,5 @@
 import { Avatar, Tag } from '@adit_firdaus/may-ui'
+import { Ed } from './content'
 import type { IconType } from 'react-icons'
 import {
   SiAndroid,
@@ -39,17 +40,22 @@ const TECH: Record<string, IconType> = {
 
 export function TechTag({
   label,
+  /** Field path, when this chip's text should be editable. */
+  p,
   tone = 'neutral',
   size = 'sm',
 }: {
   label: string
+  p?: string
   tone?: 'neutral' | 'tint'
   size?: 'sm' | 'md'
 }) {
+  /* The glyph still keys off the ORIGINAL label, so renaming a chip in the
+     browser never silently drops its icon. */
   const Icon = TECH[label]
   return (
     <Tag size={size} tone={tone} leadingIcon={Icon ? <Icon /> : undefined}>
-      {label}
+      {p ? <Ed p={p}>{label}</Ed> : label}
     </Tag>
   )
 }

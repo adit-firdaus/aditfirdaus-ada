@@ -25,16 +25,8 @@ import {
   MayProvider,
 } from '@adit_firdaus/may-ui'
 import { IoRocketOutline } from 'react-icons/io5'
-import {
-  awards,
-  education,
-  experience,
-  extracurricular,
-  profile,
-  projects,
-  skills,
-  type Project,
-} from './data'
+import { type Project } from './data'
+import { useData } from './content-store'
 import { Mark, TechTag } from './ui'
 import { asset } from './paths'
 
@@ -43,6 +35,7 @@ function Sheet({ children, className = '' }: { children: ReactNode; className?: 
 }
 
 function SheetFoot({ label }: { label: string }) {
+  const { profile } = useData()
   return (
     <footer className="sheet-foot">
       <Text variant="caption-2" tone="tertiary">
@@ -58,6 +51,7 @@ function SheetFoot({ label }: { label: string }) {
 /* ------------------------------------------------------------------ CV -- */
 
 function CurriculumVitae() {
+  const { profile, experience, education, awards, extracurricular, skills } = useData()
   return (
     <>
       <Sheet>
@@ -324,6 +318,7 @@ const STATS = [
 ]
 
 function Portfolio() {
+  const { profile, projects } = useData()
   return (
     <>
       <MayProvider theme={{ mode: 'dark' }}>

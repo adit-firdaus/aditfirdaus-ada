@@ -4,9 +4,13 @@ import { createRoot } from 'react-dom/client'
    stylesheet precedence, so the library has none to import. */
 import './index.css'
 import { App } from './App.tsx'
+import { ContentProvider } from './content.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    {/* Above App, because App itself reads the patched content. */}
+    <ContentProvider>
+      <App />
+    </ContentProvider>
   </StrictMode>,
 )

@@ -19,6 +19,39 @@ body {
   background: var(--may-color-bg);
 }
 
+/* ------------------------------------------------------------ editing -- */
+
+/* Uppercased here rather than in JS, so edit mode shows the stored text. */
+.caps {
+  text-transform: uppercase;
+}
+
+/*
+ * An editable run only looks like one while edit mode is on: outside it the
+ * span carries no class at all. The affordance is a tinted field behind the
+ * words rather than a border, so switching modes never reflows a line.
+ */
+.ed {
+  border-radius: 4px;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  padding-inline: 3px;
+  margin-inline: -3px;
+  background: color-mix(in srgb, var(--may-color-primary) 10%, transparent);
+  outline: none;
+  cursor: text;
+}
+
+.ed:focus {
+  background: color-mix(in srgb, var(--may-color-primary) 18%, transparent);
+  box-shadow: 0 0 0 2px var(--may-color-primary);
+}
+
+/* A field that has been rewritten, so it is obvious what is yours. */
+.ed[data-edited='true'] {
+  background: color-mix(in srgb, var(--may-color-success) 16%, transparent);
+}
+
 /* --------------------------------------------------------------- site -- */
 
 .site {

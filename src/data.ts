@@ -6,8 +6,8 @@
 export const profile = {
   legalName: 'Raditya Rakha Firdaus Muliyoto',
   knownAs: 'Adit Firdaus',
-  title: 'Software Engineer · Game & XR Developer · Design Systems',
-  location: 'Jepara, Central Java, Indonesia',
+  title: 'SWE @ AutoBricksAI and HexCore Labs Pte. Ltd.',
+  location: 'Central Jakarta, ID',
   email: 'aditfirdaus.dml@gmail.com',
   phone: '[PHONE]',
   links: [
@@ -16,10 +16,12 @@ export const profile = {
     { label: 'adit-firdaus.itch.io', href: 'https://adit-firdaus.itch.io/' },
   ],
   objective:
-    'I build things people can feel — rhythm games that teach Indonesian folk songs, a React design system that reproduces Apple’s motion physics, and AI tooling for cybersecurity education. I want to spend the next nine months at the Apple Developer Academy turning that range into depth on Apple platforms, and learning to design with a team instead of alone.',
+    'Hi, nice to meet you :). You can call me Adit. I have passion in technology since 4th Elementary, I keep build and recreate things on my own to understand better. I create my own tools and projects that help others, for the dev community. I do freelance and full time work right now, if you’re interested to know me better don’t hesitate to call me. I’m available at any time',
 }
 
 export type Job = {
+  /** Stable key for saved edits. Never reuse or renumber it. */
+  id: string
   role: string
   org: string
   /** File in public/logo, without extension. Omit when no official mark exists. */
@@ -31,6 +33,7 @@ export type Job = {
 
 export const experience: Job[] = [
   {
+    id: 'autobricks-ai',
     role: 'Software Engineer',
     org: 'Autobricks AI',
     logo: 'autobricks',
@@ -42,6 +45,7 @@ export const experience: Job[] = [
     ],
   },
   {
+    id: 'hexcore-labs-pte-ltd',
     role: 'Software Developer',
     org: 'Hexcore Labs Pte. Ltd.',
     logo: 'hexcore',
@@ -53,12 +57,14 @@ export const experience: Job[] = [
     ],
   },
   {
+    id: 'pt-mastah-digital-indonesia',
     role: 'Software Developer',
     org: 'PT Mastah Digital Indonesia',
     period: 'Oct — Dec 2025',
     points: ['Delivered client-facing product work on a short engagement.'],
   },
   {
+    id: 'pt-altern-digital-technologies',
     role: 'Founder & Chief Executive Officer',
     org: 'PT Altern Digital Technologies',
     logo: 'altern',
@@ -69,12 +75,14 @@ export const experience: Job[] = [
     ],
   },
   {
+    id: 'hi-klik',
     role: 'Full Stack Developer',
     org: 'Hi Klik',
     period: 'Dec 2022 — Present',
     points: ['Full-stack web development, from database and API through to interface.'],
   },
   {
+    id: 'global-multimedia-school',
     role: 'Flutter Developer',
     org: 'Global Multimedia School',
     logo: 'gmcs',
@@ -82,6 +90,7 @@ export const experience: Job[] = [
     points: ['Built cross-platform mobile applications in Flutter for the school’s own products.'],
   },
   {
+    id: 'pt-halo-industri-digital',
     role: 'XR Developer',
     org: 'PT Halo Industri Digital (HiDigi)',
     logo: 'hidigi',
@@ -91,6 +100,7 @@ export const experience: Job[] = [
     ],
   },
   {
+    id: 'floramis',
     role: 'Multimedia Intern',
     org: 'Floramis',
     logo: 'floramis',
@@ -102,6 +112,7 @@ export const experience: Job[] = [
 
 export const education = [
   {
+    id: 'nexford-university',
     school: 'Nexford University',
     logo: 'nexford',
     place: 'United States · Online',
@@ -109,6 +120,7 @@ export const education = [
     period: 'Present',
   },
   {
+    id: 'global-multimedia-creative-school',
     school: 'Global Multimedia Creative School',
     logo: 'gmcs',
     place: 'Indonesia',
@@ -116,6 +128,7 @@ export const education = [
     period: '2022 — 2025',
   },
   {
+    id: 'smk-prestasi-prima',
     school: 'SMK Prestasi Prima',
     logo: 'prestasiprima',
     place: 'Jakarta, Indonesia',
@@ -123,6 +136,7 @@ export const education = [
     period: '2021',
   },
   {
+    id: 'mtsn-2-jepara',
     school: 'MTsN 2 Jepara',
     logo: 'mtsn2jepara',
     place: 'Jepara, Indonesia',
@@ -133,24 +147,28 @@ export const education = [
 
 export const awards = [
   {
+    id: '3rd-place-kksi',
     title: '3rd Place — KKSI 2021 National Game Development',
     logo: 'prestasiprima',
     detail: 'For LOSARY, a two-person team I led as project leader.',
     year: 'Dec 2021',
   },
   {
+    id: '2nd-winner-gacci',
     title: '2nd Winner — GACCI 2022',
     logo: 'binus',
     detail: 'Bina Nusantara University (BINUS) creative competition.',
     year: 'Nov 2022',
   },
   {
+    id: '3rd-place-lomba-cipta',
     title: '3rd Place — Lomba Cipta Game Edukasi Pelatihan Vokasi',
     logo: 'kemnaker',
     detail: 'Ministry of Manpower, Republic of Indonesia (Kemnaker), for SOURCE.',
     year: 'Jul 2022',
   },
   {
+    id: 'registrant-binus-high-school',
     title: 'Registrant — BINUS High School Programming Competition',
     logo: 'binus',
     detail: 'Representing Global Multimedia Creative School.',
@@ -160,6 +178,7 @@ export const awards = [
 
 export const extracurricular = [
   {
+    id: 'marketing-communications',
     role: 'Marketing Communications',
     org: 'Lions Clubs International, District 307-B1',
     logo: 'lions',
@@ -167,6 +186,7 @@ export const extracurricular = [
     detail: 'Communications for a volunteer service organisation across the district.',
   },
   {
+    id: 'participant-madrasah-vlog-competition',
     role: 'Participant, Madrasah Vlog Competition 2020',
     org: 'MTsN 2 Jepara',
     logo: 'mtsn2jepara',
@@ -174,6 +194,7 @@ export const extracurricular = [
     detail: 'Entrant no. 444 — my first public piece of creative work.',
   },
   {
+    id: 'open-source-maintainer',
     role: 'Open-source maintainer',
     org: 'github.com/adit-firdaus',
     logo: 'github',
@@ -183,14 +204,16 @@ export const extracurricular = [
 ]
 
 export const skills = [
-  { group: 'Languages', items: ['TypeScript', 'JavaScript', 'C#', 'Dart', 'Python'] },
-  { group: 'Interface', items: ['React 19', 'Flutter', 'Design systems', 'Apple HIG', 'Motion & spring physics'] },
-  { group: 'Games & XR', items: ['Unity', 'Game design', '3D / real-time rendering', 'Extended reality'] },
-  { group: 'Platform', items: ['Node.js', 'NestJS', 'Strapi', 'PostgreSQL', 'Docker', 'GitHub Actions'] },
-  { group: 'Ways of working', items: ['Product engineering', 'Technical leadership', 'Open source', 'Agentic AI tooling'] },
+  { id: 'languages', group: 'Languages', items: ['TypeScript', 'JavaScript', 'C#', 'Dart', 'Python'] },
+  { id: 'interface', group: 'Interface', items: ['React 19', 'Flutter', 'Design systems', 'Apple HIG', 'Motion & spring physics'] },
+  { id: 'games-xr', group: 'Games & XR', items: ['Unity', 'Game design', '3D / real-time rendering', 'Extended reality'] },
+  { id: 'platform', group: 'Platform', items: ['Node.js', 'NestJS', 'Strapi', 'PostgreSQL', 'Docker', 'GitHub Actions'] },
+  { id: 'ways-of-working', group: 'Ways of working', items: ['Product engineering', 'Technical leadership', 'Open source', 'Agentic AI tooling'] },
 ]
 
 export type Project = {
+  /** Stable key for saved edits. Never reuse or renumber it. */
+  id: string
   n: string
   name: string
   /** Official mark in public/logo; falls back to an IconTile when absent. */
@@ -212,6 +235,7 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    id: 'may-ui',
     n: '01',
     name: 'May UI',
     logo: 'mayui',
@@ -234,6 +258,7 @@ export const projects: Project[] = [
     ],
   },
   {
+    id: 'source',
     n: '02',
     name: 'SOURCE',
     logo: 'source',
@@ -254,6 +279,7 @@ export const projects: Project[] = [
     links: [{ label: 'Play — adit-firdaus.itch.io/source', href: 'https://adit-firdaus.itch.io/source' }],
   },
   {
+    id: 'delis',
     n: '03',
     name: 'DELIS',
     logo: 'delis',
@@ -276,6 +302,7 @@ export const projects: Project[] = [
     ],
   },
   {
+    id: 'losary',
     n: '04',
     name: 'LOSARY',
     logo: 'losary',
@@ -296,6 +323,7 @@ export const projects: Project[] = [
     links: [{ label: 'Play — adit-firdaus.itch.io/losary', href: 'https://adit-firdaus.itch.io/losary' }],
   },
   {
+    id: 'pops',
     n: '05',
     name: 'POPs',
     logo: 'pops',
@@ -317,6 +345,8 @@ export const projects: Project[] = [
 ]
 
 export type Publication = {
+  /** Stable key for saved edits. Never reuse or renumber it. */
+  id: string
   kind: 'Package' | 'Game' | 'Talk' | 'Code'
   title: string
   venue: string
@@ -332,6 +362,7 @@ export type Publication = {
  */
 export const publications: Publication[] = [
   {
+    id: 'adit-firdaus',
     kind: 'Package',
     title: '@adit_firdaus/may-ui — v0.2.0',
     venue: 'npm · MIT licence',
@@ -342,6 +373,7 @@ export const publications: Publication[] = [
     href: 'https://www.npmjs.com/package/@adit_firdaus/may-ui',
   },
   {
+    id: 'delis-digital-education-learning',
     kind: 'Game',
     title: 'DELIS — Digital Education, Learning and Information System',
     venue: 'itch.io · Android · MIT code, CC BY 4.0 assets',
@@ -352,6 +384,7 @@ export const publications: Publication[] = [
     href: 'https://adit-firdaus.itch.io/delis',
   },
   {
+    id: 'losary-local-sea-delivery',
     kind: 'Game',
     title: 'LOSARY — Local Sea Delivery',
     venue: 'itch.io · Windows and Android',
@@ -361,6 +394,7 @@ export const publications: Publication[] = [
     href: 'https://adit-firdaus.itch.io/losary',
   },
   {
+    id: 'source',
     kind: 'Game',
     title: 'SOURCE',
     venue: 'itch.io · Windows',
@@ -371,6 +405,7 @@ export const publications: Publication[] = [
     href: 'https://adit-firdaus.itch.io/source',
   },
   {
+    id: 'pops',
     kind: 'Game',
     title: 'POPs',
     venue: 'itch.io · Android',
@@ -380,6 +415,7 @@ export const publications: Publication[] = [
     href: 'https://adit-firdaus.itch.io/pops',
   },
   {
+    id: 'nexspace',
     kind: 'Game',
     title: 'NexSpace',
     venue: 'itch.io · HTML5 · Educational',
@@ -388,6 +424,7 @@ export const publications: Publication[] = [
     href: 'https://adit-firdaus.itch.io/nexspace',
   },
   {
+    id: 'smk-prestasi-prima-kksi',
     kind: 'Talk',
     title: 'SMK Prestasi Prima — KKSI 2021 Game Development: D.E.L.I.S',
     venue: 'National vocational programme · YouTube',
@@ -397,6 +434,7 @@ export const publications: Publication[] = [
     href: 'https://www.youtube.com/watch?v=8n4ZecDWeG8',
   },
   {
+    id: '45-public-repositories',
     kind: 'Code',
     title: '45 public repositories',
     venue: 'GitHub · github.com/adit-firdaus',

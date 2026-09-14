@@ -28,38 +28,30 @@ import {
 import {
   IoArrowForward,
   IoBriefcaseOutline,
+  IoCreateOutline,
   IoDocumentTextOutline,
-  IoLibraryOutline,
   IoLogoGithub,
   IoLogoLinkedin,
   IoMailOutline,
   IoPersonOutline,
   IoPrintOutline,
+  IoRefreshOutline,
   IoSchoolOutline,
   IoSparklesOutline,
 } from 'react-icons/io5'
 import { SiItchdotio } from 'react-icons/si'
-import {
-  awards,
-  education,
-  experience,
-  extracurricular,
-  profile,
-  projects,
-  publications,
-  skills,
-} from './data'
+import { Ed } from './content'
+import { useContent, useData } from './content-store'
 import { PrintDocuments } from './Documents'
 import { Mark, TechTag } from './ui'
 import { asset } from './paths'
 import './App.css'
 
 const TABS = [
-  { value: 'overview', label: 'Overview', icon: <IoPersonOutline /> },
+  { value: 'overview', label: 'Me', icon: <IoPersonOutline /> },
   { value: 'projects', label: 'Projects', icon: <IoSparklesOutline /> },
   { value: 'experience', label: 'Experience', icon: <IoBriefcaseOutline /> },
-  { value: 'publications', label: 'Publications', icon: <IoLibraryOutline /> },
-  { value: 'contact', label: 'Get in Touch', icon: <IoMailOutline /> },
+  { value: 'contact', label: 'Call me', icon: <IoMailOutline /> },
 ] as const
 
 type TabKey = (typeof TABS)[number]['value']
@@ -83,6 +75,7 @@ const isTab = (v: string): v is TabKey => TABS.some((t) => t.value === v)
 /* -------------------------------------------------------------- panels -- */
 
 function Overview({ onGo }: { onGo: (tab: TabKey) => void }) {
+  const { profile, experience, skills } = useData()
   const current = experience.filter((j) => j.period.includes('Present'))
 
   return (
@@ -91,18 +84,15 @@ function Overview({ onGo }: { onGo: (tab: TabKey) => void }) {
         <Stack direction="row" gap={6} align="center" wrap className="hero">
           <Mark logo="github" name={profile.knownAs} size="xl" />
           <Stack gap={2} className="hero-copy">
-            <Stack direction="row" gap={2} align="center" wrap>
-              <Heading level={1} size="title-1" weight="bold">
-                {profile.knownAs}
-              </Heading>
-              <Badge tone="tint" variant="tinted">
-                Open to the Academy
-              </Badge>
-            </Stack>
+            <Heading level={1} size="title-1" weight="bold">
+              <Ed p="profile.knownAs">{profile.knownAs}</Ed>
+            </Heading>
             <Text variant="callout" tone="secondary">
-              {profile.legalName} · {profile.location}
+              <Ed p="profile.location">{profile.location}</Ed>
             </Text>
-            <Text variant="body">{profile.objective}</Text>
+            <Text variant="body">
+              <Ed p="profile.objective">{profile.objective}</Ed>
+            </Text>
             <Stack direction="row" gap={2} wrap>
               <Button variant="filled" leadingIcon={<IoSparklesOutline />} onClick={() => onGo('projects')}>
                 See the work
@@ -130,13 +120,13 @@ function Overview({ onGo }: { onGo: (tab: TabKey) => void }) {
         <List variant="inset">
           {current.map((job) => (
             <ListRow
-              key={job.org}
+              key={job.id}
               leading={<Mark logo={job.logo} name={job.org} size="md" />}
-              title={job.role}
-              subtitle={job.org}
+              title={<Ed p={`experience.${job.id}.role`}>{job.role}</Ed>}
+              subtitle={<Ed p={`experience.${job.id}.org`}>{job.org}</Ed>}
               detail={
                 <Text variant="footnote" tone="tertiary">
-                  {job.period}
+                  <Ed p={`experience.${job.id}.period`}>{job.period}</Ed>
                 </Text>
               }
             />
@@ -151,13 +141,15 @@ function Overview({ onGo }: { onGo: (tab: TabKey) => void }) {
         <Card variant="grouped" padding="md">
           <Stack gap={4}>
             {skills.map((group) => (
-              <Stack key={group.group} gap={2}>
-                <Text variant="footnote" tone="tertiary" weight="semibold">
-                  {group.group.toUpperCase()}
+              <Stack key={group.id} gap={2}>
+                {/* Uppercased in CSS rather than in JS, so edit mode shows the
+                    text as it is actually stored. */}
+                <Text variant="footnote" tone="tertiary" weight="semibold" className="caps">
+                  <Ed p={`skills.${group.id}.group`}>{group.group}</Ed>
                 </Text>
                 <Stack direction="row" gap={2} wrap>
-                  {group.items.map((i) => (
-                    <TechTag key={i} label={i} size="md" />
+                  {group.items.map((i, index) => (
+                    <TechTag key={i} label={i} p={`skills.${group.id}.items.${index}`} size="md" />
                   ))}
                 </Stack>
               </Stack>
@@ -170,6 +162,7 @@ function Overview({ onGo }: { onGo: (tab: TabKey) => void }) {
 }
 
 function Projects() {
+  const { projects } = useData()
   return (
     <Stack gap={5}>
       <Stack gap={1}>
@@ -182,18 +175,18 @@ function Projects() {
       </Stack>
 
       {projects.map((p) => (
-        <Card key={p.n} variant="elevated" padding="none" className="project">
+        <Card key={p.id} variant="elevated" padding="none" className="project">
           <img className="project-shot" src={asset(p.image)} alt={p.imageAlt} />
           <CardHeader
             accessory={
               <Stack direction="row" gap={2} align="center">
                 {p.award && (
                   <Badge tone="success" variant="tinted">
-                    {p.award}
+                    <Ed p={`projects.${p.id}.award`}>{p.award}</Ed>
                   </Badge>
                 )}
                 <Badge tone="neutral" variant="tinted">
-                  {p.year}
+                  <Ed p={`projects.${p.id}.year`}>{p.year}</Ed>
                 </Badge>
               </Stack>
             }
@@ -201,26 +194,35 @@ function Projects() {
             <Stack direction="row" gap={3} align="center">
               <Mark logo={p.logo} name={p.name} size="lg" />
               <Stack gap={0}>
-                <CardTitle>{p.name}</CardTitle>
-                <CardDescription>{p.tagline}</CardDescription>
+                <CardTitle>
+                  <Ed p={`projects.${p.id}.name`}>{p.name}</Ed>
+                </CardTitle>
+                <CardDescription>
+                  <Ed p={`projects.${p.id}.tagline`}>{p.tagline}</Ed>
+                </CardDescription>
               </Stack>
             </Stack>
           </CardHeader>
 
           <CardBody>
             <Stack gap={4}>
-              <Text variant="body">{p.summary}</Text>
+              <Text variant="body">
+                <Ed p={`projects.${p.id}.summary`}>{p.summary}</Ed>
+              </Text>
               <Descriptions variant="inset" layout="stacked" columns={2}>
-                <DescriptionItem label="Type" value={p.kind} />
-                <DescriptionItem label="My role" value={p.role} />
+                <DescriptionItem label="Type" value={<Ed p={`projects.${p.id}.kind`}>{p.kind}</Ed>} />
+                <DescriptionItem label="My role" value={<Ed p={`projects.${p.id}.role`}>{p.role}</Ed>} />
               </Descriptions>
               <Descriptions variant="inset" layout="stacked" columns={1}>
-                <DescriptionItem label="Impact" value={p.impact} />
-                <DescriptionItem label="What I learned" value={p.learned} />
+                <DescriptionItem label="Impact" value={<Ed p={`projects.${p.id}.impact`}>{p.impact}</Ed>} />
+                <DescriptionItem
+                  label="What I learned"
+                  value={<Ed p={`projects.${p.id}.learned`}>{p.learned}</Ed>}
+                />
               </Descriptions>
               <Stack direction="row" gap={2} wrap>
-                {p.stack.map((t) => (
-                  <TechTag key={t} label={t} />
+                {p.stack.map((t, index) => (
+                  <TechTag key={t} label={t} p={`projects.${p.id}.stack.${index}`} />
                 ))}
               </Stack>
             </Stack>
@@ -228,7 +230,7 @@ function Projects() {
 
           <CardFooter>
             <Stack direction="row" gap={2} wrap>
-              {p.links.map((l) => (
+              {p.links.map((l, index) => (
                 <Button
                   key={l.href}
                   size="sm"
@@ -236,7 +238,7 @@ function Projects() {
                   trailingIcon={<IoArrowForward />}
                   onClick={() => window.open(l.href, '_blank', 'noreferrer')}
                 >
-                  {l.label}
+                  <Ed p={`projects.${p.id}.links.${index}.label`}>{l.label}</Ed>
                 </Button>
               ))}
             </Stack>
@@ -248,6 +250,7 @@ function Projects() {
 }
 
 function Experience() {
+  const { experience, education, awards, extracurricular } = useData()
   return (
     <Stack gap={6}>
       <Stack gap={3}>
@@ -257,25 +260,30 @@ function Experience() {
         <List variant="inset">
           {experience.map((job) => (
             <ListRow
-              key={`${job.org}-${job.period}`}
+              key={job.id}
               leading={<Mark logo={job.logo} name={job.org} size="md" />}
-              title={job.role}
+              title={<Ed p={`experience.${job.id}.role`}>{job.role}</Ed>}
               subtitle={
                 <Stack gap={1}>
                   <Text variant="footnote" tone="secondary">
-                    {job.org}
-                    {job.place ? ` · ${job.place}` : ''}
+                    <Ed p={`experience.${job.id}.org`}>{job.org}</Ed>
+                    {job.place && (
+                      <>
+                        {' · '}
+                        <Ed p={`experience.${job.id}.place`}>{job.place}</Ed>
+                      </>
+                    )}
                   </Text>
-                  {job.points.map((p) => (
-                    <Text key={p} variant="footnote" tone="tertiary">
-                      {p}
+                  {job.points.map((point, index) => (
+                    <Text key={point} variant="footnote" tone="tertiary">
+                      <Ed p={`experience.${job.id}.points.${index}`}>{point}</Ed>
                     </Text>
                   ))}
                 </Stack>
               }
               detail={
                 <Text variant="footnote" tone="tertiary">
-                  {job.period}
+                  <Ed p={`experience.${job.id}.period`}>{job.period}</Ed>
                 </Text>
               }
             />
@@ -290,13 +298,19 @@ function Experience() {
         <List variant="inset">
           {education.map((e) => (
             <ListRow
-              key={e.school}
+              key={e.id}
               leading={<Mark logo={e.logo} name={e.school} size="md" />}
-              title={e.school}
-              subtitle={`${e.detail} · ${e.place}`}
+              title={<Ed p={`education.${e.id}.school`}>{e.school}</Ed>}
+              subtitle={
+                <>
+                  <Ed p={`education.${e.id}.detail`}>{e.detail}</Ed>
+                  {' · '}
+                  <Ed p={`education.${e.id}.place`}>{e.place}</Ed>
+                </>
+              }
               detail={
                 <Text variant="footnote" tone="tertiary">
-                  {e.period}
+                  <Ed p={`education.${e.id}.period`}>{e.period}</Ed>
                 </Text>
               }
             />
@@ -311,13 +325,13 @@ function Experience() {
         <List variant="inset">
           {awards.map((a) => (
             <ListRow
-              key={a.title}
+              key={a.id}
               leading={<Mark logo={a.logo} name={a.title} size="md" />}
-              title={a.title}
-              subtitle={a.detail}
+              title={<Ed p={`awards.${a.id}.title`}>{a.title}</Ed>}
+              subtitle={<Ed p={`awards.${a.id}.detail`}>{a.detail}</Ed>}
               detail={
                 <Text variant="footnote" tone="tertiary">
-                  {a.year}
+                  <Ed p={`awards.${a.id}.year`}>{a.year}</Ed>
                 </Text>
               }
             />
@@ -332,22 +346,22 @@ function Experience() {
         <List variant="inset">
           {extracurricular.map((x) => (
             <ListRow
-              key={x.role}
+              key={x.id}
               leading={<Mark logo={x.logo} name={x.org} size="md" />}
-              title={x.role}
+              title={<Ed p={`extracurricular.${x.id}.role`}>{x.role}</Ed>}
               subtitle={
                 <Stack gap={1}>
                   <Text variant="footnote" tone="secondary">
-                    {x.org}
+                    <Ed p={`extracurricular.${x.id}.org`}>{x.org}</Ed>
                   </Text>
                   <Text variant="footnote" tone="tertiary">
-                    {x.detail}
+                    <Ed p={`extracurricular.${x.id}.detail`}>{x.detail}</Ed>
                   </Text>
                 </Stack>
               }
               detail={
                 <Text variant="footnote" tone="tertiary">
-                  {x.period}
+                  <Ed p={`extracurricular.${x.id}.period`}>{x.period}</Ed>
                 </Text>
               }
             />
@@ -358,64 +372,8 @@ function Experience() {
   )
 }
 
-function Publications() {
-  const groups = ['Package', 'Game', 'Talk', 'Code'] as const
-  const heading: Record<(typeof groups)[number], string> = {
-    Package: 'Packages',
-    Game: 'Released games',
-    Talk: 'Talks & presentations',
-    Code: 'Open source',
-  }
-
-  return (
-    <Stack gap={6}>
-      <Text variant="footnote" tone="secondary">
-        Things I have put into the world — published packages, released games and public presentations.
-        Every row opens the real thing.
-      </Text>
-
-      {groups.map((kind) => {
-        const items = publications.filter((p) => p.kind === kind)
-        if (!items.length) return null
-        return (
-          <Stack key={kind} gap={3}>
-            <Heading level={2} size="title-3" weight="semibold">
-              {heading[kind]}
-            </Heading>
-            <List variant="inset">
-              {items.map((p) => (
-                <ListRow
-                  key={p.href}
-                  leading={<Mark logo={p.logo} name={p.title} size="md" />}
-                  title={p.title}
-                  subtitle={
-                    <Stack gap={1}>
-                      <Text variant="footnote" tone="secondary">
-                        {p.venue}
-                      </Text>
-                      <Text variant="footnote" tone="tertiary">
-                        {p.detail}
-                      </Text>
-                    </Stack>
-                  }
-                  detail={
-                    <Text variant="footnote" tone="tertiary">
-                      {p.year}
-                    </Text>
-                  }
-                  chevron
-                  onClick={() => window.open(p.href, '_blank', 'noreferrer')}
-                />
-              ))}
-            </List>
-          </Stack>
-        )
-      })}
-    </Stack>
-  )
-}
-
 function Contact({ onPrint }: { onPrint: (doc: 'cv' | 'portfolio') => void }) {
+  const { profile } = useData()
   return (
     <Stack gap={6}>
       <Card variant="elevated" padding="lg">
@@ -433,7 +391,7 @@ function Contact({ onPrint }: { onPrint: (doc: 'cv' | 'portfolio') => void }) {
               leadingIcon={<IoMailOutline />}
               onClick={() => window.open(`mailto:${profile.email}`)}
             >
-              {profile.email}
+              <Ed p="profile.email">{profile.email}</Ed>
             </Button>
             <Button
               variant="tinted"
@@ -501,6 +459,9 @@ function Contact({ onPrint }: { onPrint: (doc: 'cv' | 'portfolio') => void }) {
 /* ----------------------------------------------------------------- App -- */
 
 export function App() {
+  const { profile } = useData()
+  const { editing, setEditing, patch, resetAll } = useContent()
+  const edits = Object.keys(patch).length
   const [tab, setTab] = useState<TabKey>(() => {
     const hash = window.location.hash.replace('#', '')
     return isTab(hash) ? hash : 'overview'
@@ -553,6 +514,19 @@ export function App() {
             <Stack direction="row" gap={2} align="center">
               <Button
                 size="sm"
+                variant={editing ? 'filled' : 'gray'}
+                leadingIcon={<IoCreateOutline />}
+                onClick={() => setEditing(!editing)}
+              >
+                {editing ? 'Done' : 'Edit'}
+              </Button>
+              {editing && edits > 0 && (
+                <Button size="sm" variant="plain" leadingIcon={<IoRefreshOutline />} onClick={resetAll}>
+                  Reset {edits}
+                </Button>
+              )}
+              <Button
+                size="sm"
                 variant={paper === 'a4' ? 'tinted' : 'plain'}
                 onClick={() => setPaper('a4')}
                 aria-label="A4 paper"
@@ -602,9 +576,6 @@ export function App() {
             <TabPanel value="experience">
               <Experience />
             </TabPanel>
-            <TabPanel value="publications">
-              <Publications />
-            </TabPanel>
             <TabPanel value="contact">
               <Contact onPrint={print} />
             </TabPanel>
@@ -614,7 +585,8 @@ export function App() {
 
           <footer className="site-foot">
             <Text variant="footnote" tone="tertiary">
-              {profile.legalName} · {profile.location}
+              <Ed p="profile.knownAs">{profile.knownAs}</Ed> ·{' '}
+              <Ed p="profile.location">{profile.location}</Ed>
             </Text>
             <Text variant="footnote" tone="tertiary">
               Built with May UI — a design system of mine.
