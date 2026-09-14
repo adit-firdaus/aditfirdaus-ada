@@ -1,0 +1,6 @@
+/* Intentionally empty.
+
+   When vite.config.ts finds a local May UI checkout it aliases
+   `@adit_firdaus/may-ui/styles.css` here. The library source carries every
+   component's CSS itself through React 19 stylesheet precedence, so loading
+   the published aggregate on top would only reintroduce stale rules. */

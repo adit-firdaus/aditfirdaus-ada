@@ -63,4 +63,31 @@ npm run build    # tsc -b && vite build
 npm run lint     # oxlint
 ```
 
+### Working on May UI at the same time
+
+May UI is both a dependency here and something I am still writing. `npm run dev`
+looks for a checkout at `../../mayui` and, when it finds one, builds straight
+from its `src` — edit a component there and this page updates, with no build,
+publish or version bump in between. The startup line says which source is in
+use:
+
+```
+May UI: local source — /Users/af/Documents/Projects/mayui
+May UI: npm package
+```
+
+Production builds deliberately keep using the npm package, so what I preview
+locally is what CI deploys. Two environment variables change that:
+
+| Variable | Effect |
+|---|---|
+| `MAY_UI_SRC=/path/to/mayui` | Use a checkout somewhere other than `../../mayui` |
+| `MAY_UI_LOCAL=1` | Build from the checkout too, not just serve from it |
+
+The library source attaches each component's CSS itself through React 19
+stylesheet precedence, so while the alias is active the published aggregate
+`styles.css` is swapped for an empty file. Nothing in the app may depend on API
+that only the checkout has — that is why there is no `MayHost` here even though
+the published package still exports one.
+
 Pushing to `main` deploys to GitHub Pages via `.github/workflows/deploy.yml`.

@@ -14,7 +14,6 @@ import {
   Heading,
   List,
   ListRow,
-  MayHost,
   MayProvider,
   NavigationBar,
   NoticeBar,
@@ -26,7 +25,6 @@ import {
   TabPanel,
   Tabs,
   Text,
-  toast,
 } from '@adit_firdaus/may-ui'
 import {
   IoArrowForward,
@@ -527,18 +525,11 @@ export function App() {
    */
   const print = (doc: 'cv' | 'portfolio') => {
     document.body.dataset.print = doc
-    const name =
-      doc === 'cv'
-        ? 'RadityaRakhaFirdausMuliyoto_CV_Academy'
-        : 'RadityaRakhaFirdausMuliyoto_Portfolio_Academy'
-    toast(`Save as ${name}.pdf — margins None, background graphics on`)
     window.print()
   }
 
   return (
     <MayProvider theme="system">
-      <MayHost />
-
       <style>{`
         @page { size: ${PAPER[paper].css}; margin: 0; }
         :root { --sheet-w: ${PAPER[paper].width}; --sheet-h: ${PAPER[paper].height}; }
