@@ -19,6 +19,57 @@ body {
   background: var(--may-color-bg);
 }
 
+/* A shipped brand mark, sized to sit like the icon-font glyphs beside it. */
+.tech-mark {
+  width: 1em;
+  height: 1em;
+  display: block;
+  object-fit: contain;
+}
+
+/* -------------------------------------------------------------- marks -- */
+
+/*
+ * A logo sits on the plate its owner drew it for. The PNGs are transparent, so
+ * a navy wordmark on this dark page would otherwise be a smudge and a white
+ * one would be invisible.
+ */
+.mark {
+  display: inline-flex;
+  border-radius: var(--may-radius-md);
+  overflow: hidden;
+}
+
+.mark[data-bg='white'] {
+  background: #fff;
+}
+.mark[data-bg='black'] {
+  background: #000;
+}
+.mark[data-bg='yellow'] {
+  background: #ffd400;
+}
+
+.mark[data-bg] .may-avatar {
+  /* Breathing room so a mark never touches the edge of its own plate. */
+  padding: 3px;
+  background: transparent;
+}
+
+/* A record with no mark still holds the column, so the rows stay aligned. */
+.mark--blank {
+  width: var(--may-control-h);
+  height: var(--may-control-h);
+}
+.mark--blank[data-size='sm'] {
+  width: calc(var(--may-control-h) * 0.73);
+  height: calc(var(--may-control-h) * 0.73);
+}
+.mark--blank[data-size='lg'] {
+  width: calc(var(--may-control-h) * 1.36);
+  height: calc(var(--may-control-h) * 1.36);
+}
+
 /* ------------------------------------------------------------ editing -- */
 
 /* Uppercased here rather than in JS, so edit mode shows the stored text. */
@@ -88,17 +139,37 @@ body {
 .project-shot {
   display: block;
   width: 100%;
-  height: 280px;
+  height: 150px;
   object-fit: cover;
   background: var(--may-color-fill-tertiary);
 }
 
+/* The dialog has room the card does not, so the cover can breathe there. */
+.project-shot--wide {
+  height: 240px;
+  border-radius: var(--may-radius-md);
+}
+
+.project-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--may-space-3);
+  padding: var(--may-space-4);
+}
+
+/*
+ * The footer draws its own hairline. A <Separator> above it spanned the column
+ * while the footer text sat inside the same box, so the rule read as a stray
+ * line rather than as the end of the page.
+ */
 .site-foot {
   display: flex;
   justify-content: space-between;
   gap: 12px;
   flex-wrap: wrap;
-  padding: 20px 0 64px;
+  margin-block-start: var(--may-space-10);
+  padding-block: var(--may-space-5) 64px;
+  border-block-start: 1px solid var(--may-color-separator);
 }
 
 /* The documents are print-only; they must never reach the screen. */

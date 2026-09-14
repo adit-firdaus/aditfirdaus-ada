@@ -16,16 +16,21 @@ export const profile = {
     { label: 'adit-firdaus.itch.io', href: 'https://adit-firdaus.itch.io/' },
   ],
   objective:
-    'Hi, nice to meet you :). You can call me Adit. I have passion in technology since 4th Elementary, I keep build and recreate things on my own to understand better. I create my own tools and projects that help others, for the dev community. I do freelance and full time work right now, if you’re interested to know me better don’t hesitate to call me. I’m available at any time',
+    'Hi, nice to meet you :). Call me Adit. I have passion in technology since 4th Elementary, I like to build and re-create things on my own to understand them better. I create my own tools and projects, mainly for the dev community. I do freelance and full-time. If you’re interested to know me better, don’t hesitate to call me. I’m available at any time',
 }
+
+/** The plate a transparent logo was drawn for. */
+export type LogoBackground = 'white' | 'black' | 'yellow'
 
 export type Job = {
   /** Stable key for saved edits. Never reuse or renumber it. */
   id: string
   role: string
   org: string
-  /** File in public/logo, without extension. Omit when no official mark exists. */
+  /** File in public/logo, without extension. Omit to show no mark at all. */
   logo?: string
+  /** The plate the mark was drawn for. */
+  logoBg?: LogoBackground
   place?: string
   period: string
   points: string[]
@@ -34,6 +39,7 @@ export type Job = {
 export const experience: Job[] = [
   {
     id: 'autobricks-ai',
+    logoBg: 'white',
     role: 'Software Engineer',
     org: 'Autobricks AI',
     logo: 'autobricks',
@@ -46,6 +52,7 @@ export const experience: Job[] = [
   },
   {
     id: 'hexcore-labs-pte-ltd',
+    logoBg: 'black',
     role: 'Software Developer',
     org: 'Hexcore Labs Pte. Ltd.',
     logo: 'hexcore',
@@ -75,14 +82,8 @@ export const experience: Job[] = [
     ],
   },
   {
-    id: 'hi-klik',
-    role: 'Full Stack Developer',
-    org: 'Hi Klik',
-    period: 'Dec 2022 — Present',
-    points: ['Full-stack web development, from database and API through to interface.'],
-  },
-  {
     id: 'global-multimedia-school',
+    logoBg: 'white',
     role: 'Flutter Developer',
     org: 'Global Multimedia School',
     logo: 'gmcs',
@@ -91,6 +92,7 @@ export const experience: Job[] = [
   },
   {
     id: 'pt-halo-industri-digital',
+    logoBg: 'white',
     role: 'XR Developer',
     org: 'PT Halo Industri Digital (HiDigi)',
     logo: 'hidigi',
@@ -101,6 +103,7 @@ export const experience: Job[] = [
   },
   {
     id: 'floramis',
+    logoBg: 'white',
     role: 'Multimedia Intern',
     org: 'Floramis',
     logo: 'floramis',
@@ -110,9 +113,20 @@ export const experience: Job[] = [
   },
 ]
 
-export const education = [
+export type School = {
+  id: string
+  school: string
+  logo?: string
+  logoBg?: LogoBackground
+  place: string
+  detail: string
+  period: string
+}
+
+export const education: School[] = [
   {
     id: 'nexford-university',
+    logoBg: 'yellow',
     school: 'Nexford University',
     logo: 'nexford',
     place: 'United States · Online',
@@ -121,6 +135,7 @@ export const education = [
   },
   {
     id: 'global-multimedia-creative-school',
+    logoBg: 'white',
     school: 'Global Multimedia Creative School',
     logo: 'gmcs',
     place: 'Indonesia',
@@ -129,6 +144,7 @@ export const education = [
   },
   {
     id: 'smk-prestasi-prima',
+    logoBg: 'white',
     school: 'SMK Prestasi Prima',
     logo: 'prestasiprima',
     place: 'Jakarta, Indonesia',
@@ -137,6 +153,7 @@ export const education = [
   },
   {
     id: 'mtsn-2-jepara',
+    logoBg: 'white',
     school: 'MTsN 2 Jepara',
     logo: 'mtsn2jepara',
     place: 'Jepara, Indonesia',
@@ -145,9 +162,19 @@ export const education = [
   },
 ]
 
-export const awards = [
+export type Award = {
+  id: string
+  title: string
+  logo?: string
+  logoBg?: LogoBackground
+  detail: string
+  year: string
+}
+
+export const awards: Award[] = [
   {
     id: '3rd-place-kksi',
+    logoBg: 'white',
     title: '3rd Place — KKSI 2021 National Game Development',
     logo: 'prestasiprima',
     detail: 'For LOSARY, a two-person team I led as project leader.',
@@ -155,6 +182,7 @@ export const awards = [
   },
   {
     id: '2nd-winner-gacci',
+    logoBg: 'white',
     title: '2nd Winner — GACCI 2022',
     logo: 'binus',
     detail: 'Bina Nusantara University (BINUS) creative competition.',
@@ -162,6 +190,7 @@ export const awards = [
   },
   {
     id: '3rd-place-lomba-cipta',
+    logoBg: 'white',
     title: '3rd Place — Lomba Cipta Game Edukasi Pelatihan Vokasi',
     logo: 'kemnaker',
     detail: 'Ministry of Manpower, Republic of Indonesia (Kemnaker), for SOURCE.',
@@ -169,6 +198,7 @@ export const awards = [
   },
   {
     id: 'registrant-binus-high-school',
+    logoBg: 'white',
     title: 'Registrant — BINUS High School Programming Competition',
     logo: 'binus',
     detail: 'Representing Global Multimedia Creative School.',
@@ -176,9 +206,20 @@ export const awards = [
   },
 ]
 
-export const extracurricular = [
+export type Extracurricular = {
+  id: string
+  role: string
+  org: string
+  logo?: string
+  logoBg?: LogoBackground
+  period: string
+  detail: string
+}
+
+export const extracurricular: Extracurricular[] = [
   {
     id: 'marketing-communications',
+    logoBg: 'white',
     role: 'Marketing Communications',
     org: 'Lions Clubs International, District 307-B1',
     logo: 'lions',
@@ -187,28 +228,50 @@ export const extracurricular = [
   },
   {
     id: 'participant-madrasah-vlog-competition',
+    logoBg: 'white',
     role: 'Participant, Madrasah Vlog Competition 2020',
     org: 'MTsN 2 Jepara',
     logo: 'mtsn2jepara',
     period: '2020',
     detail: 'Entrant no. 444 — my first public piece of creative work.',
   },
-  {
-    id: 'open-source-maintainer',
-    role: 'Open-source maintainer',
-    org: 'github.com/adit-firdaus',
-    logo: 'github',
-    period: '2021 — Present',
-    detail: '45 public repositories spanning design systems, games, agent tooling and web infrastructure.',
-  },
 ]
 
+/**
+ * Taken from a scan of the 29 repositories Adit actually wrote — forks
+ * excluded, since a forked codebase says nothing about what he works in.
+ * Inngest and BullMQ are the exception: both come from work that is not
+ * public, so no scan could have found them.
+ */
 export const skills = [
-  { id: 'languages', group: 'Languages', items: ['TypeScript', 'JavaScript', 'C#', 'Dart', 'Python'] },
-  { id: 'interface', group: 'Interface', items: ['React 19', 'Flutter', 'Design systems', 'Apple HIG', 'Motion & spring physics'] },
-  { id: 'games-xr', group: 'Games & XR', items: ['Unity', 'Game design', '3D / real-time rendering', 'Extended reality'] },
-  { id: 'platform', group: 'Platform', items: ['Node.js', 'NestJS', 'Strapi', 'PostgreSQL', 'Docker', 'GitHub Actions'] },
-  { id: 'ways-of-working', group: 'Ways of working', items: ['Product engineering', 'Technical leadership', 'Open source', 'Agentic AI tooling'] },
+  {
+    id: 'languages',
+    group: 'Languages',
+    items: ['TypeScript', 'JavaScript', 'Go', 'C#', 'Dart', 'Python'],
+  },
+  {
+    id: 'interface',
+    group: 'Interface',
+    items: ['React', 'Flutter', 'Tailwind CSS', 'Vite', 'Storybook'],
+  },
+  { id: 'games-xr', group: 'Games & XR', items: ['Unity', 'Three.js', 'HLSL shaders'] },
+  {
+    id: 'platform',
+    group: 'Platform',
+    items: [
+      'Next.js',
+      'TanStack Start',
+      'TanStack Query',
+      'Hono',
+      'Drizzle ORM',
+      'PostgreSQL',
+      'Redis',
+      'BullMQ',
+      'Inngest',
+      'Docker',
+      'GitHub Actions',
+    ],
+  },
 ]
 
 export type Project = {
@@ -222,6 +285,8 @@ export type Project = {
   year: string
   /** Short award ribbon shown on the project sheet. */
   award?: string
+  /** The public repository, when there is one. Drives the open-source tag. */
+  repo?: string
   image: string
   imageAlt: string
   kind: string
@@ -236,6 +301,7 @@ export type Project = {
 export const projects: Project[] = [
   {
     id: 'may-ui',
+    repo: 'https://github.com/adit-firdaus/may-ui',
     n: '01',
     name: 'May UI',
     logo: 'mayui',
@@ -259,6 +325,7 @@ export const projects: Project[] = [
   },
   {
     id: 'source',
+    repo: 'https://github.com/adit-firdaus/Source',
     n: '02',
     name: 'SOURCE',
     logo: 'source',
@@ -280,6 +347,7 @@ export const projects: Project[] = [
   },
   {
     id: 'delis',
+    repo: 'https://github.com/adit-firdaus/Delis',
     n: '03',
     name: 'DELIS',
     logo: 'delis',
@@ -303,6 +371,7 @@ export const projects: Project[] = [
   },
   {
     id: 'losary',
+    repo: 'https://github.com/adit-firdaus/Losary',
     n: '04',
     name: 'LOSARY',
     logo: 'losary',

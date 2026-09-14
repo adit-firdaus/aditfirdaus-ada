@@ -1445,7 +1445,7 @@ export declare const ListRow: typeof ListRow_2;
  * handler — a div is invisible to keyboard and switch-access users, who have
  * no way to focus or activate it.
  */
-declare function ListRow_2({ title, subtitle, leading, detail, accessory, onClick, chevron, destructive, disabled, className, ...rest }: ListRowProps): JSX.Element;
+declare function ListRow_2({ title, subtitle, leading, detail, accessory, onClick, chevron, align, destructive, disabled, className, ...rest }: ListRowProps): JSX.Element;
 
 export declare interface ListRowProps extends Omit<HTMLAttributes<HTMLElement>, 'title' | 'onClick'> {
     /** Primary line. */
@@ -1454,6 +1454,14 @@ export declare interface ListRowProps extends Omit<HTMLAttributes<HTMLElement>, 
     subtitle?: ReactNode;
     /** Leading element — typically an `IconTile` or an `Avatar`. */
     leading?: ReactNode;
+    /**
+     * Where the leading mark and the trailing value sit against a row whose text
+     * runs to several lines. `center` is the iOS default and right for a row of
+     * one or two lines; `top` is for a row carrying a paragraph, where a centred
+     * mark floats halfway down and stops reading as the subject's mark.
+     * @default 'center'
+     */
+    align?: 'center' | 'top';
     /** Trailing value, shown muted before the chevron. */
     detail?: ReactNode;
     /** Trailing control such as a `Switch`. Suppresses the chevron. */

@@ -3,10 +3,7 @@ import {
   Badge,
   Button,
   Card,
-  CardBody,
   CardDescription,
-  CardFooter,
-  CardHeader,
   CardTitle,
   DescriptionItem,
   Descriptions,
@@ -15,6 +12,7 @@ import {
   List,
   ListRow,
   MayProvider,
+  Modal,
   NavigationBar,
   Separator,
   Stack,
@@ -28,16 +26,14 @@ import {
 import {
   IoArrowForward,
   IoBriefcaseOutline,
-  IoCreateOutline,
   IoDocumentTextOutline,
+  IoFolderOpenOutline,
   IoLogoGithub,
   IoLogoLinkedin,
   IoMailOutline,
   IoPersonOutline,
   IoPrintOutline,
-  IoRefreshOutline,
   IoSchoolOutline,
-  IoSparklesOutline,
 } from 'react-icons/io5'
 import { SiItchdotio } from 'react-icons/si'
 import { Ed } from './content'
@@ -49,7 +45,7 @@ import './App.css'
 
 const TABS = [
   { value: 'overview', label: 'Me', icon: <IoPersonOutline /> },
-  { value: 'projects', label: 'Projects', icon: <IoSparklesOutline /> },
+  { value: 'projects', label: 'Projects', icon: <IoFolderOpenOutline /> },
   { value: 'experience', label: 'Experience', icon: <IoBriefcaseOutline /> },
   { value: 'contact', label: 'Call me', icon: <IoMailOutline /> },
 ] as const
@@ -59,10 +55,9 @@ type TabKey = (typeof TABS)[number]['value']
 const STATS = [
   { label: 'Open Source Projects', value: '45' },
   { label: 'Games Published', value: '5' },
-  /* Counted off the skills list and the awards list, so a relabelling never
-     leaves a figure describing the thing it used to describe. */
+  /* Counted off the technologies list below, so relabelling can never leave a
+     figure describing the thing it used to describe. */
   { label: 'Technologies Used', value: '24' },
-  { label: 'Awards', value: '3' },
 ]
 
 const PAPER = {
@@ -94,8 +89,8 @@ function Overview({ onGo }: { onGo: (tab: TabKey) => void }) {
               <Ed p="profile.objective">{profile.objective}</Ed>
             </Text>
             <Stack direction="row" gap={2} wrap>
-              <Button variant="filled" leadingIcon={<IoSparklesOutline />} onClick={() => onGo('projects')}>
-                See the work
+              <Button variant="filled" leadingIcon={<IoFolderOpenOutline />} onClick={() => onGo('projects')}>
+                See my work
               </Button>
               <Button variant="tinted" leadingIcon={<IoMailOutline />} onClick={() => onGo('contact')}>
                 Call me
@@ -121,7 +116,8 @@ function Overview({ onGo }: { onGo: (tab: TabKey) => void }) {
           {current.map((job) => (
             <ListRow
               key={job.id}
-              leading={<Mark logo={job.logo} name={job.org} size="md" />}
+              align="top"
+              leading={<Mark logo={job.logo} bg={job.logoBg} name={job.org} size="md" />}
               title={<Ed p={`experience.${job.id}.role`}>{job.role}</Ed>}
               subtitle={<Ed p={`experience.${job.id}.org`}>{job.org}</Ed>}
               detail={
@@ -136,7 +132,7 @@ function Overview({ onGo }: { onGo: (tab: TabKey) => void }) {
 
       <Stack gap={3}>
         <Heading level={2} size="title-3" weight="semibold">
-          What I work with
+          My Technologies
         </Heading>
         <Card variant="grouped" padding="md">
           <Stack gap={4}>
@@ -161,76 +157,100 @@ function Overview({ onGo }: { onGo: (tab: TabKey) => void }) {
   )
 }
 
+/** Projects fall into years, newest first, with the year carrying the divider. */
+function byYear(projects: ReturnType<typeof useData>['projects']) {
+  const groups = new Map<string, typeof projects>()
+  for (const p of projects) {
+    const year = p.year.match(/\d{4}/)?.[0] ?? p.year
+    groups.set(year, [...(groups.get(year) ?? []), p])
+  }
+  return [...groups.entries()].sort((a, b) => b[0].localeCompare(a[0]))
+}
+
 function Projects() {
   const { projects } = useData()
+  const [openId, setOpenId] = useState<string | null>(null)
+  const open = projects.find((p) => p.id === openId) ?? null
+
   return (
-    <Stack gap={5}>
-      <Stack gap={1}>
-        <Heading level={2} size="title-3" weight="semibold">
-          Selected projects
-        </Heading>
-        <Text variant="footnote" tone="secondary">
-          Two competition winners, one design system, and the games that started it.
-        </Text>
+    <>
+      <Stack gap={6}>
+        {byYear(projects).map(([year, group]) => (
+          <Stack key={year} gap={4}>
+            <Separator label={year} />
+            {/* Covers only. Everything a card cannot hold without becoming a
+                page of its own waits in the dialog behind it. */}
+            <Grid minColumnWidth={240} gap={4}>
+              {group.map((p) => (
+                <Card
+                  key={p.id}
+                  variant="elevated"
+                  padding="none"
+                  className="project"
+                  interactive
+                  onClick={() => setOpenId(p.id)}
+                >
+                  <img className="project-shot" src={asset(p.image)} alt={p.imageAlt} />
+                  <div className="project-body">
+                    <Stack gap={1}>
+                      <CardTitle>
+                        <Ed p={`projects.${p.id}.name`}>{p.name}</Ed>
+                      </CardTitle>
+                      <CardDescription>
+                        <Ed p={`projects.${p.id}.tagline`}>{p.tagline}</Ed>
+                      </CardDescription>
+                    </Stack>
+                    <Stack direction="row" gap={2} wrap>
+                      {p.repo && (
+                        <Badge tone="tint" variant="tinted">
+                          Open source
+                        </Badge>
+                      )}
+                      {p.award && (
+                        <Badge tone="success" variant="tinted">
+                          <Ed p={`projects.${p.id}.award`}>{p.award}</Ed>
+                        </Badge>
+                      )}
+                    </Stack>
+                  </div>
+                </Card>
+              ))}
+            </Grid>
+          </Stack>
+        ))}
       </Stack>
 
-      {projects.map((p) => (
-        <Card key={p.id} variant="elevated" padding="none" className="project">
-          <img className="project-shot" src={asset(p.image)} alt={p.imageAlt} />
-          <CardHeader
-            accessory={
-              <Stack direction="row" gap={2} align="center">
-                {p.award && (
-                  <Badge tone="success" variant="tinted">
-                    <Ed p={`projects.${p.id}.award`}>{p.award}</Ed>
-                  </Badge>
-                )}
-                <Badge tone="neutral" variant="tinted">
-                  <Ed p={`projects.${p.id}.year`}>{p.year}</Ed>
-                </Badge>
-              </Stack>
-            }
-          >
-            <Stack direction="row" gap={3} align="center">
-              <Mark logo={p.logo} name={p.name} size="lg" />
-              <Stack gap={0}>
-                <CardTitle>
-                  <Ed p={`projects.${p.id}.name`}>{p.name}</Ed>
-                </CardTitle>
-                <CardDescription>
-                  <Ed p={`projects.${p.id}.tagline`}>{p.tagline}</Ed>
-                </CardDescription>
-              </Stack>
-            </Stack>
-          </CardHeader>
-
-          <CardBody>
-            <Stack gap={4}>
-              <Text variant="body">
-                <Ed p={`projects.${p.id}.summary`}>{p.summary}</Ed>
-              </Text>
-              <Descriptions variant="inset" layout="stacked" columns={2}>
-                <DescriptionItem label="Type" value={<Ed p={`projects.${p.id}.kind`}>{p.kind}</Ed>} />
-                <DescriptionItem label="My role" value={<Ed p={`projects.${p.id}.role`}>{p.role}</Ed>} />
-              </Descriptions>
-              <Descriptions variant="inset" layout="stacked" columns={1}>
-                <DescriptionItem label="Impact" value={<Ed p={`projects.${p.id}.impact`}>{p.impact}</Ed>} />
-                <DescriptionItem
-                  label="What I learned"
-                  value={<Ed p={`projects.${p.id}.learned`}>{p.learned}</Ed>}
-                />
-              </Descriptions>
-              <Stack direction="row" gap={2} wrap>
-                {p.stack.map((t, index) => (
-                  <TechTag key={t} label={t} p={`projects.${p.id}.stack.${index}`} />
-                ))}
-              </Stack>
-            </Stack>
-          </CardBody>
-
-          <CardFooter>
+      <Modal
+        open={open !== null}
+        onClose={() => setOpenId(null)}
+        size="lg"
+        title={open?.name}
+        description={open?.tagline}
+      >
+        {open && (
+          <Stack gap={5}>
+            <img className="project-shot project-shot--wide" src={asset(open.image)} alt={open.imageAlt} />
+            <Text variant="body">
+              <Ed p={`projects.${open.id}.summary`}>{open.summary}</Ed>
+            </Text>
+            <Descriptions variant="inset" layout="stacked" columns={2}>
+              <DescriptionItem label="Type" value={<Ed p={`projects.${open.id}.kind`}>{open.kind}</Ed>} />
+              <DescriptionItem label="My role" value={<Ed p={`projects.${open.id}.role`}>{open.role}</Ed>} />
+            </Descriptions>
+            <Descriptions variant="inset" layout="stacked" columns={1}>
+              <DescriptionItem label="Impact" value={<Ed p={`projects.${open.id}.impact`}>{open.impact}</Ed>} />
+              <DescriptionItem
+                label="What I learned"
+                value={<Ed p={`projects.${open.id}.learned`}>{open.learned}</Ed>}
+              />
+            </Descriptions>
             <Stack direction="row" gap={2} wrap>
-              {p.links.map((l, index) => (
+              {open.stack.map((t, index) => (
+                <TechTag key={t} label={t} p={`projects.${open.id}.stack.${index}`} />
+              ))}
+            </Stack>
+            <Stack direction="row" gap={2} wrap>
+              {open.links.map((l, index) => (
                 <Button
                   key={l.href}
                   size="sm"
@@ -238,14 +258,14 @@ function Projects() {
                   trailingIcon={<IoArrowForward />}
                   onClick={() => window.open(l.href, '_blank', 'noreferrer')}
                 >
-                  <Ed p={`projects.${p.id}.links.${index}.label`}>{l.label}</Ed>
+                  <Ed p={`projects.${open.id}.links.${index}.label`}>{l.label}</Ed>
                 </Button>
               ))}
             </Stack>
-          </CardFooter>
-        </Card>
-      ))}
-    </Stack>
+          </Stack>
+        )}
+      </Modal>
+    </>
   )
 }
 
@@ -261,7 +281,8 @@ function Experience() {
           {experience.map((job) => (
             <ListRow
               key={job.id}
-              leading={<Mark logo={job.logo} name={job.org} size="md" />}
+              align="top"
+              leading={<Mark logo={job.logo} bg={job.logoBg} name={job.org} size="md" />}
               title={<Ed p={`experience.${job.id}.role`}>{job.role}</Ed>}
               subtitle={
                 <Stack gap={1}>
@@ -299,7 +320,8 @@ function Experience() {
           {education.map((e) => (
             <ListRow
               key={e.id}
-              leading={<Mark logo={e.logo} name={e.school} size="md" />}
+              align="top"
+              leading={<Mark logo={e.logo} bg={e.logoBg} name={e.school} size="md" />}
               title={<Ed p={`education.${e.id}.school`}>{e.school}</Ed>}
               subtitle={
                 <>
@@ -326,7 +348,8 @@ function Experience() {
           {awards.map((a) => (
             <ListRow
               key={a.id}
-              leading={<Mark logo={a.logo} name={a.title} size="md" />}
+              align="top"
+              leading={<Mark logo={a.logo} bg={a.logoBg} name={a.title} size="md" />}
               title={<Ed p={`awards.${a.id}.title`}>{a.title}</Ed>}
               subtitle={<Ed p={`awards.${a.id}.detail`}>{a.detail}</Ed>}
               detail={
@@ -347,7 +370,8 @@ function Experience() {
           {extracurricular.map((x) => (
             <ListRow
               key={x.id}
-              leading={<Mark logo={x.logo} name={x.org} size="md" />}
+              align="top"
+              leading={<Mark logo={x.logo} bg={x.logoBg} name={x.org} size="md" />}
               title={<Ed p={`extracurricular.${x.id}.role`}>{x.role}</Ed>}
               subtitle={
                 <Stack gap={1}>
@@ -460,24 +484,30 @@ function Contact({ onPrint }: { onPrint: (doc: 'cv' | 'portfolio') => void }) {
 
 export function App() {
   const { profile } = useData()
-  const { editing, setEditing, patch, resetAll } = useContent()
-  const edits = Object.keys(patch).length
+  const { setEditing } = useContent()
   const [tab, setTab] = useState<TabKey>(() => {
     const hash = window.location.hash.replace('#', '')
     return isTab(hash) ? hash : 'overview'
   })
-  const [paper, setPaper] = useState<PaperKey>('a4')
+  /* The bar no longer offers a choice, so ?paper=letter is how Letter is
+     reached — the print CSS still honours whichever is set. */
+  const [paper] = useState<PaperKey>(() =>
+    new URLSearchParams(window.location.search).get('paper') === 'letter' ? 'letter' : 'a4',
+  )
 
   useEffect(() => {
     window.history.replaceState(null, '', `#${tab}`)
   }, [tab])
 
   /* ?print=cv / ?print=portfolio preselects the paper target, which makes the
-     print output reachable from a plain link. */
+     print output reachable from a plain link. ?edit turns on in-place editing,
+     which no longer has a button in the bar. */
   useEffect(() => {
-    const target = new URLSearchParams(window.location.search).get('print')
+    const query = new URLSearchParams(window.location.search)
+    const target = query.get('print')
     if (target === 'cv' || target === 'portfolio') document.body.dataset.print = target
-  }, [])
+    if (query.has('edit')) setEditing(true)
+  }, [setEditing])
 
   const go = (next: TabKey) => {
     setTab(next)
@@ -510,50 +540,6 @@ export function App() {
              whole-page scroll like this one wants. */
           largeTitle
           sticky
-          trailing={
-            <Stack direction="row" gap={2} align="center">
-              <Button
-                size="sm"
-                variant={editing ? 'filled' : 'gray'}
-                leadingIcon={<IoCreateOutline />}
-                onClick={() => setEditing(!editing)}
-              >
-                {editing ? 'Done' : 'Edit'}
-              </Button>
-              {editing && edits > 0 && (
-                <Button size="sm" variant="plain" leadingIcon={<IoRefreshOutline />} onClick={resetAll}>
-                  Reset {edits}
-                </Button>
-              )}
-              <Button
-                size="sm"
-                variant={paper === 'a4' ? 'tinted' : 'plain'}
-                onClick={() => setPaper('a4')}
-                aria-label="A4 paper"
-              >
-                A4
-              </Button>
-              <Button
-                size="sm"
-                variant={paper === 'letter' ? 'tinted' : 'plain'}
-                onClick={() => setPaper('letter')}
-                aria-label="US Letter paper"
-              >
-                Letter
-              </Button>
-              <Button size="sm" variant="filled" leadingIcon={<IoDocumentTextOutline />} onClick={() => print('cv')}>
-                CV
-              </Button>
-              <Button
-                size="sm"
-                variant="tinted"
-                leadingIcon={<IoPrintOutline />}
-                onClick={() => print('portfolio')}
-              >
-                Portfolio
-              </Button>
-            </Stack>
-          }
         />
 
 
@@ -580,8 +566,6 @@ export function App() {
               <Contact onPrint={print} />
             </TabPanel>
           </Tabs>
-
-          <Separator />
 
           <footer className="site-foot">
             <Text variant="footnote" tone="tertiary">

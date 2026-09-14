@@ -1,42 +1,7 @@
 import { Avatar, Tag } from '@adit_firdaus/may-ui'
 import { Ed } from './content'
-import type { IconType } from 'react-icons'
-import {
-  SiAndroid,
-  SiDart,
-  SiDocker,
-  SiFlutter,
-  SiGithubactions,
-  SiJavascript,
-  SiNestjs,
-  SiNodedotjs,
-  SiPostgresql,
-  SiPython,
-  SiReact,
-  SiSharp,
-  SiStrapi,
-  SiTypescript,
-  SiUnity,
-} from 'react-icons/si'
 import { logoUrl } from './paths'
-
-const TECH: Record<string, IconType> = {
-  TypeScript: SiTypescript,
-  JavaScript: SiJavascript,
-  'C#': SiSharp,
-  Dart: SiDart,
-  Python: SiPython,
-  'React 19': SiReact,
-  Flutter: SiFlutter,
-  Unity: SiUnity,
-  Android: SiAndroid,
-  'Node.js': SiNodedotjs,
-  NestJS: SiNestjs,
-  Strapi: SiStrapi,
-  PostgreSQL: SiPostgresql,
-  Docker: SiDocker,
-  'GitHub Actions': SiGithubactions,
-}
+import { TECH } from './tech'
 
 export function TechTag({
   label,
@@ -51,32 +16,51 @@ export function TechTag({
   size?: 'sm' | 'md'
 }) {
   /* The glyph still keys off the ORIGINAL label, so renaming a chip in the
-     browser never silently drops its icon. */
-  const Icon = TECH[label]
+     browser never silently drops its icon or its colour. */
+  const tech = TECH[label]
+  const Icon = tech?.icon
+  /* A brand with no mark in any react-icons set ships its own SVG instead. */
+  const glyph = tech?.img ? (
+    <img className="tech-mark" src={`${import.meta.env.BASE_URL}logo/${tech.img}.svg`} alt="" />
+  ) : Icon ? (
+    <Icon style={tech.color ? { color: tech.color } : undefined} />
+  ) : undefined
   return (
-    <Tag size={size} tone={tone} leadingIcon={Icon ? <Icon /> : undefined}>
+    <Tag size={size} tone={tone} leadingIcon={glyph}>
       {p ? <Ed p={p}>{label}</Ed> : label}
     </Tag>
   )
 }
 
-/** A real mark when one exists; May UI's initials avatar when it does not. */
+export type MarkSize = 'sm' | 'md' | 'lg' | 'xl'
+/** The plate a logo sits on. Most marks are drawn for one and vanish on the other. */
+export type MarkBackground = 'white' | 'black' | 'yellow'
+
+/**
+ * An organisation's own mark.
+ *
+ * Each logo is a transparent PNG drawn for the background its owner uses, so
+ * the plate is part of the data rather than a guess: a navy wordmark needs
+ * white behind it, a white one needs black. A record with no logo keeps its
+ * space and shows nothing — the rows stay aligned without inventing initials
+ * for a company whose mark we do not have.
+ */
 export function Mark({
   logo,
   name,
   size = 'sm',
+  bg,
 }: {
   logo?: string
   name: string
-  size?: 'sm' | 'md' | 'lg' | 'xl'
+  size?: MarkSize
+  bg?: MarkBackground
 }) {
+  if (!logo) return <span className="mark mark--blank" data-size={size} aria-hidden />
+
   return (
-    <Avatar
-      shape="square"
-      size={size}
-      name={name}
-      src={logo ? logoUrl(logo) : undefined}
-      alt={logo ? `${name} logo` : undefined}
-    />
+    <span className="mark" data-size={size} data-bg={bg}>
+      <Avatar shape="square" size={size} src={logoUrl(logo)} alt={`${name} logo`} />
+    </span>
   )
 }

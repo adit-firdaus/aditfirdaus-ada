@@ -98,7 +98,7 @@ function CurriculumVitae() {
           {experience.map((job) => (
             <ListRow
               key={`${job.org}-${job.period}`}
-              leading={<Mark logo={job.logo} name={job.org} />}
+              leading={<Mark logo={job.logo} bg={job.logoBg} name={job.org} />}
               title={
                 <Text variant="headline" weight="semibold">
                   {job.role}
@@ -134,7 +134,7 @@ function CurriculumVitae() {
           {education.map((e) => (
             <ListRow
               key={e.school}
-              leading={<Mark logo={e.logo} name={e.school} />}
+              leading={<Mark logo={e.logo} bg={e.logoBg} name={e.school} />}
               title={
                 <Text variant="headline" weight="semibold">
                   {e.school}
@@ -158,7 +158,7 @@ function CurriculumVitae() {
           {awards.map((a) => (
             <ListRow
               key={a.title}
-              leading={<Mark logo={a.logo} name={a.title} />}
+              leading={<Mark logo={a.logo} bg={a.logoBg} name={a.title} />}
               title={
                 <Text variant="headline" weight="semibold">
                   {a.title}
@@ -182,7 +182,7 @@ function CurriculumVitae() {
           {extracurricular.map((x) => (
             <ListRow
               key={x.role}
-              leading={<Mark logo={x.logo} name={x.org} />}
+              leading={<Mark logo={x.logo} bg={x.logoBg} name={x.org} />}
               title={
                 <Text variant="headline" weight="semibold">
                   {x.role}

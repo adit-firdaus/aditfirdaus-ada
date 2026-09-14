@@ -13,11 +13,11 @@ function me({
   actions: o = [],
   title: n,
   description: i,
-  cancelLabel: s = "Cancel",
-  anchorRef: l,
+  cancelLabel: l = "Cancel",
+  anchorRef: s,
   className: m
 }) {
-  const u = B(null), d = B(null), h = ta(), v = r ?? o, p = va(), [_, y] = U(null), k = oa(), E = Sa(a, k ? 0 : se), b = p, $ = _ !== null, P = () => {
+  const u = B(null), y = B(null), g = ta(), v = r ?? o, p = va(), [_, d] = U(null), k = oa(), E = Sa(a, k ? 0 : se), b = p, $ = _ !== null, P = () => {
     var f;
     return Array.from(
       ((f = u.current) == null ? void 0 : f.querySelectorAll(
@@ -28,16 +28,16 @@ function me({
   Y(() => {
     var w;
     if (!a) return;
-    d.current = document.activeElement;
+    y.current = document.activeElement;
     const f = document.body, c = f.style.overflow;
     return b || (f.style.overflow = "hidden"), (w = P()[0]) == null || w.focus(), () => {
       var M, z;
-      f.style.overflow = c, (z = (M = d.current) == null ? void 0 : M.focus) == null || z.call(M);
+      f.style.overflow = c, (z = (M = y.current) == null ? void 0 : M.focus) == null || z.call(M);
     };
   }, [a, b]), ce(() => {
-    const f = u.current, c = l == null ? void 0 : l.current;
+    const f = u.current, c = s == null ? void 0 : s.current;
     if (!a || !b || !f || !c) {
-      y(null);
+      d(null);
       return;
     }
     const w = () => {
@@ -51,7 +51,7 @@ function me({
           Math.max(Da, window.innerWidth - S - Da)
         )
       };
-      y(
+      d(
         (F) => F && F.top === j.top && F.left === j.left && F.side === j.side ? F : j
       );
     }, M = (z) => {
@@ -60,7 +60,7 @@ function me({
     return w(), window.addEventListener("resize", w), window.addEventListener("scroll", M, !0), () => {
       window.removeEventListener("resize", w), window.removeEventListener("scroll", M, !0);
     };
-  }, [a, b, l, v.length]);
+  }, [a, b, s, v.length]);
   const D = (f) => {
     var S;
     if (f.key === "Escape") {
@@ -93,14 +93,14 @@ function me({
     f.target === f.currentTarget && t();
   };
   if (!E) return null;
-  const g = b ? "menu" : "sheet", x = n ? `${h}-title` : void 0;
+  const h = b ? "menu" : "sheet", x = n ? `${g}-title` : void 0;
   return /* @__PURE__ */ e(
     "div",
     {
       className: "may-action-sheet__scrim",
       "data-slot": "scrim",
       "data-state": a ? "open" : "closed",
-      "data-presentation": g,
+      "data-presentation": h,
       onMouseDown: A,
       onKeyDown: D,
       children: /* @__PURE__ */ T(
@@ -110,11 +110,11 @@ function me({
           role: b ? "menu" : "dialog",
           "aria-modal": b ? void 0 : "true",
           "aria-labelledby": x,
-          "aria-describedby": i ? `${h}-description` : void 0,
+          "aria-describedby": i ? `${g}-description` : void 0,
           tabIndex: -1,
           "data-slot": "action-sheet",
           "data-state": a ? "open" : "closed",
-          "data-presentation": g,
+          "data-presentation": h,
           "data-anchored": $ ? "true" : void 0,
           "data-side": _ == null ? void 0 : _.side,
           style: _ ? { top: _.top, left: _.left } : void 0,
@@ -122,8 +122,8 @@ function me({
           children: [
             /* @__PURE__ */ T("div", { className: "may-action-sheet__group", "data-slot": "scroll-area", children: [
               (n || i) && /* @__PURE__ */ T("div", { className: "may-action-sheet__header", children: [
-                n && /* @__PURE__ */ e("span", { className: "may-action-sheet__title", id: `${h}-title`, children: n }),
-                i && /* @__PURE__ */ e("span", { className: "may-action-sheet__description", id: `${h}-description`, children: i })
+                n && /* @__PURE__ */ e("span", { className: "may-action-sheet__title", id: `${g}-title`, children: n }),
+                i && /* @__PURE__ */ e("span", { className: "may-action-sheet__description", id: `${g}-description`, children: i })
               ] }),
               v.map((f, c) => /* @__PURE__ */ e(
                 de,
@@ -135,7 +135,7 @@ function me({
                 `${f.label}-${c}`
               ))
             ] }),
-            !b && /* @__PURE__ */ e("div", { className: "may-action-sheet__group may-action-sheet__group--cancel", children: /* @__PURE__ */ e(ye, { label: s, onClose: t }) })
+            !b && /* @__PURE__ */ e("div", { className: "may-action-sheet__group may-action-sheet__group--cancel", children: /* @__PURE__ */ e(ye, { label: l, onClose: t }) })
           ]
         }
       )
@@ -178,18 +178,18 @@ function ye({ label: a, onClose: t }) {
     }
   );
 }
-const pe = R("ActionSheet", ie), ue = [pe], ms = C("ActionSheet", me, ue), ve = ".may-grid{--may-grid-gap: var(--may-space-0);--may-grid-columns: 1;--may-grid-min: var(--may-space-20);display:grid;gap:var(--may-grid-gap);grid-template-columns:repeat(var(--may-grid-columns),minmax(0,1fr));min-width:0}.may-grid[data-auto-fill=true]{grid-template-columns:repeat(auto-fill,minmax(min(var(--may-grid-min),100%),1fr))}", he = (a) => `var(--may-space-${a})`, ge = Z(function({ columns: t = 1, minColumnWidth: r, gap: o = 0, className: n, style: i, children: s, ...l }, m) {
-  const u = r !== void 0, d = { "--may-grid-gap": he(o) };
-  return u ? d["--may-grid-min"] = typeof r == "number" ? `${r}px` : String(r) : d["--may-grid-columns"] = String(t), /* @__PURE__ */ e(
+const pe = R("ActionSheet", ie), ue = [pe], ms = C("ActionSheet", me, ue), ve = ".may-grid{--may-grid-gap: var(--may-space-0);--may-grid-columns: 1;--may-grid-min: var(--may-space-20);display:grid;gap:var(--may-grid-gap);grid-template-columns:repeat(var(--may-grid-columns),minmax(0,1fr));min-width:0}.may-grid[data-auto-fill=true]{grid-template-columns:repeat(auto-fill,minmax(min(var(--may-grid-min),100%),1fr))}", he = (a) => `var(--may-space-${a})`, ge = Z(function({ columns: t = 1, minColumnWidth: r, gap: o = 0, className: n, style: i, children: l, ...s }, m) {
+  const u = r !== void 0, y = { "--may-grid-gap": he(o) };
+  return u ? y["--may-grid-min"] = typeof r == "number" ? `${r}px` : String(r) : y["--may-grid-columns"] = String(t), /* @__PURE__ */ e(
     "div",
     {
-      ...l,
+      ...s,
       ref: m,
       "data-slot": "grid",
       "data-auto-fill": u ? "true" : void 0,
       className: I("may-grid", n),
-      style: { ...d, ...i },
-      children: s
+      style: { ...y, ...i },
+      children: l
     }
   );
 }), fe = R("Grid", ve), be = [fe], ds = C("Grid", ge, be), _e = '.may-icon-button{flex-shrink:0}.may-button.may-icon-button[data-size]{padding-inline:0}.may-icon-button[data-size=xs]{width:var(--may-control-h-xs)}.may-icon-button[data-size=sm]{width:var(--may-control-h-sm)}.may-icon-button[data-size=md]{width:var(--may-control-h-md)}.may-icon-button[data-size=lg]{width:var(--may-control-h-lg)}.may-icon-button[data-round=true][data-size]{border-radius:var(--may-radius-full)}.may-icon-button__glyph{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}.may-icon-button__glyph>svg,.may-icon-button__glyph>svg[width="1em"]{width:1.25em;height:1.25em;display:block}.may-icon-button[data-size=xs]:after,.may-icon-button[data-size=sm]:after{content:"";position:absolute;inset-inline-start:50%;inset-block-start:50%;width:var(--may-control-h);height:var(--may-control-h);transform:translate(-50%,-50%)}', Oa = ".may-button{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:var(--may-space-2);border:0;border-radius:var(--may-radius-full);font-family:inherit;font-size:var(--may-text-body);font-weight:600;letter-spacing:var(--may-text-headline-tracking);line-height:1;white-space:nowrap;cursor:pointer;background:transparent;transition:background-color var(--may-duration-color) var(--may-ease-out),color var(--may-duration-color) var(--may-ease-out),opacity var(--may-duration-fast) var(--may-ease-out),transform var(--may-duration-settle) var(--may-spring-bouncy)}.may-button:disabled{cursor:not-allowed;opacity:.35}.may-button[data-tone=tint]{--may-btn-solid: var(--may-color-primary);--may-btn-on-solid: var(--may-color-on-primary);--may-btn-text: var(--may-color-tint)}.may-button[data-tone=neutral]{--may-btn-solid: var(--may-label);--may-btn-on-solid: var(--may-bg-elevated);--may-btn-text: var(--may-color-text)}.may-button[data-tone=danger]{--may-btn-solid: var(--may-color-destructive);--may-btn-on-solid: var(--may-color-on-destructive);--may-btn-text: var(--may-color-danger)}.may-button[data-tone=success]{--may-btn-solid: var(--may-color-success);--may-btn-on-solid: var(--may-on-color);--may-btn-text: var(--may-color-success)}.may-button[data-tone=warning]{--may-btn-solid: var(--may-color-warning);--may-btn-on-solid: var(--may-label);--may-btn-text: var(--may-color-warning)}.may-button[data-variant=filled]{background:var(--may-btn-solid);color:var(--may-btn-on-solid)}.may-button[data-variant=tinted]{background:color-mix(in srgb,var(--may-btn-solid) 14%,transparent);color:var(--may-btn-text)}.may-button[data-variant=gray]{background:var(--may-color-fill-tertiary);color:var(--may-btn-text)}.may-button[data-variant=plain]{background:transparent;color:var(--may-btn-text)}@media(hover:hover)and (pointer:fine){.may-button[data-variant=filled]:hover:not(:disabled){background:color-mix(in srgb,var(--may-btn-solid) 88%,var(--may-label))}.may-button[data-variant=tinted]:hover:not(:disabled){background:color-mix(in srgb,var(--may-btn-solid) 22%,transparent)}.may-button[data-variant=gray]:hover:not(:disabled){background:var(--may-color-fill-secondary)}.may-button[data-variant=plain]:hover:not(:disabled){background:var(--may-color-fill-quaternary)}}.may-button[data-size=xs]{height:var(--may-control-h-xs);padding-inline:var(--may-space-3);font-size:var(--may-text-footnote);gap:var(--may-space-1)}.may-button[data-size=sm]{height:var(--may-control-h-sm);padding-inline:var(--may-space-4);font-size:var(--may-text-subheadline)}.may-button[data-size=md]{height:var(--may-control-h-md);padding-inline:var(--may-space-5)}.may-button[data-size=lg]{height:var(--may-control-h-lg);padding-inline:var(--may-space-6)}.may-button--pill{border-radius:var(--may-radius-full)}.may-button--full{width:100%}.may-button:has(>.may-button__icon){padding-inline:var(--may-space-4)}.may-button__icon{display:inline-flex;align-items:center;flex-shrink:0}.may-button__icon>svg{width:1.15em;height:1.15em;display:block}.may-button__label{display:inline-flex;align-items:center;justify-content:center;gap:var(--may-space-2)}.may-button__spinner{width:1.05em;height:1.05em;flex-shrink:0;border-radius:var(--may-radius-full);border:2px solid currentColor;border-top-color:transparent;animation:may-spin .7s linear infinite}@keyframes may-spin{to{transform:rotate(360deg)}}", xe = Z(function({
@@ -198,36 +198,36 @@ const pe = R("ActionSheet", ie), ue = [pe], ms = C("ActionSheet", me, ue), ve = 
   variant: o = "plain",
   tone: n = "tint",
   size: i = "md",
-  round: s = !1,
-  loading: l = !1,
+  round: l = !1,
+  loading: s = !1,
   disabled: m,
   className: u,
-  type: d = "button",
-  ...h
+  type: y = "button",
+  ...g
 }, v) {
-  const p = m || l, { pressProps: _ } = W(p), y = (E) => l ? /* @__PURE__ */ e("span", { className: "may-button__spinner", "aria-hidden": !0 }) : /* @__PURE__ */ e("span", { className: "may-icon-button__glyph", "aria-hidden": !0, children: E }), k = {
+  const p = m || s, { pressProps: _ } = W(p), d = (E) => s ? /* @__PURE__ */ e("span", { className: "may-button__spinner", "aria-hidden": !0 }) : /* @__PURE__ */ e("span", { className: "may-icon-button__glyph", "aria-hidden": !0, children: E }), k = {
     "data-slot": "icon-button",
     "data-variant": o,
     "data-tone": n,
     "data-size": i,
-    "data-round": s ? "true" : void 0,
+    "data-round": l ? "true" : void 0,
     className: I("may-button", "may-icon-button", "may-pressable", "may-hoverable", u)
   };
   return r ? st(
     t,
-    { ...h, ..._, ref: v, ...k, "aria-busy": l || void 0, "aria-disabled": p || void 0 },
-    y
+    { ...g, ..._, ref: v, ...k, "aria-busy": s || void 0, "aria-disabled": p || void 0 },
+    d
   ) : /* @__PURE__ */ e(
     "button",
     {
-      ...h,
+      ...g,
       ..._,
       ref: v,
-      type: d,
+      type: y,
       disabled: p,
-      "aria-busy": l || void 0,
+      "aria-busy": s || void 0,
       ...k,
-      children: y(t)
+      children: d(t)
     }
   );
 }), we = R("IconButton", _e), ke = R("Button", Oa), ze = [ke, we], ys = C("IconButton", xe, ze), Ne = ".may-segmented{position:relative;display:inline-flex;width:fit-content;align-items:stretch;padding:2px;border-radius:var(--may-radius-full);isolation:isolate;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}.may-segmented__track{position:absolute;top:0;right:0;bottom:0;left:0;z-index:-1;border-radius:inherit;background:var(--may-color-fill-tertiary)}.may-segmented--full{display:flex;width:100%}.may-segmented.may-segmented--full .may-segmented__segment{flex:1 1 0}.may-segmented__thumb-layout{position:absolute;top:0;right:0;bottom:0;left:0;z-index:2;pointer-events:none}.may-segmented__thumb{position:absolute;top:0;right:0;bottom:0;left:0;display:grid;place-items:center;overflow:hidden;border-radius:var(--may-radius-full);background:var(--may-color-primary);color:var(--may-color-on-primary);font-weight:600;box-shadow:var(--may-shadow-2xs)}.may-segmented__thumb-label{max-width:100%;overflow:hidden;padding-inline:var(--may-space-1);text-overflow:ellipsis;white-space:nowrap}.may-segmented[data-dragging=true] .may-segmented__thumb{box-shadow:var(--may-shadow-xs)}.may-segmented .may-segmented__segment{position:relative;z-index:1;flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;min-width:0;padding-inline:var(--may-space-4);border:0;border-radius:var(--may-radius-full);background:transparent;color:var(--may-color-text-secondary);font:inherit;font-weight:500;white-space:nowrap;cursor:pointer}.may-segmented__label{position:relative;z-index:1;transition:opacity var(--may-duration-fast) var(--may-ease-out)}.may-segmented[data-dragging=true] .may-segmented__segment[aria-selected=true]{color:var(--may-color-text-secondary)}.may-segmented[data-dragging=true] .may-segmented__segment[data-hit=true]{color:var(--may-color-on-primary)}.may-segmented__segment[aria-selected=true]{z-index:2;color:var(--may-color-on-primary);font-weight:600}.may-segmented__segment[aria-selected=true]>.may-segmented__label{opacity:0}.may-segmented[data-dragging=true] .may-segmented__segment[aria-selected=true]>.may-segmented__label{opacity:1}.may-segmented[data-dragging=true] .may-segmented__segment[data-hit=true]>.may-segmented__label{opacity:0}.may-segmented__segment:disabled{opacity:.35;cursor:not-allowed}.may-segmented[data-dragging=true] .may-segmented__segment{cursor:grabbing}.may-segmented[data-size=sm]{height:var(--may-control-h-sm)}.may-segmented[data-size=sm] .may-segmented__segment{font-size:var(--may-text-footnote)}.may-segmented[data-size=md]{height:var(--may-control-h-md)}.may-segmented[data-size=md] .may-segmented__segment{font-size:var(--may-text-subheadline)}.may-segmented[data-size=lg]{height:var(--may-control-h-lg)}.may-segmented[data-size=lg] .may-segmented__segment{font-size:var(--may-text-body)}", lt = 1.16, $e = 4, Xa = { type: "tween", duration: 0.22, ease: Ut }, Se = { type: "tween", duration: 0.14, ease: "easeOut" }, Ee = {
@@ -241,16 +241,16 @@ function Ae({
   onValueChange: o,
   size: n = "md",
   fullWidth: i = !1,
-  className: s,
-  ...l
+  className: l,
+  ...s
 }) {
   var S;
-  const [m, u] = U(r ?? ((S = a[0]) == null ? void 0 : S.value)), [d, h] = U(!1), [v, p] = U(null), _ = t ?? m, y = ta(), k = B(null), E = B([]), b = B(-1), $ = B(null), P = qt(), D = Math.max(
+  const [m, u] = U(r ?? ((S = a[0]) == null ? void 0 : S.value)), [y, g] = U(!1), [v, p] = U(null), _ = t ?? m, d = ta(), k = B(null), E = B([]), b = B(-1), $ = B(null), P = qt(), D = Math.max(
     0,
     a.findIndex((N) => N.value === _)
   ), A = (N) => {
     N !== _ && (t === void 0 && u(N), o == null || o(N));
-  }, g = () => {
+  }, h = () => {
     var N;
     E.current = [...((N = k.current) == null ? void 0 : N.querySelectorAll(".may-segmented__segment")) ?? []].map((L, j) => {
       const F = L.getBoundingClientRect();
@@ -261,7 +261,7 @@ function Ae({
     return ((L = E.current.find(({ left: j, right: F }) => N >= j && N <= F)) == null ? void 0 : L.index) ?? -1;
   }, f = (N, L) => {
     var j;
-    (j = a[L]) != null && j.disabled || (g(), b.current = L, $.current = { index: L, x: N.clientX, y: N.clientY });
+    (j = a[L]) != null && j.disabled || (h(), b.current = L, $.current = { index: L, x: N.clientX, y: N.clientY });
   }, c = (N) => {
     const L = $.current;
     L && (Math.hypot(N.clientX - L.x, N.clientY - L.y) < $e || ($.current = null, p(L.index), P.start(N, { snapToCursor: !0 })));
@@ -274,7 +274,7 @@ function Ae({
   }, z = () => {
     var L;
     const N = b.current;
-    h(!1), p(null), N >= 0 && !((L = a[N]) != null && L.disabled) && A(a[N].value);
+    g(!1), p(null), N >= 0 && !((L = a[N]) != null && L.disabled) && A(a[N].value);
   }, O = (N) => {
     var F, q, H;
     const L = N.key === "ArrowRight" ? 1 : N.key === "ArrowLeft" ? -1 : 0;
@@ -285,16 +285,16 @@ function Ae({
       ;
     A(a[j].value), (H = (q = k.current) == null ? void 0 : q.querySelectorAll(".may-segmented__segment")[j]) == null || H.focus();
   };
-  return /* @__PURE__ */ e(Ht, { reducedMotion: "user", children: /* @__PURE__ */ e(Gt, { id: y, children: /* @__PURE__ */ T(
+  return /* @__PURE__ */ e(Ht, { reducedMotion: "user", children: /* @__PURE__ */ e(Gt, { id: d, children: /* @__PURE__ */ T(
     ga.div,
     {
-      ...l,
+      ...s,
       ref: k,
       role: "tablist",
       "data-slot": "segmented",
       "data-size": n,
-      "data-dragging": d ? "true" : void 0,
-      className: I("may-segmented", i && "may-segmented--full", s),
+      "data-dragging": y ? "true" : void 0,
+      className: I("may-segmented", i && "may-segmented--full", l),
       onKeyDown: O,
       onPointerMove: c,
       onPointerUp: w,
@@ -307,7 +307,7 @@ function Ae({
           ga.span,
           {
             className: "may-segmented__track",
-            animate: { scale: d ? 0.98 : 1 },
+            animate: { scale: y ? 0.98 : 1 },
             transition: Xa,
             "aria-hidden": !0
           }
@@ -322,7 +322,7 @@ function Ae({
               "aria-selected": N.value === _,
               tabIndex: N.value === _ ? 0 : -1,
               disabled: N.disabled,
-              "data-hit": d && v === L ? "true" : void 0,
+              "data-hit": y && v === L ? "true" : void 0,
               onPointerDown: (F) => f(F, L),
               onClick: () => A(N.value),
               className: "may-segmented__segment",
@@ -330,7 +330,7 @@ function Ae({
                 L === D && /* @__PURE__ */ e(
                   ga.span,
                   {
-                    layoutId: `may-segmented-thumb-${y}`,
+                    layoutId: `may-segmented-thumb-${d}`,
                     className: "may-segmented__thumb-layout",
                     transition: { layout: Xa },
                     "aria-hidden": !0,
@@ -348,7 +348,7 @@ function Ae({
                         dragMomentum: !1,
                         dragSnapToOrigin: !0,
                         whileDrag: { scale: lt },
-                        onDragStart: () => h(!0),
+                        onDragStart: () => g(!0),
                         onDrag: M,
                         onDragEnd: z,
                         children: /* @__PURE__ */ e("span", { className: "may-segmented__thumb-label", children: (j = a[v ?? D]) == null ? void 0 : j.label })
@@ -372,17 +372,17 @@ const Te = R("SegmentedControl", Ne), Ie = [Te], ps = C("SegmentedControl", Ae, 
   align: o = "stretch",
   justify: n = "start",
   wrap: i = !1,
-  fullWidth: s = !1,
-  className: l,
+  fullWidth: l = !1,
+  className: s,
   style: m,
   children: u,
-  ...d
-}, h) {
+  ...y
+}, g) {
   return /* @__PURE__ */ e(
     "div",
     {
-      ...d,
-      ref: h,
+      ...y,
+      ref: g,
       "data-slot": "stack",
       "data-direction": t,
       "data-align": o,
@@ -390,8 +390,8 @@ const Te = R("SegmentedControl", Ne), Ie = [Te], ps = C("SegmentedControl", Ae, 
       className: I(
         "may-stack",
         i && "may-stack--wrap",
-        s && "may-stack--full",
-        l
+        l && "may-stack--full",
+        s
       ),
       style: { "--may-stack-gap": De(r), ...m },
       children: u
@@ -403,27 +403,27 @@ const Te = R("SegmentedControl", Ne), Ie = [Te], ps = C("SegmentedControl", Ae, 
   tone: o = "default",
   weight: n,
   align: i,
-  clamp: s,
-  mono: l = !1,
+  clamp: l,
+  mono: s = !1,
   as: m,
   className: u,
-  style: d,
-  ...h
+  style: y,
+  ...g
 }, v) {
   return /* @__PURE__ */ e(
     m ?? "p",
     {
-      ...h,
+      ...g,
       ref: v,
       "data-slot": "text",
       "data-variant": r,
       "data-tone": o,
       "data-weight": n,
       "data-align": i,
-      "data-mono": l ? "true" : void 0,
-      "data-clamp": s != null ? "true" : void 0,
+      "data-mono": s ? "true" : void 0,
+      "data-clamp": l != null ? "true" : void 0,
       className: I("may-text", u),
-      style: s != null ? { ...d, "--may-txt-clamp": s } : d,
+      style: l != null ? { ...y, "--may-txt-clamp": l } : y,
       children: t
     }
   );
@@ -433,21 +433,21 @@ const Te = R("SegmentedControl", Ne), Ie = [Te], ps = C("SegmentedControl", Ae, 
   variant: o = "filled",
   tone: n = "tint",
   size: i = "md",
-  pill: s = !1,
-  loading: l = !1,
+  pill: l = !1,
+  loading: s = !1,
   fullWidth: m = !1,
   leadingIcon: u,
-  trailingIcon: d,
-  disabled: h,
+  trailingIcon: y,
+  disabled: g,
   className: v,
   type: p = "button",
   ..._
-}, y) {
-  const k = h || l, { pressProps: E } = W(k), b = (P) => /* @__PURE__ */ T(pa, { children: [
-    l && /* @__PURE__ */ e("span", { className: "may-button__spinner", "aria-hidden": !0 }),
-    u && !l && /* @__PURE__ */ e("span", { className: "may-button__icon", "aria-hidden": !0, children: u }),
+}, d) {
+  const k = g || s, { pressProps: E } = W(k), b = (P) => /* @__PURE__ */ T(pa, { children: [
+    s && /* @__PURE__ */ e("span", { className: "may-button__spinner", "aria-hidden": !0 }),
+    u && !s && /* @__PURE__ */ e("span", { className: "may-button__icon", "aria-hidden": !0, children: u }),
     P != null && /* @__PURE__ */ e("span", { className: "may-button__label", children: P }),
-    d && /* @__PURE__ */ e("span", { className: "may-button__icon", "aria-hidden": !0, children: d })
+    y && /* @__PURE__ */ e("span", { className: "may-button__icon", "aria-hidden": !0, children: y })
   ] }), $ = {
     "data-slot": "button",
     "data-variant": o,
@@ -458,7 +458,7 @@ const Te = R("SegmentedControl", Ne), Ie = [Te], ps = C("SegmentedControl", Ae, 
       "may-button",
       "may-pressable",
       "may-hoverable",
-      s && "may-button--pill",
+      l && "may-button--pill",
       m && "may-button--full",
       v
     )
@@ -468,9 +468,9 @@ const Te = R("SegmentedControl", Ne), Ie = [Te], ps = C("SegmentedControl", Ae, 
     {
       ..._,
       ...E,
-      ref: y,
+      ref: d,
       ...$,
-      "aria-busy": l || void 0,
+      "aria-busy": s || void 0,
       // `disabled` is not a thing on an anchor; announce it instead.
       "aria-disabled": k || void 0
     },
@@ -480,10 +480,10 @@ const Te = R("SegmentedControl", Ne), Ie = [Te], ps = C("SegmentedControl", Ae, 
     {
       ..._,
       ...E,
-      ref: y,
+      ref: d,
       type: p,
       disabled: k,
-      "aria-busy": l || void 0,
+      "aria-busy": s || void 0,
       ...$,
       children: b(t)
     }
@@ -535,10 +535,10 @@ function Ta(a) {
 }
 function Ha(a, t = {}) {
   Xe();
-  const { id: r = `may-toast-${++Ye}`, ...o } = t, n = { ...o, id: r, title: a, createdAt: Date.now() }, i = aa.findIndex((s) => s.id === r);
+  const { id: r = `may-toast-${++Ye}`, ...o } = t, n = { ...o, id: r, title: a, createdAt: Date.now() }, i = aa.findIndex((l) => l.id === r);
   return mt(r), Aa(
     Ta(
-      i === -1 ? aa.concat(n) : aa.map((s) => s.id === r ? n : s)
+      i === -1 ? aa.concat(n) : aa.map((l) => l.id === r ? n : l)
     )
   ), r;
 }
@@ -582,24 +582,24 @@ function cr({
   icon: o,
   action: n,
   duration: i = rr,
-  position: s = "bottom-center",
-  dismissible: l = !0,
+  position: l = "bottom-center",
+  dismissible: s = !0,
   closeButton: m = !0,
   closeLabel: u = "Dismiss",
-  closed: d = !1,
-  onDismiss: h,
+  closed: y = !1,
+  onDismiss: g,
   className: v,
   ...p
 }) {
-  const _ = B(null), [y, k] = U(!1), [E, b] = U(!1), [$, P] = U(!1), [D, A] = U(!1), { pressProps: g } = W(), x = s.startsWith("top") ? "top" : "bottom", f = y || E || $, c = B(h);
+  const _ = B(null), [d, k] = U(!1), [E, b] = U(!1), [$, P] = U(!1), [D, A] = U(!1), { pressProps: h } = W(), x = l.startsWith("top") ? "top" : "bottom", f = d || E || $, c = B(g);
   Y(() => {
-    c.current = h;
+    c.current = g;
   });
   const w = B(i);
   Y(() => {
     w.current = i;
   }, [i]), Y(() => {
-    if (i <= 0 || f || d) return;
+    if (i <= 0 || f || y) return;
     const z = Date.now(), O = setTimeout(() => {
       var S;
       return (S = c.current) == null ? void 0 : S.call(c);
@@ -607,9 +607,9 @@ function cr({
     return () => {
       clearTimeout(O), w.current = Math.max(0, w.current - (Date.now() - z));
     };
-  }, [i, f, d]), Y(() => {
+  }, [i, f, y]), Y(() => {
     const z = _.current;
-    if (!z || !l || d) return;
+    if (!z || !s || y) return;
     let O = !1;
     const S = (F) => {
       var H;
@@ -648,7 +648,7 @@ function cr({
     return z.addEventListener("pointerdown", j), () => {
       z.removeEventListener("pointerdown", S, !0), z.removeEventListener("pointerdown", j), L();
     };
-  }, [l, d, x]);
+  }, [s, y, x]);
   const M = r === "danger";
   return /* @__PURE__ */ T(
     "div",
@@ -660,9 +660,9 @@ function cr({
       "aria-atomic": "true",
       "data-slot": "toast",
       "data-tone": r,
-      "data-position": s,
-      "data-state": d ? "closed" : "open",
-      "data-dismissible": l ? "true" : void 0,
+      "data-position": l,
+      "data-state": y ? "closed" : "open",
+      "data-dismissible": s ? "true" : void 0,
       "data-swiping": $ ? "true" : void 0,
       "data-entered": D ? "true" : void 0,
       className: I("may-toast", v),
@@ -697,10 +697,10 @@ function cr({
             children: n.label
           }
         ),
-        l && m && /* @__PURE__ */ e(
+        s && m && /* @__PURE__ */ e(
           "button",
           {
-            ...g,
+            ...h,
             type: "button",
             onClick: () => {
               var z;
@@ -724,35 +724,35 @@ function vr({
   align: o = "between",
   separator: n = !1,
   variant: i,
-  safeArea: s = !1,
-  className: l,
+  safeArea: l = !1,
+  className: s,
   onKeyDown: m,
   ...u
 }) {
-  const d = B(null), h = i ?? (r ? "surface" : "plain"), v = (p) => {
+  const y = B(null), g = i ?? (r ? "surface" : "plain"), v = (p) => {
     var $;
     if (m == null || m(p), p.defaultPrevented || p.altKey || p.metaKey || p.ctrlKey) return;
     const _ = p.target;
     if (_.closest(ur)) return;
-    const y = Array.from((($ = d.current) == null ? void 0 : $.querySelectorAll(Ja)) ?? []), k = y.indexOf(_.closest(Ja) ?? _);
-    if (y.length === 0 || k === -1) return;
-    const E = p.key === "ArrowRight" ? 1 : p.key === "ArrowLeft" ? -1 : 0, b = E !== 0 ? (k + E + y.length) % y.length : p.key === "Home" ? 0 : p.key === "End" ? y.length - 1 : -1;
-    b !== -1 && (p.preventDefault(), y[b].focus());
+    const d = Array.from((($ = y.current) == null ? void 0 : $.querySelectorAll(Ja)) ?? []), k = d.indexOf(_.closest(Ja) ?? _);
+    if (d.length === 0 || k === -1) return;
+    const E = p.key === "ArrowRight" ? 1 : p.key === "ArrowLeft" ? -1 : 0, b = E !== 0 ? (k + E + d.length) % d.length : p.key === "Home" ? 0 : p.key === "End" ? d.length - 1 : -1;
+    b !== -1 && (p.preventDefault(), d[b].focus());
   };
   return /* @__PURE__ */ e(
     "div",
     {
       ...u,
-      ref: d,
+      ref: y,
       role: "toolbar",
       "data-slot": "toolbar",
-      "data-variant": h,
+      "data-variant": g,
       "data-placement": t,
       "data-align": o,
       "data-sticky": r ? "true" : void 0,
       "data-separator": n ? "true" : void 0,
-      "data-safe-area": s ? "true" : void 0,
-      className: I("may-toolbar", l),
+      "data-safe-area": l ? "true" : void 0,
+      className: I("may-toolbar", s),
       onKeyDown: v,
       children: a
     }
@@ -779,14 +779,14 @@ function xr({
   size: o = "md",
   shape: n = "circle",
   fallback: i,
-  hue: s,
-  className: l,
+  hue: l,
+  className: s,
   "aria-label": m,
   ...u
 }) {
-  const [d, h] = U(!1);
-  Y(() => h(!1), [t]);
-  const v = !!t && !d, p = a ? br(a) : "", _ = r ?? a ?? m;
+  const [y, g] = U(!1);
+  Y(() => g(!1), [t]);
+  const v = !!t && !y, p = a ? br(a) : "", _ = r ?? a ?? m;
   return /* @__PURE__ */ e(
     "span",
     {
@@ -794,10 +794,10 @@ function xr({
       "data-slot": "avatar",
       "data-size": o,
       "data-shape": n,
-      "data-hue": !v && p ? s ?? _r(a ?? "") : void 0,
+      "data-hue": !v && p ? l ?? _r(a ?? "") : void 0,
       role: !v && _ ? "img" : void 0,
       "aria-label": !v && _ ? _ : void 0,
-      className: I("may-avatar", l),
+      className: I("may-avatar", s),
       children: v ? /* @__PURE__ */ e(
         "img",
         {
@@ -805,7 +805,7 @@ function xr({
           src: t,
           alt: _ ?? "",
           draggable: !1,
-          onError: () => h(!0)
+          onError: () => g(!0)
         }
       ) : p ? /* @__PURE__ */ e("span", { className: "may-avatar__initials", "aria-hidden": !0, children: p }) : /* @__PURE__ */ e("span", { className: "may-avatar__glyph", "aria-hidden": !0, children: i ?? /* @__PURE__ */ e(Yt, { "aria-hidden": !0, focusable: "false" }) })
     }
@@ -820,7 +820,7 @@ function wr({
 }) {
   const i = nt.toArray(a).filter(
     (m) => za(m)
-  ), s = i.slice(0, t), l = i.length - s.length;
+  ), l = i.slice(0, t), s = i.length - l.length;
   return /* @__PURE__ */ T(
     "div",
     {
@@ -829,26 +829,26 @@ function wr({
       "data-size": r,
       className: I("may-avatar-group", o),
       children: [
-        s.map(
+        l.map(
           (m, u) => it(m, { key: u, size: m.props.size ?? r })
         ),
-        l > 0 && /* @__PURE__ */ e(
+        s > 0 && /* @__PURE__ */ e(
           "span",
           {
             "data-slot": "avatar-more",
             "data-size": r,
             "data-shape": "circle",
             className: "may-avatar may-avatar--more",
-            "aria-label": `${l} more`,
+            "aria-label": `${s} more`,
             role: "img",
-            children: `+${l}`
+            children: `+${s}`
           }
         )
       ]
     }
   );
 }
-const kr = R("Avatar", fr), pt = [kr], ws = C("Avatar", xr, pt), ks = C("AvatarGroup", wr, pt), ut = '.may-list-group{display:flex;flex-direction:column;width:100%;min-width:0}.may-list__header{padding:var(--may-space-4) var(--may-space-4) var(--may-space-2);font-size:var(--may-text-footnote);line-height:var(--may-text-footnote-leading);letter-spacing:.06em;text-transform:uppercase;color:var(--may-color-text-secondary)}.may-list__footer{padding:var(--may-space-2) var(--may-space-4) var(--may-space-4);font-size:var(--may-text-footnote);line-height:var(--may-text-footnote-leading);color:var(--may-color-text-secondary)}.may-list{display:flex;flex-direction:column;min-width:0;background:var(--may-color-surface)}.may-list[data-variant=inset]{border-radius:var(--may-radius-card);overflow:hidden}.may-list-row{position:relative;display:flex;align-items:center;gap:var(--may-space-3);width:100%;min-height:var(--may-control-h);padding:var(--may-space-2) var(--may-space-4);border:0;background:transparent;color:var(--may-color-text);font:inherit;text-align:start;transition:background-color var(--may-duration-color) var(--may-ease-out)}button.may-list-row{cursor:pointer}button.may-list-row:disabled{cursor:not-allowed;opacity:.4}.may-list-row+.may-list-row:before{content:"";position:absolute;inset-block-start:0;inset-inline-start:var(--may-space-4);inset-inline-end:0;height:1px;background:var(--may-color-separator)}.may-list-row:has(.may-list-row__leading)+.may-list-row:before{inset-inline-start:calc(var(--may-space-4) * 2 + var(--may-list-leading-w, 29px))}@media(min-resolution:2dppx){.may-list-row+.may-list-row:before{height:var(--may-hairline)}}.may-list-row[data-pressed=true]{background:var(--may-color-highlight-strong)}@media(hover:hover)and (pointer:fine){button.may-list-row:hover:not(:disabled){background:var(--may-color-highlight)}}.may-list-row__leading{display:inline-flex;align-items:center;flex-shrink:0}.may-list-row__text{display:flex;flex-direction:column;gap:1px;min-width:0;flex:1}.may-list-row__title{font-size:var(--may-text-body);line-height:var(--may-text-body-leading);letter-spacing:var(--may-text-body-tracking);color:var(--may-color-text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.may-list-row[data-destructive=true] .may-list-row__title{color:var(--may-color-danger)}.may-list-row__subtitle{font-size:var(--may-text-footnote);line-height:var(--may-text-footnote-leading);color:var(--may-color-text-secondary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.may-list-row__detail{font-size:var(--may-text-body);color:var(--may-color-text-secondary);max-width:45%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex-shrink:0}.may-list-row__accessory{display:inline-flex;align-items:center;flex-shrink:0}.may-list-row__chevron{width:14px;height:14px;flex-shrink:0;color:var(--may-color-text-tertiary)}';
+const kr = R("Avatar", fr), pt = [kr], ws = C("Avatar", xr, pt), ks = C("AvatarGroup", wr, pt), ut = '.may-list-group{display:flex;flex-direction:column;width:100%;min-width:0}.may-list__header{padding:var(--may-space-4) var(--may-space-4) var(--may-space-2);font-size:var(--may-text-footnote);line-height:var(--may-text-footnote-leading);letter-spacing:.06em;text-transform:uppercase;color:var(--may-color-text-secondary)}.may-list__footer{padding:var(--may-space-2) var(--may-space-4) var(--may-space-4);font-size:var(--may-text-footnote);line-height:var(--may-text-footnote-leading);color:var(--may-color-text-secondary)}.may-list{display:flex;flex-direction:column;min-width:0;background:var(--may-color-surface)}.may-list[data-variant=inset]{border-radius:var(--may-radius-card);overflow:hidden}.may-list-row{position:relative;display:flex;align-items:center;gap:var(--may-space-3);width:100%;min-height:var(--may-control-h);padding:var(--may-space-2) var(--may-space-4);border:0;background:transparent;color:var(--may-color-text);font:inherit;text-align:start;transition:background-color var(--may-duration-color) var(--may-ease-out)}.may-list-row[data-align=top]{align-items:flex-start}.may-list-row[data-align=top] .may-list-row__leading,.may-list-row[data-align=top] .may-list-row__detail,.may-list-row[data-align=top] .may-list-row__accessory{margin-block-start:1px;align-items:flex-start}button.may-list-row{cursor:pointer}button.may-list-row:disabled{cursor:not-allowed;opacity:.4}.may-list-row+.may-list-row:before{content:"";position:absolute;inset-block-start:0;inset-inline-start:var(--may-space-4);inset-inline-end:0;height:1px;background:var(--may-color-separator)}.may-list-row:has(.may-list-row__leading)+.may-list-row:before{inset-inline-start:calc(var(--may-space-4) * 2 + var(--may-list-leading-w, 29px))}@media(min-resolution:2dppx){.may-list-row+.may-list-row:before{height:var(--may-hairline)}}.may-list-row[data-pressed=true]{background:var(--may-color-highlight-strong)}@media(hover:hover)and (pointer:fine){button.may-list-row:hover:not(:disabled){background:var(--may-color-highlight)}}.may-list-row__leading{display:inline-flex;align-items:center;flex-shrink:0}.may-list-row__text{display:flex;flex-direction:column;gap:1px;min-width:0;flex:1}.may-list-row__title{font-size:var(--may-text-body);line-height:var(--may-text-body-leading);letter-spacing:var(--may-text-body-tracking);color:var(--may-color-text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.may-list-row[data-destructive=true] .may-list-row__title{color:var(--may-color-danger)}.may-list-row__subtitle{font-size:var(--may-text-footnote);line-height:var(--may-text-footnote-leading);color:var(--may-color-text-secondary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.may-list-row__detail{font-size:var(--may-text-body);color:var(--may-color-text-secondary);max-width:45%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex-shrink:0}.may-list-row__accessory{display:inline-flex;align-items:center;flex-shrink:0}.may-list-row__chevron{width:14px;height:14px;flex-shrink:0;color:var(--may-color-text-tertiary)}';
 function vt({
   children: a,
   header: t,
@@ -870,13 +870,14 @@ function ht({
   detail: o,
   accessory: n,
   onClick: i,
-  chevron: s,
-  destructive: l = !1,
-  disabled: m = !1,
-  className: u,
-  ...d
+  chevron: l,
+  align: s = "center",
+  destructive: m = !1,
+  disabled: u = !1,
+  className: y,
+  ...g
 }) {
-  const h = !!i, v = s ?? (h && !n), { pressProps: p } = W(m || !h), _ = /* @__PURE__ */ T(pa, { children: [
+  const v = !!i, p = l ?? (v && !n), { pressProps: _ } = W(u || !v), d = /* @__PURE__ */ T(pa, { children: [
     r && /* @__PURE__ */ e("span", { className: "may-list-row__leading", children: r }),
     /* @__PURE__ */ T("span", { className: "may-list-row__text", children: [
       /* @__PURE__ */ e("span", { className: "may-list-row__title", children: a }),
@@ -884,25 +885,26 @@ function ht({
     ] }),
     o && /* @__PURE__ */ e("span", { className: "may-list-row__detail", children: o }),
     n && /* @__PURE__ */ e("span", { className: "may-list-row__accessory", children: n }),
-    v && /* @__PURE__ */ e(Ba, { className: "may-list-row__chevron", "aria-hidden": !0, focusable: "false" })
-  ] }), y = {
+    p && /* @__PURE__ */ e(Ba, { className: "may-list-row__chevron", "aria-hidden": !0, focusable: "false" })
+  ] }), k = {
     "data-slot": "list-row",
-    "data-destructive": l ? "true" : void 0,
-    className: I("may-list-row", h && "may-hoverable", u),
+    "data-align": s === "center" ? void 0 : s,
+    "data-destructive": m ? "true" : void 0,
+    className: I("may-list-row", v && "may-hoverable", y),
     role: "listitem"
   };
-  return h ? /* @__PURE__ */ e(
+  return v ? /* @__PURE__ */ e(
     "button",
     {
-      ...d,
-      ...y,
-      ...p,
+      ...g,
+      ...k,
+      ..._,
       type: "button",
       onClick: i,
-      disabled: m,
-      children: _
+      disabled: u,
+      children: d
     }
-  ) : /* @__PURE__ */ e("div", { ...d, ...y, children: _ });
+  ) : /* @__PURE__ */ e("div", { ...g, ...k, children: d });
 }
 const zr = R("List", ut), gt = [zr], zs = C("List", vt, gt), Ns = C("ListRow", ht, gt), Nr = ".may-search{--may-search-cancel-w: 0px;display:inline-flex;align-items:center;min-width:0;max-width:100%}.may-search--full{display:flex;width:100%}.may-search__field{position:relative;display:flex;align-items:center;flex:1 1 auto;min-width:0;padding-inline:var(--may-space-3);border-radius:var(--may-radius-full);background:var(--may-color-fill-tertiary);color:var(--may-color-text);font-size:var(--may-text-body);line-height:var(--may-text-body-leading);letter-spacing:var(--may-text-body-tracking);cursor:text;box-shadow:0 0 0 0 transparent;transition:background-color var(--may-duration-color) var(--may-ease-out),box-shadow var(--may-duration-settle) var(--may-spring-snappy)}.may-search__field:focus-within{background:var(--may-color-fill-quaternary);box-shadow:0 0 0 var(--may-space-1) color-mix(in srgb,var(--may-color-ring) 28%,transparent)}.may-search[data-invalid=true] .may-search__field{box-shadow:0 0 0 2px color-mix(in srgb,var(--may-color-danger) 45%,transparent)}.may-search[data-invalid=true] .may-search__field:focus-within{box-shadow:0 0 0 var(--may-space-1) color-mix(in srgb,var(--may-color-danger) 40%,transparent)}.may-search[data-disabled=true]{opacity:.4;cursor:not-allowed}@media(hover:hover)and (pointer:fine){.may-search:not([data-disabled=true]) .may-search__field:not(:focus-within):hover{background:var(--may-color-fill-secondary)}}.may-search[data-size=sm] .may-search__field{height:var(--may-control-h-sm);font-size:var(--may-text-subheadline);line-height:var(--may-text-subheadline-leading);letter-spacing:var(--may-text-subheadline-tracking)}.may-search[data-size=md] .may-search__field{height:var(--may-control-h-md)}.may-search[data-size=lg] .may-search__field{height:var(--may-control-h-lg);padding-inline:var(--may-space-4)}.may-search__glyph{width:1.05em;height:1.05em;flex-shrink:0;display:block;margin-inline-end:var(--may-space-2);color:var(--may-color-text-tertiary);transition:color var(--may-duration-color) var(--may-ease-out)}.may-search__field:focus-within .may-search__glyph{color:var(--may-color-text-secondary)}.may-search__control{flex:1;min-width:0;height:100%;margin:0;padding:0;border:0;background:transparent;color:inherit;font:inherit;letter-spacing:inherit;text-overflow:ellipsis;-webkit-appearance:none;-moz-appearance:none;appearance:none}.may-search__control::placeholder{color:var(--may-color-text-tertiary);opacity:1}.may-search__control::-webkit-search-cancel-button,.may-search__control::-webkit-search-decoration{-webkit-appearance:none;-moz-appearance:none;appearance:none;display:none}.may-search__control:focus-visible{outline:none}.may-search__clear-slot{display:flex;align-items:center;flex:0 0 auto;width:0;overflow:hidden;opacity:0;transform:scale(.4);transition:width var(--may-duration-fast) var(--may-ease-out),opacity var(--may-duration-fast) var(--may-ease-out),transform var(--may-duration-settle) var(--may-spring-bouncy)}.may-search__clear-slot[data-visible=true]{width:var(--may-control-h-xs);opacity:1;transform:none}.may-search__clear{display:inline-flex;align-items:center;justify-content:center;width:var(--may-control-h-xs);height:100%;flex:0 0 auto;padding:0;border:0;border-radius:var(--may-radius-full);background:transparent;color:var(--may-color-text-tertiary);cursor:pointer;transition:color var(--may-duration-color) var(--may-ease-out)}.may-search__clear>svg{width:1.05em;height:1.05em;display:block}.may-search__cancel-slot{display:flex;align-items:stretch;flex:0 0 auto;width:0;overflow:hidden;opacity:0;transform:translate(var(--may-space-4));transition:width var(--may-duration-settle) var(--may-ease-standard),opacity var(--may-duration-fast) var(--may-ease-out),transform var(--may-duration-settle) var(--may-spring-snappy)}.may-search[data-cancel=true] .may-search__cancel-slot{width:var(--may-search-cancel-w);opacity:1;transform:none}.may-search__cancel{flex:0 0 auto;display:inline-flex;align-items:center;padding:0 0 0 var(--may-space-3);border:0;background:transparent;color:var(--may-color-tint);font:inherit;font-size:var(--may-text-body);line-height:var(--may-text-body-leading);letter-spacing:var(--may-text-body-tracking);white-space:nowrap;cursor:pointer;transition:color var(--may-duration-color) var(--may-ease-out)}.may-search[data-size=sm] .may-search__cancel{font-size:var(--may-text-subheadline)}@media(hover:hover)and (pointer:fine){.may-search .may-search__clear.may-hoverable:hover:not(:disabled){background:transparent;color:var(--may-color-text-secondary)}.may-search .may-search__cancel.may-hoverable:hover:not(:disabled){background:transparent;color:color-mix(in srgb,var(--may-color-tint) 78%,var(--may-color-text))}}";
 function $r(a, t) {
@@ -914,16 +916,16 @@ const Sr = typeof window > "u" ? Y : sa, Er = Z(function({
   onValueChange: o,
   onSearch: n,
   size: i = "md",
-  cancelable: s = !1,
-  cancelLabel: l = "Cancel",
+  cancelable: l = !1,
+  cancelLabel: s = "Cancel",
   onCancel: m,
   clearLabel: u = "Clear search",
-  invalid: d,
-  fullWidth: h = !1,
+  invalid: y,
+  fullWidth: g = !1,
   wrapperClassName: v,
   className: p,
   placeholder: _ = "Search",
-  id: y,
+  id: d,
   required: k,
   disabled: E,
   onChange: b,
@@ -931,10 +933,10 @@ const Sr = typeof window > "u" ? Y : sa, Er = Z(function({
   onFocus: P,
   onBlur: D,
   "aria-describedby": A,
-  style: g,
+  style: h,
   ...x
 }, f) {
-  const c = Ea({ id: y, invalid: d, required: k, disabled: E, "aria-describedby": A }), [w, M] = U(r ?? ""), [z, O] = U(!1), [S, N] = U(0), L = B(null), j = B(null), F = t ?? w, q = F.length > 0, H = s && (z || q), K = W(!q), Q = W(c.disabled);
+  const c = Ea({ id: d, invalid: y, required: k, disabled: E, "aria-describedby": A }), [w, M] = U(r ?? ""), [z, O] = U(!1), [S, N] = U(0), L = B(null), j = B(null), F = t ?? w, q = F.length > 0, H = l && (z || q), K = W(!q), Q = W(c.disabled);
   Sr(() => {
     const G = j.current;
     if (!G) return;
@@ -942,7 +944,7 @@ const Sr = typeof window > "u" ? Y : sa, Er = Z(function({
     if (Ya(), typeof ResizeObserver > "u") return;
     const Wa = new ResizeObserver(Ya);
     return Wa.observe(G), () => Wa.disconnect();
-  }, [s, l, i]);
+  }, [l, s, i]);
   const J = (G) => {
     t === void 0 && M(G), o == null || o(G);
   }, V = (G) => {
@@ -968,8 +970,8 @@ const Sr = typeof window > "u" ? Y : sa, Er = Z(function({
       "data-cancel": H ? "true" : void 0,
       "data-invalid": c.invalid ? "true" : void 0,
       "data-disabled": c.disabled ? "true" : void 0,
-      className: I("may-search", h && "may-search--full", v),
-      style: { ...It, ...g },
+      className: I("may-search", g && "may-search--full", v),
+      style: { ...It, ...h },
       children: [
         /* @__PURE__ */ T("div", { className: "may-search__field", children: [
           /* @__PURE__ */ e(Wt, { className: "may-search__glyph", "aria-hidden": !0, focusable: "false" }),
@@ -1015,7 +1017,7 @@ const Sr = typeof window > "u" ? Y : sa, Er = Z(function({
             }
           ) })
         ] }),
-        s && /* @__PURE__ */ e("div", { className: "may-search__cancel-slot", children: /* @__PURE__ */ e(
+        l && /* @__PURE__ */ e("div", { className: "may-search__cancel-slot", children: /* @__PURE__ */ e(
           "button",
           {
             ...Q.pressProps,
@@ -1026,14 +1028,14 @@ const Sr = typeof window > "u" ? Y : sa, Er = Z(function({
             onMouseDown: ma,
             onClick: ea,
             className: "may-search__cancel may-pressable may-hoverable",
-            children: l
+            children: s
           }
         ) })
       ]
     }
   );
 }), Ar = R("SearchField", Nr), Tr = [Ar], $s = C("SearchField", Er, Tr), Ir = ".may-separator[data-orientation=horizontal]{width:100%}.may-separator[data-orientation=vertical]{width:1px;height:auto;align-self:stretch;min-height:var(--may-space-4)}@media(min-resolution:2dppx){.may-separator[data-orientation=vertical]{width:var(--may-hairline)}}.may-separator--labelled{display:flex;align-items:center;gap:var(--may-space-3);width:100%}.may-separator__rule{flex:1}.may-separator__label{flex-shrink:0;font-size:var(--may-text-footnote);line-height:var(--may-text-footnote-leading);letter-spacing:var(--may-text-footnote-tracking);font-weight:var(--may-text-footnote-weight);color:var(--may-color-text-secondary)}", Cr = Z(function({ orientation: t = "horizontal", label: r, className: o, ...n }, i) {
-  const s = r != null && t === "horizontal", l = {
+  const l = r != null && t === "horizontal", s = {
     ref: i,
     "data-slot": "separator",
     "data-orientation": t,
@@ -1042,11 +1044,11 @@ const Sr = typeof window > "u" ? Y : sa, Er = Z(function({
     // exception is worth announcing.
     "aria-orientation": t === "vertical" ? "vertical" : void 0
   };
-  return s ? /* @__PURE__ */ T(
+  return l ? /* @__PURE__ */ T(
     "div",
     {
       ...n,
-      ...l,
+      ...s,
       "aria-label": typeof r == "string" ? r : void 0,
       className: I("may-separator", "may-separator--labelled", o),
       children: [
@@ -1059,16 +1061,16 @@ const Sr = typeof window > "u" ? Y : sa, Er = Z(function({
     "div",
     {
       ...n,
-      ...l,
+      ...s,
       className: I("may-separator", "may-hairline", o)
     }
   );
-}), Dr = R("Separator", Ir), Pr = [Dr], Ss = C("Separator", Cr, Pr), Mr = ".may-visually-hidden--focusable:focus-within{position:static;width:auto;height:auto;margin:0;overflow:visible;clip-path:none;white-space:normal;display:inline-block;padding:var(--may-space-2) var(--may-space-3);border-radius:var(--may-radius-sm);background:var(--may-color-surface);box-shadow:var(--may-shadow-md);font-size:var(--may-text-subheadline);line-height:var(--may-text-subheadline-leading)}", Lr = Z(function({ as: t = "span", focusable: r = !1, className: o, children: n, ...i }, s) {
+}), Dr = R("Separator", Ir), Pr = [Dr], Ss = C("Separator", Cr, Pr), Mr = ".may-visually-hidden--focusable:focus-within{position:static;width:auto;height:auto;margin:0;overflow:visible;clip-path:none;white-space:normal;display:inline-block;padding:var(--may-space-2) var(--may-space-3);border-radius:var(--may-radius-sm);background:var(--may-color-surface);box-shadow:var(--may-shadow-md);font-size:var(--may-text-subheadline);line-height:var(--may-text-subheadline-leading)}", Lr = Z(function({ as: t = "span", focusable: r = !1, className: o, children: n, ...i }, l) {
   return /* @__PURE__ */ e(
     t,
     {
       ...i,
-      ref: s,
+      ref: l,
       "data-slot": "visually-hidden",
       className: I(
         "may-sr-only",
@@ -1087,26 +1089,26 @@ function bt({
   trigger: o,
   children: n,
   chevron: i = !0,
-  disabled: s = !1,
-  className: l,
+  disabled: l = !1,
+  className: s,
   triggerClassName: m,
   panelClassName: u,
-  id: d,
-  ...h
+  id: y,
+  ...g
 }) {
-  const [v, p] = U(t), _ = a ?? v, y = ta(d), k = `${y}-panel`, E = `${y}-trigger`, { pressProps: b } = W(s), $ = X(() => {
-    if (s) return;
+  const [v, p] = U(t), _ = a ?? v, d = ta(y), k = `${d}-panel`, E = `${d}-trigger`, { pressProps: b } = W(l), $ = X(() => {
+    if (l) return;
     const P = !_;
     a === void 0 && p(P), r == null || r(P);
-  }, [s, _, a, r]);
+  }, [l, _, a, r]);
   return /* @__PURE__ */ T(
     "div",
     {
-      ...h,
-      id: y,
+      ...g,
+      id: d,
       "data-slot": "collapsible",
       "data-state": _ ? "open" : "closed",
-      className: I("may-collapsible", l),
+      className: I("may-collapsible", s),
       children: [
         /* @__PURE__ */ T(
           "button",
@@ -1114,7 +1116,7 @@ function bt({
             ...b,
             id: E,
             type: "button",
-            disabled: s,
+            disabled: l,
             "aria-expanded": _,
             "aria-controls": k,
             onClick: $,
@@ -1149,27 +1151,27 @@ function Fr({
   defaultValue: o,
   onValueChange: n,
   collapsible: i = !0,
-  variant: s = "inset",
-  header: l,
+  variant: l = "inset",
+  header: s,
   footer: m,
   className: u,
-  ...d
+  ...y
 }) {
-  const [h, v] = U(
+  const [g, v] = U(
     () => t === "single" ? (o ?? []).slice(0, 1) : o ?? []
-  ), p = r ?? h, _ = X(
+  ), p = r ?? g, _ = X(
     (k) => {
       const E = p.includes(k), b = t === "single" ? E ? i ? [] : p : [k] : E ? p.filter(($) => $ !== k) : [...p, k];
       b !== p && (r === void 0 && v(b), n == null || n(b));
     },
     [i, n, p, t, r]
-  ), y = ua(
+  ), d = ua(
     () => ({ openValues: p, toggle: _ }),
     [p, _]
   );
   return /* @__PURE__ */ T("div", { className: I("may-accordion-group", u), children: [
-    l && /* @__PURE__ */ e("div", { className: "may-accordion__section-header", children: l }),
-    /* @__PURE__ */ e(_t.Provider, { value: y, children: /* @__PURE__ */ e("div", { ...d, "data-slot": "accordion", "data-variant": s, className: "may-accordion", children: a }) }),
+    s && /* @__PURE__ */ e("div", { className: "may-accordion__section-header", children: s }),
+    /* @__PURE__ */ e(_t.Provider, { value: d, children: /* @__PURE__ */ e("div", { ...y, "data-slot": "accordion", "data-variant": l, className: "may-accordion", children: a }) }),
     m && /* @__PURE__ */ e("div", { className: "may-accordion__section-footer", children: m })
   ] });
 }
@@ -1180,8 +1182,8 @@ function Or({
   leading: o,
   detail: n,
   children: i,
-  disabled: s = !1,
-  className: l
+  disabled: l = !1,
+  className: s
 }) {
   const m = Na(_t);
   if (!m) throw new Error("<AccordionItem> must be rendered inside <Accordion>");
@@ -1191,13 +1193,13 @@ function Or({
     {
       "data-slot": "accordion-item",
       "data-state": u ? "open" : "closed",
-      className: I("may-accordion__item", l),
+      className: I("may-accordion__item", s),
       children: /* @__PURE__ */ e(
         bt,
         {
           open: u,
           onOpenChange: () => m.toggle(a),
-          disabled: s,
+          disabled: l,
           triggerClassName: "may-accordion__trigger",
           panelClassName: "may-accordion__panel",
           trigger: /* @__PURE__ */ T("span", { className: "may-accordion__row", children: [
@@ -1222,13 +1224,13 @@ function Ur({
   icon: o,
   onDismiss: n,
   dismissLabel: i = "Dismiss",
-  actions: s,
-  role: l,
+  actions: l,
+  role: s,
   className: m,
   ...u
 }) {
-  const [d, h] = U(!1), { pressProps: v } = W(!n), p = o === void 0 ? Yr(a) : o, _ = (y) => {
-    !d || y.target !== y.currentTarget || (n == null || n(), h(!1));
+  const [y, g] = U(!1), { pressProps: v } = W(!n), p = o === void 0 ? Yr(a) : o, _ = (d) => {
+    !y || d.target !== d.currentTarget || (n == null || n(), g(!1));
   };
   return /* @__PURE__ */ e(
     "div",
@@ -1236,8 +1238,8 @@ function Ur({
       ...u,
       "data-slot": "alert",
       "data-tone": a,
-      "data-exiting": d ? "true" : void 0,
-      role: l ?? (a === "danger" ? "alert" : "status"),
+      "data-exiting": y ? "true" : void 0,
+      role: s ?? (a === "danger" ? "alert" : "status"),
       className: I("may-alert", m),
       onAnimationEnd: _,
       children: /* @__PURE__ */ e("div", { className: "may-alert__slot", children: /* @__PURE__ */ T("div", { className: "may-alert__box", children: [
@@ -1245,14 +1247,14 @@ function Ur({
         /* @__PURE__ */ T("div", { className: "may-alert__content", children: [
           t != null && /* @__PURE__ */ e("p", { className: "may-alert__title", children: t }),
           r != null && /* @__PURE__ */ e("div", { className: "may-alert__body", "data-slot": "body", children: r }),
-          s && /* @__PURE__ */ e("div", { className: "may-alert__actions", children: s })
+          l && /* @__PURE__ */ e("div", { className: "may-alert__actions", children: l })
         ] }),
         n && /* @__PURE__ */ e(
           "button",
           {
             ...v,
             type: "button",
-            onClick: () => h(!0),
+            onClick: () => g(!0),
             "aria-label": i,
             className: "may-alert__dismiss may-pressable may-hoverable",
             children: /* @__PURE__ */ e("span", { className: "may-alert__dismiss-chip", "aria-hidden": !0, children: /* @__PURE__ */ e(ha, { focusable: "false" }) })
@@ -1278,41 +1280,41 @@ function Qr({
   confirmLabel: o = "OK",
   cancelLabel: n = "Cancel",
   destructive: i = !1,
-  onConfirm: s,
-  onCancel: l,
+  onConfirm: l,
+  onCancel: s,
   children: m,
   className: u,
-  ...d
+  ...y
 }) {
-  const h = B(null), v = B(null), p = B(null), _ = B(null), y = ta(), k = va(), E = oa(), b = Sa(a, E ? 0 : Zr);
+  const g = B(null), v = B(null), p = B(null), _ = B(null), d = ta(), k = va(), E = oa(), b = Sa(a, E ? 0 : Zr);
   Y(() => {
     if (!b) return;
     _.current = document.activeElement;
-    const A = document.body, g = A.style.overflow, x = A.style.paddingRight, f = window.innerWidth - document.documentElement.clientWidth;
+    const A = document.body, h = A.style.overflow, x = A.style.paddingRight, f = window.innerWidth - document.documentElement.clientWidth;
     A.style.overflow = "hidden", f > 0 && (A.style.paddingRight = `${f}px`);
     const c = i ? p.current : v.current;
     return c == null || c.focus(), () => {
       var w, M;
-      A.style.overflow = g, A.style.paddingRight = x, (M = (w = _.current) == null ? void 0 : w.focus) == null || M.call(w);
+      A.style.overflow = h, A.style.paddingRight = x, (M = (w = _.current) == null ? void 0 : w.focus) == null || M.call(w);
     };
   }, [b, i]);
   const $ = () => {
-    const A = h.current;
+    const A = g.current;
     A && (A.removeAttribute("data-nudge"), A.offsetWidth, A.setAttribute("data-nudge", "true"));
   }, P = (A) => {
     var c;
     if (A.key === "Escape") {
-      A.stopPropagation(), l();
+      A.stopPropagation(), s();
       return;
     }
     if (A.key !== "Tab") return;
-    const g = (c = h.current) == null ? void 0 : c.querySelectorAll(Jr);
-    if (!g || g.length === 0) return;
-    const x = g[0], f = g[g.length - 1];
+    const h = (c = g.current) == null ? void 0 : c.querySelectorAll(Jr);
+    if (!h || h.length === 0) return;
+    const x = h[0], f = h[h.length - 1];
     A.shiftKey && document.activeElement === x ? (A.preventDefault(), f.focus()) : !A.shiftKey && document.activeElement === f && (A.preventDefault(), x.focus());
   }, D = (A) => {
-    var g;
-    A.target === A.currentTarget && ($(), (g = h.current) == null || g.focus());
+    var h;
+    A.target === A.currentTarget && ($(), (h = g.current) == null || h.focus());
   };
   return b ? /* @__PURE__ */ e(
     "div",
@@ -1325,11 +1327,11 @@ function Qr({
       children: /* @__PURE__ */ T(
         "div",
         {
-          ref: h,
+          ref: g,
           role: "alertdialog",
           "aria-modal": "true",
-          "aria-labelledby": `${y}-title`,
-          "aria-describedby": r ? `${y}-description` : void 0,
+          "aria-labelledby": `${d}-title`,
+          "aria-describedby": r ? `${d}-description` : void 0,
           tabIndex: -1,
           "data-slot": "alert-dialog",
           "data-state": a ? "open" : "closed",
@@ -1337,25 +1339,25 @@ function Qr({
           "data-destructive": i ? "true" : void 0,
           onAnimationEnd: () => {
             var A;
-            return (A = h.current) == null ? void 0 : A.removeAttribute("data-nudge");
+            return (A = g.current) == null ? void 0 : A.removeAttribute("data-nudge");
           },
-          ...d,
+          ...y,
           className: I("may-alert-dialog", u),
           children: [
             /* @__PURE__ */ T("div", { className: "may-alert-dialog__content", "data-slot": "scroll-area", children: [
-              /* @__PURE__ */ e("h2", { className: "may-alert-dialog__title", id: `${y}-title`, children: t }),
-              r && /* @__PURE__ */ e("p", { className: "may-alert-dialog__description", id: `${y}-description`, children: r }),
+              /* @__PURE__ */ e("h2", { className: "may-alert-dialog__title", id: `${d}-title`, children: t }),
+              r && /* @__PURE__ */ e("p", { className: "may-alert-dialog__description", id: `${d}-description`, children: r }),
               m
             ] }),
             /* @__PURE__ */ T("div", { className: "may-alert-dialog__actions", children: [
-              /* @__PURE__ */ e(La, { ref: p, variant: "gray", onClick: l, children: n }),
+              /* @__PURE__ */ e(La, { ref: p, variant: "gray", onClick: s, children: n }),
               /* @__PURE__ */ e(
                 La,
                 {
                   ref: v,
                   tone: i ? "danger" : "tint",
                   variant: "filled",
-                  onClick: s,
+                  onClick: l,
                   children: o
                 }
               )
@@ -1374,24 +1376,24 @@ function eo({
   paddingX: o,
   paddingY: n,
   surface: i = "none",
-  radius: s = "none",
-  shadow: l = "none",
+  radius: l = "none",
+  shadow: s = "none",
   fullWidth: m = !1,
   className: u,
-  style: d,
-  ...h
+  style: y,
+  ...g
 }) {
-  const v = a ?? "div", p = n ?? r, _ = o ?? r, y = {};
-  return p !== void 0 && (y["--may-box-pt"] = fa(p), y["--may-box-pb"] = fa(p)), _ !== void 0 && (y["--may-box-pl"] = fa(_), y["--may-box-pr"] = fa(_)), /* @__PURE__ */ e(
+  const v = a ?? "div", p = n ?? r, _ = o ?? r, d = {};
+  return p !== void 0 && (d["--may-box-pt"] = fa(p), d["--may-box-pb"] = fa(p)), _ !== void 0 && (d["--may-box-pl"] = fa(_), d["--may-box-pr"] = fa(_)), /* @__PURE__ */ e(
     v,
     {
-      ...h,
+      ...g,
       "data-slot": "box",
       "data-surface": i,
-      "data-radius": s,
-      "data-shadow": l,
+      "data-radius": l,
+      "data-shadow": s,
       className: I("may-box", m && "may-box--full", u),
-      style: { ...y, ...d },
+      style: { ...d, ...y },
       children: t
     }
   );
@@ -1404,11 +1406,11 @@ function io(a) {
 }
 function so(a, t, { duration: r = 340, easing: o = "var(--may-spring-smooth)", onFinish: n } = {}) {
   const i = [];
-  for (const s of a) {
-    const l = t.get(s), m = s.getBoundingClientRect(), u = Ft(s, o);
-    if (!l) {
+  for (const l of a) {
+    const s = t.get(l), m = l.getBoundingClientRect(), u = Ft(l, o);
+    if (!s) {
       i.push(
-        s.animate([{ opacity: 0, transform: "scale(0.96)" }, { opacity: 1, transform: "none" }], {
+        l.animate([{ opacity: 0, transform: "scale(0.96)" }, { opacity: 1, transform: "none" }], {
           duration: r,
           easing: u,
           fill: "none"
@@ -1416,18 +1418,18 @@ function so(a, t, { duration: r = 340, easing: o = "var(--may-spring-smooth)", o
       );
       continue;
     }
-    const d = l.left - m.left, h = l.top - m.top, v = l.width / m.width || 1, p = l.height / m.height || 1;
-    Math.abs(d) < 1 && Math.abs(h) < 1 && Math.abs(v - 1) < 0.01 && Math.abs(p - 1) < 0.01 || i.push(
-      s.animate(
+    const y = s.left - m.left, g = s.top - m.top, v = s.width / m.width || 1, p = s.height / m.height || 1;
+    Math.abs(y) < 1 && Math.abs(g) < 1 && Math.abs(v - 1) < 0.01 && Math.abs(p - 1) < 0.01 || i.push(
+      l.animate(
         [
-          { transform: `translate(${d}px, ${h}px) scale(${v}, ${p})` },
+          { transform: `translate(${y}px, ${g}px) scale(${v}, ${p})` },
           { transform: "none" }
         ],
         { duration: r, easing: u, fill: "none" }
       )
     );
   }
-  return n && i.length && Promise.allSettled(i.map((s) => s.finished)).then(n), i;
+  return n && i.length && Promise.allSettled(i.map((l) => l.finished)).then(n), i;
 }
 const lo = typeof window > "u" ? Y : sa;
 function co({ item: a, current: t }) {
@@ -1476,16 +1478,16 @@ function yo({
   itemsAfterCollapse: o = 2,
   separator: n,
   size: i = "md",
-  className: s,
-  "aria-label": l = "Breadcrumb",
+  className: l,
+  "aria-label": s = "Breadcrumb",
   ...m
 }) {
-  const [u, d] = U(!1), h = oa(), v = B(null), p = B(null), _ = !u && t != null && a.length > Math.max(t, r + o + 1), y = a.length - o, k = _ ? [
+  const [u, y] = U(!1), g = oa(), v = B(null), p = B(null), _ = !u && t != null && a.length > Math.max(t, r + o + 1), d = a.length - o, k = _ ? [
     ...a.slice(0, r).map((b, $) => ({ item: b, index: $ })),
     { item: null, index: -1 },
-    ...a.slice(y).map((b, $) => ({ item: b, index: y + $ }))
+    ...a.slice(d).map((b, $) => ({ item: b, index: d + $ }))
   ] : a.map((b, $) => ({ item: b, index: $ })), E = () => {
-    !h && v.current && (p.current = io(v.current.children)), d(!0);
+    !g && v.current && (p.current = io(v.current.children)), y(!0);
   };
   return lo(() => {
     const b = p.current;
@@ -1494,10 +1496,10 @@ function yo({
     "nav",
     {
       ...m,
-      "aria-label": l,
+      "aria-label": s,
       "data-slot": "breadcrumb",
       "data-size": i,
-      className: I("may-breadcrumb", s),
+      className: I("may-breadcrumb", l),
       children: /* @__PURE__ */ e("ol", { ref: v, className: "may-breadcrumb__list", children: k.map((b, $) => {
         const P = $ === k.length - 1;
         return /* @__PURE__ */ T(
@@ -1551,10 +1553,10 @@ function _o({
   interactive: o,
   onClick: n,
   disabled: i = !1,
-  className: s,
-  ...l
+  className: l,
+  ...s
 }) {
-  const m = !!(o ?? n), { pressProps: u } = W(i || !m), d = {
+  const m = !!(o ?? n), { pressProps: u } = W(i || !m), y = {
     "data-slot": "card",
     "data-variant": t,
     "data-padding": r,
@@ -1562,21 +1564,21 @@ function _o({
       "may-card",
       m && "may-pressable",
       m && "may-hoverable",
-      s
+      l
     )
   };
   return m ? /* @__PURE__ */ e(
     "button",
     {
-      ...l,
-      ...d,
+      ...s,
+      ...y,
       ...u,
       type: "button",
       onClick: n,
       disabled: i,
       children: a
     }
-  ) : /* @__PURE__ */ e("div", { ...l, ...d, children: a });
+  ) : /* @__PURE__ */ e("div", { ...s, ...y, children: a });
 }
 function xo({ children: a, accessory: t, className: r, ...o }) {
   return /* @__PURE__ */ T("div", { ...o, "data-slot": "card-header", className: I("may-card__header", r), children: [
@@ -1607,12 +1609,12 @@ function To({
   variant: o = "inset",
   layout: n = "inline",
   columns: i = 1,
-  className: s,
-  style: l,
+  className: l,
+  style: s,
   ...m
 }) {
-  const d = va() ? Math.max(1, Math.floor(i)) : 1, h = nt.toArray(a);
-  return /* @__PURE__ */ T("div", { className: I("may-descriptions-group", s), children: [
+  const y = va() ? Math.max(1, Math.floor(i)) : 1, g = nt.toArray(a);
+  return /* @__PURE__ */ T("div", { className: I("may-descriptions-group", l), children: [
     t && /* @__PURE__ */ e("div", { className: "may-descriptions__section-header", children: t }),
     /* @__PURE__ */ e(
       "dl",
@@ -1621,16 +1623,16 @@ function To({
         "data-slot": "descriptions",
         "data-variant": o,
         "data-layout": n,
-        "data-columns": d,
+        "data-columns": y,
         className: "may-descriptions",
-        style: { ...l, "--may-desc-columns": d },
-        children: h.map((v, p) => (
+        style: { ...s, "--may-desc-columns": y },
+        children: g.map((v, p) => (
           // toArray has already given every row a stable key; reusing it means
           // reordering the pairs moves them rather than remounting them.
           /* @__PURE__ */ e(
             wt.Provider,
             {
-              value: { index: p, columns: d },
+              value: { index: p, columns: y },
               children: v
             },
             za(v) ? v.key ?? p : p
@@ -1648,13 +1650,13 @@ function Io({
   className: o,
   ...n
 }) {
-  const { index: i, columns: s } = Na(wt), l = i < s;
+  const { index: i, columns: l } = Na(wt), s = i < l;
   return /* @__PURE__ */ T(
     "div",
     {
       ...n,
       "data-slot": "description-item",
-      "data-row-start": l ? "true" : void 0,
+      "data-row-start": s ? "true" : void 0,
       className: I("may-desc__item", o),
       children: [
         /* @__PURE__ */ e("dt", { className: "may-desc__label", children: a }),
@@ -1671,16 +1673,16 @@ function Po({
   action: o,
   size: n = "md",
   as: i = "h3",
-  className: s,
-  ...l
+  className: l,
+  ...s
 }) {
   return /* @__PURE__ */ T(
     "div",
     {
-      ...l,
+      ...s,
       "data-slot": "empty-state",
       "data-size": n,
-      className: I("may-empty", s),
+      className: I("may-empty", l),
       children: [
         a && /* @__PURE__ */ e("div", { className: "may-empty__glyph", "aria-hidden": !0, children: a }),
         /* @__PURE__ */ e(i, { className: "may-empty__title", children: t }),
@@ -1697,22 +1699,22 @@ const Mo = R("EmptyState", Do), Lo = [Mo], Us = C("EmptyState", Po, Lo), Ro = ".
   4: "title-3",
   5: "headline",
   6: "subheadline"
-}, qo = Z(function({ children: t, level: r = 2, size: o, tone: n = "default", weight: i, align: s, clamp: l, className: m, style: u, ...d }, h) {
+}, qo = Z(function({ children: t, level: r = 2, size: o, tone: n = "default", weight: i, align: l, clamp: s, className: m, style: u, ...y }, g) {
   const v = `h${r}`, p = o ?? Oo[r];
   return /* @__PURE__ */ e(
     v,
     {
-      ...d,
-      ref: h,
+      ...y,
+      ref: g,
       "data-slot": "heading",
       "data-level": r,
       "data-variant": p,
       "data-tone": n,
       "data-weight": i,
-      "data-align": s,
-      "data-clamp": l != null ? "true" : void 0,
+      "data-align": l,
+      "data-clamp": s != null ? "true" : void 0,
       className: I("may-text", "may-heading", m),
-      style: l != null ? { ...u, "--may-txt-clamp": l } : u,
+      style: s != null ? { ...u, "--may-txt-clamp": s } : u,
       children: t
     }
   );
@@ -1724,19 +1726,19 @@ function Wo({
   label: o,
   className: n,
   "aria-label": i,
-  ...s
+  ...l
 }) {
-  const l = o ?? i;
+  const s = o ?? i;
   return /* @__PURE__ */ e(
     "span",
     {
-      ...s,
+      ...l,
       "data-slot": "icon-tile",
       "data-gradient": t,
       "data-size": r,
-      role: l ? "img" : void 0,
-      "aria-label": l,
-      "aria-hidden": l ? void 0 : !0,
+      role: s ? "img" : void 0,
+      "aria-label": s,
+      "aria-hidden": s ? void 0 : !0,
       className: I("may-icon-tile", n),
       children: a
     }
@@ -1748,22 +1750,22 @@ const Ko = R("IconTile", Yo), Xo = [Ko], Ks = C("IconTile", Wo, Xo), Zo = ".may-
   required: o = !1,
   disabled: n = !1,
   variant: i = "subheadline",
-  tone: s = "default",
-  weight: l = "medium",
+  tone: l = "default",
+  weight: s = "medium",
   uppercase: m = !1,
   className: u,
-  ...d
-}, h) {
+  ...y
+}, g) {
   return /* @__PURE__ */ T(
     "label",
     {
-      ...d,
-      ref: h,
+      ...y,
+      ref: g,
       htmlFor: r,
       "data-slot": "label",
       "data-variant": i,
-      "data-tone": s,
-      "data-weight": l,
+      "data-tone": l,
+      "data-weight": s,
       "data-disabled": n ? "true" : void 0,
       className: I("may-text", "may-label", m && "may-label--eyebrow", u),
       children: [
@@ -1783,24 +1785,24 @@ function ln({
   offset: o = 6,
   open: n,
   defaultOpen: i = !1,
-  onOpenChange: s,
-  className: l,
+  onOpenChange: l,
+  className: s,
   "aria-label": m
 }) {
-  const [u, d] = U(i), h = n ?? u, [v, p] = U(-1), _ = B([]), y = B(t);
-  y.current = t;
+  const [u, y] = U(i), g = n ?? u, [v, p] = U(-1), _ = B([]), d = B(t);
+  d.current = t;
   const k = B(""), E = B(0), b = X(
     (c) => {
-      n === void 0 && d(c), s == null || s(c);
+      n === void 0 && y(c), l == null || l(c);
     },
-    [n, s]
+    [n, l]
   );
   Y(() => {
-    h && p(y.current.findIndex((c) => !c.disabled));
-  }, [h]), Y(() => {
+    g && p(d.current.findIndex((c) => !c.disabled));
+  }, [g]), Y(() => {
     var c;
-    !h || v < 0 || (c = _.current[v]) == null || c.focus({ preventScroll: !0 });
-  }, [h, v]);
+    !g || v < 0 || (c = _.current[v]) == null || c.focus({ preventScroll: !0 });
+  }, [g, v]);
   const $ = (c) => {
     var z;
     const w = t.length;
@@ -1820,7 +1822,7 @@ function ln({
     var M;
     const w = t[c];
     !w || w.disabled || ((M = w.onSelect) == null || M.call(w), b(!1));
-  }, A = () => k.current !== "" && Date.now() - E.current <= sn, g = (c) => {
+  }, A = () => k.current !== "" && Date.now() - E.current <= sn, h = (c) => {
     const w = Date.now();
     k.current = A() ? k.current + c : c, E.current = w;
     const M = /^(.)\1*$/.test(k.current), z = M ? k.current[0] : k.current, O = !M && k.current.length > 1, S = (v < 0 ? -1 : v) + (O ? 0 : 1);
@@ -1846,13 +1848,13 @@ function ln({
         c.preventDefault(), P(-1);
         return;
     }
-    c.key === " " && !A() || c.key.length === 1 && !c.metaKey && !c.ctrlKey && !c.altKey && (c.preventDefault(), g(c.key.toLowerCase()));
+    c.key === " " && !A() || c.key.length === 1 && !c.metaKey && !c.ctrlKey && !c.altKey && (c.preventDefault(), h(c.key.toLowerCase()));
   }, f = v >= 0 ? v : t.findIndex((c) => !c.disabled);
   return /* @__PURE__ */ e(
     nn,
     {
       trigger: a,
-      open: h,
+      open: g,
       onOpenChange: b,
       placement: r,
       offset: o,
@@ -1860,7 +1862,7 @@ function ln({
       padded: !1,
       role: "none",
       haspopup: "menu",
-      className: l,
+      className: s,
       children: /* @__PURE__ */ e(
         "div",
         {
@@ -1929,42 +1931,42 @@ function hn({
   title: o,
   description: n,
   footer: i,
-  footerLayout: s = "end",
-  size: l = "md",
+  footerLayout: l = "end",
+  size: s = "md",
   closeButton: m = !0,
   closeLabel: u = "Close",
-  closeOnScrimClick: d = !0,
-  closeOnEscape: h = !0,
+  closeOnScrimClick: y = !0,
+  closeOnEscape: g = !0,
   className: v,
   ...p
 }) {
-  const _ = B(null), y = B(null), k = ta(), E = va(), b = oa(), $ = Sa(a, b ? 0 : un), { pressProps: P } = W();
+  const _ = B(null), d = B(null), k = ta(), E = va(), b = oa(), $ = Sa(a, b ? 0 : un), { pressProps: P } = W();
   Y(() => {
     if (!$) return;
-    const g = _.current;
-    y.current = document.activeElement;
+    const h = _.current;
+    d.current = document.activeElement;
     const x = document.body, f = x.style.overflow, c = x.style.paddingRight, w = window.innerWidth - document.documentElement.clientWidth;
-    return x.style.overflow = "hidden", w > 0 && (x.style.paddingRight = `${w}px`), g && !g.contains(document.activeElement) && g.focus(), () => {
+    return x.style.overflow = "hidden", w > 0 && (x.style.paddingRight = `${w}px`), h && !h.contains(document.activeElement) && h.focus(), () => {
       var M, z;
-      x.style.overflow = f, x.style.paddingRight = c, (z = (M = y.current) == null ? void 0 : M.focus) == null || z.call(M);
+      x.style.overflow = f, x.style.paddingRight = c, (z = (M = d.current) == null ? void 0 : M.focus) == null || z.call(M);
     };
   }, [$]);
-  const D = (g) => {
+  const D = (h) => {
     var w;
-    if (g.key === "Escape") {
-      if (!h) return;
-      g.stopPropagation(), t();
+    if (h.key === "Escape") {
+      if (!g) return;
+      h.stopPropagation(), t();
       return;
     }
-    if (g.key !== "Tab") return;
+    if (h.key !== "Tab") return;
     const x = (w = _.current) == null ? void 0 : w.querySelectorAll(vn);
     if (!x || x.length === 0) return;
     const f = x[0], c = x[x.length - 1];
-    g.shiftKey && document.activeElement === f ? (g.preventDefault(), c.focus()) : !g.shiftKey && document.activeElement === c && (g.preventDefault(), f.focus());
-  }, A = (g) => {
+    h.shiftKey && document.activeElement === f ? (h.preventDefault(), c.focus()) : !h.shiftKey && document.activeElement === c && (h.preventDefault(), f.focus());
+  }, A = (h) => {
     var x;
-    if (g.target === g.currentTarget) {
-      if (d) {
+    if (h.target === h.currentTarget) {
+      if (y) {
         t();
         return;
       }
@@ -1990,7 +1992,7 @@ function hn({
           tabIndex: -1,
           "data-slot": "modal",
           "data-state": a ? "open" : "closed",
-          "data-size": l,
+          "data-size": s,
           "data-presentation": E ? "desktop" : "compact",
           "data-closable": m ? "true" : void 0,
           ...p,
@@ -2013,7 +2015,7 @@ function hn({
               n && /* @__PURE__ */ e("p", { className: "may-modal__description", id: `${k}-description`, children: n })
             ] }),
             r && /* @__PURE__ */ e("div", { className: "may-modal__body", "data-slot": "scroll-area", children: r }),
-            i && /* @__PURE__ */ e("footer", { className: "may-modal__footer", "data-footer": s, children: i })
+            i && /* @__PURE__ */ e("footer", { className: "may-modal__footer", "data-footer": l, children: i })
           ]
         }
       )
@@ -2028,20 +2030,20 @@ function _n({
   leading: o,
   trailing: n,
   onBack: i,
-  backLabel: s = "Back",
-  scrollRef: l,
+  backLabel: l = "Back",
+  scrollRef: s,
   sticky: m = !0,
   safeArea: u = !0,
-  className: d,
-  ...h
+  className: y,
+  ...g
 }) {
   const v = B(null), p = B(null), _ = W();
   Y(() => {
     const k = v.current;
     if (!k) return;
-    const E = (l == null ? void 0 : l.current) ?? null, b = E ?? window;
+    const E = (s == null ? void 0 : s.current) ?? null, b = E ?? window;
     let $ = 0, P = -1, D = "", A = null;
-    const g = () => {
+    const h = () => {
       var z;
       $ = 0;
       const f = E ? E.scrollTop : window.scrollY, c = ((z = p.current) == null ? void 0 : z.offsetHeight) ?? 0;
@@ -2051,19 +2053,19 @@ function _n({
       const M = f > 0;
       M !== A && (A = M, k.toggleAttribute("data-scrolled", M));
     }, x = () => {
-      $ || ($ = requestAnimationFrame(g));
+      $ || ($ = requestAnimationFrame(h));
     };
-    return g(), b.addEventListener("scroll", x, { passive: !0 }), window.addEventListener("resize", x), () => {
+    return h(), b.addEventListener("scroll", x, { passive: !0 }), window.addEventListener("resize", x), () => {
       $ && cancelAnimationFrame($), b.removeEventListener("scroll", x), window.removeEventListener("resize", x);
     };
-  }, [l, r]);
-  const y = i && /* @__PURE__ */ e(
+  }, [s, r]);
+  const d = i && /* @__PURE__ */ e(
     "button",
     {
       ..._.pressProps,
       type: "button",
       onClick: i,
-      "aria-label": typeof s == "string" ? s : void 0,
+      "aria-label": typeof l == "string" ? l : void 0,
       "data-slot": "nav-bar-back",
       className: "may-nav-bar__back-chip may-pressable may-hoverable",
       children: /* @__PURE__ */ e(Vt, { className: "may-nav-bar__back-chevron", "aria-hidden": !0, focusable: "false" })
@@ -2072,16 +2074,16 @@ function _n({
   return /* @__PURE__ */ T(
     "header",
     {
-      ...h,
+      ...g,
       ref: v,
       "data-slot": "nav-bar",
       "data-large-title": r ? "true" : void 0,
       "data-sticky": m ? "true" : void 0,
       "data-safe-area": u ? "true" : void 0,
-      className: I("may-nav-bar", d),
+      className: I("may-nav-bar", y),
       children: [
         /* @__PURE__ */ T("div", { className: "may-nav-bar__bar", children: [
-          /* @__PURE__ */ e("div", { className: "may-nav-bar__side may-nav-bar__side--leading", children: o ?? y }),
+          /* @__PURE__ */ e("div", { className: "may-nav-bar__side may-nav-bar__side--leading", children: o ?? d }),
           /* @__PURE__ */ T("div", { className: "may-nav-bar__title", children: [
             r ? (
               // The large title below is the real heading; this one is its
@@ -2109,26 +2111,26 @@ function zn({
   action: o,
   onClose: n,
   closeLabel: i = "Dismiss",
-  marquee: s = !1,
-  speed: l = 44,
+  marquee: l = !1,
+  speed: s = 44,
   role: m,
   className: u,
-  ...d
+  ...y
 }) {
-  const h = B(null), v = B(null), p = oa(), [_, y] = U(0), [k, E] = U(!1), { pressProps: b } = W(!n), $ = s && !p, P = _ > 0;
+  const g = B(null), v = B(null), p = oa(), [_, d] = U(0), [k, E] = U(!1), { pressProps: b } = W(!n), $ = l && !p, P = _ > 0;
   Y(() => {
-    const A = h.current, g = v.current;
-    if (!$ || !A || !g) {
-      y(0);
+    const A = g.current, h = v.current;
+    if (!$ || !A || !h) {
+      d(0);
       return;
     }
     const x = () => {
-      const c = parseFloat(getComputedStyle(g).paddingInlineEnd) || 0, w = g.offsetWidth - c;
-      y(w > A.clientWidth ? g.offsetWidth : 0);
+      const c = parseFloat(getComputedStyle(h).paddingInlineEnd) || 0, w = h.offsetWidth - c;
+      d(w > A.clientWidth ? h.offsetWidth : 0);
     };
     if (x(), typeof ResizeObserver > "u") return;
     const f = new ResizeObserver(x);
-    return f.observe(A), f.observe(g), () => f.disconnect();
+    return f.observe(A), f.observe(h), () => f.disconnect();
   }, [$]);
   const D = (A) => {
     !k || A.target !== A.currentTarget || (n == null || n(), E(!1));
@@ -2136,7 +2138,7 @@ function zn({
   return /* @__PURE__ */ T(
     "div",
     {
-      ...d,
+      ...y,
       "data-slot": "notice-bar",
       "data-tone": t,
       "data-marquee": $ ? "true" : void 0,
@@ -2146,7 +2148,7 @@ function zn({
       onAnimationEnd: D,
       children: [
         r && /* @__PURE__ */ e("span", { className: "may-notice__icon", "aria-hidden": !0, children: r }),
-        /* @__PURE__ */ e("div", { className: "may-notice__viewport", ref: h, children: /* @__PURE__ */ T(
+        /* @__PURE__ */ e("div", { className: "may-notice__viewport", ref: g, children: /* @__PURE__ */ T(
           "div",
           {
             className: "may-notice__track",
@@ -2156,7 +2158,7 @@ function zn({
               // Content-derived, not a design duration: holding a constant
               // SPEED is what keeps a long notice and a short one equally
               // readable. A token here would do the opposite.
-              "--may-notice-duration": `${_ / l}s`
+              "--may-notice-duration": `${_ / s}s`
             } : void 0,
             children: [
               /* @__PURE__ */ e("span", { className: "may-notice__copy", ref: v, children: a }),
@@ -2192,18 +2194,18 @@ function En({
   tone: o = "tint",
   size: n = "md",
   showValue: i = !1,
-  formatValue: s,
-  label: l,
+  formatValue: l,
+  label: s,
   className: m,
   style: u,
-  "aria-label": d,
-  ...h
+  "aria-label": y,
+  ...g
 }) {
-  const v = Ga(a, t), p = s ? s(a, t) : zt(a, t), _ = ta(), y = i && !r, k = l != null || y;
+  const v = Ga(a, t), p = l ? l(a, t) : zt(a, t), _ = ta(), d = i && !r, k = s != null || d;
   return /* @__PURE__ */ T(
     "div",
     {
-      ...h,
+      ...g,
       "data-slot": "progress",
       "data-tone": o,
       "data-size": n,
@@ -2212,16 +2214,16 @@ function En({
       style: { ...u, "--may-progress-pct": v },
       children: [
         k && /* @__PURE__ */ T("div", { className: "may-progress__meta", children: [
-          l != null && /* @__PURE__ */ e("span", { className: "may-progress__label", id: _, children: l }),
-          y && /* @__PURE__ */ e("span", { className: "may-progress__value", children: p })
+          s != null && /* @__PURE__ */ e("span", { className: "may-progress__label", id: _, children: s }),
+          d && /* @__PURE__ */ e("span", { className: "may-progress__value", children: p })
         ] }),
         /* @__PURE__ */ e(
           "div",
           {
             className: "may-progress__track",
             role: "progressbar",
-            "aria-labelledby": l != null ? _ : void 0,
-            "aria-label": l == null ? d : void 0,
+            "aria-labelledby": s != null ? _ : void 0,
+            "aria-label": s == null ? y : void 0,
             "aria-valuemin": 0,
             "aria-valuemax": t,
             "aria-valuenow": r ? void 0 : a,
@@ -2240,12 +2242,12 @@ function An({
   tone: o = "tint",
   size: n = "md",
   showValue: i = !1,
-  formatValue: s,
-  children: l,
+  formatValue: l,
+  children: s,
   className: m,
   ...u
 }) {
-  const d = Ga(a, t), h = s ? s(a, t) : zt(a, t), v = l ?? (i && !r ? h : void 0);
+  const y = Ga(a, t), g = l ? l(a, t) : zt(a, t), v = s ?? (i && !r ? g : void 0);
   return /* @__PURE__ */ T(
     "div",
     {
@@ -2259,7 +2261,7 @@ function An({
       "aria-valuemin": 0,
       "aria-valuemax": t,
       "aria-valuenow": r ? void 0 : a,
-      "aria-valuetext": r ? void 0 : h,
+      "aria-valuetext": r ? void 0 : g,
       children: [
         /* @__PURE__ */ T("svg", { className: "may-ring__svg", viewBox: "0 0 100 100", "aria-hidden": !0, focusable: "false", children: [
           /* @__PURE__ */ e("circle", { className: "may-ring__rail", cx: "50", cy: "50", r: Va, pathLength: ba }),
@@ -2271,7 +2273,7 @@ function An({
               cy: "50",
               r: Va,
               pathLength: ba,
-              style: r ? void 0 : { strokeDashoffset: ba - d * ba }
+              style: r ? void 0 : { strokeDashoffset: ba - y * ba }
             }
           )
         ] }),
@@ -2288,33 +2290,33 @@ function Cn({
   defaultValue: o,
   onValueChange: n,
   orientation: i = "vertical",
-  size: s = "md",
-  disabled: l,
+  size: l = "md",
+  disabled: s,
   invalid: m,
   className: u,
-  "aria-describedby": d,
-  ...h
+  "aria-describedby": y,
+  ...g
 }) {
-  const v = Ea({ invalid: m, disabled: l, "aria-describedby": d }), p = ta(t), [_, y] = U(o), k = r ?? _, E = !!v.disabled, b = ua(
+  const v = Ea({ invalid: m, disabled: s, "aria-describedby": y }), p = ta(t), [_, d] = U(o), k = r ?? _, E = !!v.disabled, b = ua(
     () => ({
       name: p,
       value: k,
       select: ($) => {
-        r === void 0 && y($), n == null || n($);
+        r === void 0 && d($), n == null || n($);
       },
-      size: s,
+      size: l,
       disabled: E,
       invalid: v.invalid
     }),
-    [p, k, r, n, s, E, v.invalid]
+    [p, k, r, n, l, E, v.invalid]
   );
   return /* @__PURE__ */ e($t.Provider, { value: b, children: /* @__PURE__ */ e(
     "div",
     {
-      ...h,
+      ...g,
       role: "radiogroup",
       "data-slot": "radio-group",
-      "data-size": s,
+      "data-size": l,
       "data-orientation": i,
       "data-invalid": v.invalid ? "true" : void 0,
       "aria-disabled": E || void 0,
@@ -2331,28 +2333,28 @@ const Dn = Z(function({
   description: o,
   size: n,
   invalid: i,
-  onChange: s,
-  checked: l,
+  onChange: l,
+  checked: s,
   defaultChecked: m,
   disabled: u,
-  name: d,
-  className: h,
+  name: y,
+  className: g,
   style: v,
   ...p
 }, _) {
-  const y = Na($t), k = u ?? (y == null ? void 0 : y.disabled) ?? !1, E = i ?? (y == null ? void 0 : y.invalid) ?? !1, { pressProps: b } = W(k), $ = y ? y.value === t : l, P = (D) => {
-    D.target.checked && (y == null || y.select(t)), s == null || s(D);
+  const d = Na($t), k = u ?? (d == null ? void 0 : d.disabled) ?? !1, E = i ?? (d == null ? void 0 : d.invalid) ?? !1, { pressProps: b } = W(k), $ = d ? d.value === t : s, P = (D) => {
+    D.target.checked && (d == null || d.select(t)), l == null || l(D);
   };
   return /* @__PURE__ */ T(
     "label",
     {
       ...b,
       "data-slot": "radio",
-      "data-size": n ?? (y == null ? void 0 : y.size) ?? "md",
+      "data-size": n ?? (d == null ? void 0 : d.size) ?? "md",
       "data-checked": $ ? "true" : void 0,
       "data-invalid": E ? "true" : void 0,
       "aria-disabled": k || void 0,
-      className: I("may-radio", "may-pressable", "may-hoverable", h),
+      className: I("may-radio", "may-pressable", "may-hoverable", g),
       style: v,
       children: [
         /* @__PURE__ */ e(
@@ -2362,12 +2364,12 @@ const Dn = Z(function({
             ref: _,
             type: "radio",
             className: "may-radio__input may-sr-only",
-            name: d ?? (y == null ? void 0 : y.name),
+            name: y ?? (d == null ? void 0 : d.name),
             value: t,
             disabled: k,
             "aria-invalid": E || void 0,
             onChange: P,
-            ...y || l !== void 0 ? { checked: !!$ } : { defaultChecked: m }
+            ...d || s !== void 0 ? { checked: !!$ } : { defaultChecked: m }
           }
         ),
         /* @__PURE__ */ e("span", { className: "may-radio__ring", children: /* @__PURE__ */ e("span", { className: "may-radio__dot", "aria-hidden": !0 }) }),
@@ -2379,27 +2381,27 @@ const Dn = Z(function({
     }
   );
 }), Pn = R("RadioGroup", In), St = [Pn], el = C("RadioGroup", Cn, St), rl = C("Radio", Dn, St), Mn = ".may-safe-area[data-edges~=top]{padding-top:var(--may-inset-top)}.may-safe-area[data-edges~=bottom]{padding-bottom:var(--may-inset-bottom)}.may-safe-area[data-edges~=left]{padding-left:var(--may-inset-left)}.may-safe-area[data-edges~=right]{padding-right:var(--may-inset-right)}", Ln = ["top", "bottom", "left", "right"], Rn = Z(function({ edges: t = Ln, className: r, children: o, ...n }, i) {
-  const s = Array.isArray(t) ? t : [t];
+  const l = Array.isArray(t) ? t : [t];
   return /* @__PURE__ */ e(
     "div",
     {
       ...n,
       ref: i,
       "data-slot": "safe-area",
-      "data-edges": s.join(" "),
+      "data-edges": l.join(" "),
       "aria-hidden": o == null ? !0 : void 0,
       className: I("may-safe-area", r),
       children: o
     }
   );
-}), jn = R("SafeArea", Mn), Bn = [jn], ol = C("SafeArea", Rn, Bn), Fn = ".may-scroll-area{--may-scroll-max: none;position:relative;max-height:var(--may-scroll-max);min-height:0;min-width:0}.may-scroll-area[data-axis=vertical]{overflow-x:hidden;overflow-y:auto}.may-scroll-area[data-axis=horizontal]{overflow-x:auto;overflow-y:hidden}.may-scroll-area[data-axis=both]{overflow:auto}", On = Z(function({ maxHeight: t, axis: r = "vertical", className: o, style: n, children: i, ...s }, l) {
+}), jn = R("SafeArea", Mn), Bn = [jn], ol = C("SafeArea", Rn, Bn), Fn = ".may-scroll-area{--may-scroll-max: none;position:relative;max-height:var(--may-scroll-max);min-height:0;min-width:0}.may-scroll-area[data-axis=vertical]{overflow-x:hidden;overflow-y:auto}.may-scroll-area[data-axis=horizontal]{overflow-x:auto;overflow-y:hidden}.may-scroll-area[data-axis=both]{overflow:auto}", On = Z(function({ maxHeight: t, axis: r = "vertical", className: o, style: n, children: i, ...l }, s) {
   const m = {};
   return t !== void 0 && (m["--may-scroll-max"] = typeof t == "number" ? `${t}px` : String(t)), /* @__PURE__ */ e(
     "div",
     {
       tabIndex: 0,
-      ...s,
-      ref: l,
+      ...l,
+      ref: s,
       "data-slot": "scroll-area",
       "data-axis": r,
       className: I("may-scroll-area", o),
@@ -2415,12 +2417,12 @@ function Un({
   height: o,
   radius: n,
   label: i,
-  className: s,
-  style: l,
+  className: l,
+  style: s,
   ...m
 }) {
-  const u = a === "text", d = u ? Math.max(1, Math.round(t)) : 0, h = {
-    ...l,
+  const u = a === "text", y = u ? Math.max(1, Math.round(t)) : 0, g = {
+    ...s,
     width: Pa(r),
     // For text the height belongs to each bar; the stack's own height is the
     // sum of the bars and the gaps between them and must stay derived.
@@ -2435,14 +2437,14 @@ function Un({
       "data-variant": a,
       role: i ? "status" : void 0,
       "aria-hidden": i ? void 0 : !0,
-      className: I("may-skeleton", s),
-      style: h,
+      className: I("may-skeleton", l),
+      style: g,
       children: [
-        u && Array.from({ length: d }, (v, p) => /* @__PURE__ */ e(
+        u && Array.from({ length: y }, (v, p) => /* @__PURE__ */ e(
           "span",
           {
             className: "may-skeleton__line",
-            "data-tail": d > 1 && p === d - 1 ? "true" : void 0
+            "data-tail": y > 1 && p === y - 1 ? "true" : void 0
           },
           p
         )),
@@ -2455,8 +2457,8 @@ const Yn = R("Skeleton", Gn), Wn = [Yn], il = C("Skeleton", Un, Wn), Kn = ".may-
 function Ma(a, t, r, o) {
   const n = Math.min(r, Math.max(t, a));
   if (!(o > 0)) return n;
-  const i = t + Math.round((n - t) / o) * o, s = (String(o).split(".")[1] ?? "").length;
-  return Number(Math.min(r, Math.max(t, i)).toFixed(s));
+  const i = t + Math.round((n - t) / o) * o, l = (String(o).split(".")[1] ?? "").length;
+  return Number(Math.min(r, Math.max(t, i)).toFixed(l));
 }
 function Zn({
   value: a,
@@ -2465,20 +2467,20 @@ function Zn({
   min: o = 0,
   max: n = 100,
   step: i = 1,
-  disabled: s = !1,
-  showValue: l = !1,
+  disabled: l = !1,
+  showValue: s = !1,
   formatValue: m,
   ticks: u = !1,
-  tone: d = "tint",
-  leading: h,
+  tone: y = "tint",
+  leading: g,
   trailing: v,
   className: p,
   style: _,
-  "aria-label": y,
+  "aria-label": d,
   "aria-labelledby": k,
   ...E
 }) {
-  const [b, $] = U(() => Ma(t ?? o, o, n, i)), [P, D] = U(!1), A = B(null), g = B(null), x = Math.min(n, Math.max(o, a ?? b)), f = n > o ? (x - o) / (n - o) : 0, c = X(
+  const [b, $] = U(() => Ma(t ?? o, o, n, i)), [P, D] = U(!1), A = B(null), h = B(null), x = Math.min(n, Math.max(o, a ?? b)), f = n > o ? (x - o) / (n - o) : 0, c = X(
     (S) => {
       const N = Ma(S, o, n, i);
       N !== x && (a === void 0 && $(N), r == null || r(N));
@@ -2489,17 +2491,17 @@ function Zn({
     w.current = { min: o, max: n, step: i, commit: c };
   }), Y(() => {
     const S = A.current;
-    if (!S || s) return;
+    if (!S || l) return;
     let N = 0, L = !1;
     const j = (H) => {
       var ra;
-      const { min: K, max: Q, step: J } = w.current, V = S.getBoundingClientRect(), na = S.offsetWidth > 0 ? V.width / S.offsetWidth : 1, ea = (((ra = g.current) == null ? void 0 : ra.offsetWidth) ?? 0) * na, ia = V.width - ea;
+      const { min: K, max: Q, step: J } = w.current, V = S.getBoundingClientRect(), na = S.offsetWidth > 0 ? V.width / S.offsetWidth : 1, ea = (((ra = h.current) == null ? void 0 : ra.offsetWidth) ?? 0) * na, ia = V.width - ea;
       if (ia <= 0) return K;
       const ca = (H - V.left - ea / 2) / ia;
       return Ma(K + ca * (Q - K), K, Q, J);
     }, F = (H) => {
       if (L = H.button === 0, !L) return;
-      const K = g.current;
+      const K = h.current;
       if (!!K && H.target instanceof Node && K.contains(H.target)) {
         const J = K.getBoundingClientRect();
         N = J.left + J.width / 2 - H.clientX;
@@ -2523,7 +2525,7 @@ function Zn({
     return () => {
       S.removeEventListener("pointerdown", F), q();
     };
-  }, [s]);
+  }, [l]);
   const M = (S) => {
     const N = Math.max(i, (n - o) / 10), L = S.shiftKey ? N : i;
     let j = null;
@@ -2566,13 +2568,13 @@ function Zn({
     {
       ...E,
       "data-slot": "slider",
-      "data-tone": d,
+      "data-tone": y,
       "data-dragging": P ? "true" : void 0,
-      "data-disabled": s ? "true" : void 0,
+      "data-disabled": l ? "true" : void 0,
       className: I("may-slider", p),
       style: { ..._, "--may-slider-pct": f },
       children: [
-        h && /* @__PURE__ */ e("span", { className: "may-slider__adornment", "aria-hidden": !0, children: h }),
+        g && /* @__PURE__ */ e("span", { className: "may-slider__adornment", "aria-hidden": !0, children: g }),
         /* @__PURE__ */ T("div", { ref: A, className: "may-slider__control", children: [
           /* @__PURE__ */ T("span", { className: "may-slider__rail", children: [
             z.length > 0 && /* @__PURE__ */ e("span", { className: "may-slider__ticks", "aria-hidden": !0, children: z.map((S) => /* @__PURE__ */ e(
@@ -2588,12 +2590,12 @@ function Zn({
           /* @__PURE__ */ e(
             "button",
             {
-              ref: g,
+              ref: h,
               type: "button",
               role: "slider",
               className: "may-slider__thumb",
-              disabled: s,
-              "aria-label": y,
+              disabled: l,
+              "aria-label": d,
               "aria-labelledby": k,
               "aria-orientation": "horizontal",
               "aria-valuemin": o,
@@ -2605,7 +2607,7 @@ function Zn({
           )
         ] }),
         v && /* @__PURE__ */ e("span", { className: "may-slider__adornment", "aria-hidden": !0, children: v }),
-        l && /* @__PURE__ */ e("span", { className: "may-slider__value", children: O })
+        s && /* @__PURE__ */ e("span", { className: "may-slider__value", children: O })
       ]
     }
   );
@@ -2618,20 +2620,20 @@ function ai({
   delta: o,
   direction: n = "flat",
   invertDelta: i = !1,
-  trailing: s,
-  size: l = "md",
+  trailing: l,
+  size: s = "md",
   variant: m = "plain",
   className: u,
-  ...d
+  ...y
 }) {
-  const h = n === "flat" ? "flat" : n === "up" !== i ? "positive" : "negative";
+  const g = n === "flat" ? "flat" : n === "up" !== i ? "positive" : "negative";
   return /* @__PURE__ */ T(
     "div",
     {
-      ...d,
+      ...y,
       "data-slot": "statistic",
       "data-variant": m,
-      "data-size": l,
+      "data-size": s,
       className: I("may-statistic", u),
       children: [
         /* @__PURE__ */ T("div", { className: "may-statistic__text", children: [
@@ -2645,7 +2647,7 @@ function ai({
             {
               className: "may-statistic__delta",
               "data-direction": n,
-              "data-sentiment": h,
+              "data-sentiment": g,
               children: [
                 /* @__PURE__ */ e(ae, { className: "may-statistic__arrow", "aria-hidden": !0, focusable: "false" }),
                 /* @__PURE__ */ e("span", { className: "may-sr-only", children: n === "up" ? "Up " : n === "down" ? "Down " : "Unchanged, " }),
@@ -2654,7 +2656,7 @@ function ai({
             }
           )
         ] }),
-        s && /* @__PURE__ */ e("span", { className: "may-statistic__trailing", children: s })
+        l && /* @__PURE__ */ e("span", { className: "may-statistic__trailing", children: l })
       ]
     }
   );
@@ -2663,8 +2665,8 @@ const ti = R("Statistic", Vn), ei = [ti], ll = C("Statistic", ai, ei), ri = '.ma
 function _a(a, t, r, o) {
   const n = Math.min(r, Math.max(t, a));
   if (!(o > 0) || !Number.isFinite(t)) return n;
-  const i = t + Math.round((n - t) / o) * o, s = (String(o).split(".")[1] ?? "").length;
-  return Number(Math.min(r, Math.max(t, i)).toFixed(s));
+  const i = t + Math.round((n - t) / o) * o, l = (String(o).split(".")[1] ?? "").length;
+  return Number(Math.min(r, Math.max(t, i)).toFixed(l));
 }
 function at({
   action: a,
@@ -2673,9 +2675,9 @@ function at({
   atLimit: o,
   onPress: n,
   onRelease: i,
-  onActivate: s
+  onActivate: l
 }) {
-  const l = r || o, { pressProps: m } = W(l);
+  const s = r || o, { pressProps: m } = W(s);
   return /* @__PURE__ */ e(
     "button",
     {
@@ -2688,7 +2690,7 @@ function at({
       "data-press-squish": "true",
       className: "may-stepper__button may-pressable may-hoverable",
       onPointerDown: (u) => {
-        m.onPointerDown(), u.button === 0 && !l && n();
+        m.onPointerDown(), u.button === 0 && !s && n();
       },
       onPointerUp: () => {
         m.onPointerUp(), i();
@@ -2700,7 +2702,7 @@ function at({
         m.onPointerLeave(), i();
       },
       onClick: (u) => {
-        u.detail === 0 && !l && s();
+        u.detail === 0 && !s && l();
       },
       children: a === "increment" ? /* @__PURE__ */ e(te, { "aria-hidden": !0, focusable: "false" }) : /* @__PURE__ */ e(ee, { "aria-hidden": !0, focusable: "false" })
     }
@@ -2713,19 +2715,19 @@ function li({
   min: o = Number.NEGATIVE_INFINITY,
   max: n = Number.POSITIVE_INFINITY,
   step: i = 1,
-  size: s = "md",
-  disabled: l = !1,
+  size: l = "md",
+  disabled: s = !1,
   formatValue: m,
   decrementLabel: u = "Decrease",
-  incrementLabel: d = "Increase",
-  className: h,
+  incrementLabel: y = "Increase",
+  className: g,
   ...v
 }) {
   const [p, _] = U(
     () => _a(t ?? (Number.isFinite(o) ? o : 0), o, n, i)
-  ), y = Math.min(n, Math.max(o, a ?? p)), k = B(y);
+  ), d = Math.min(n, Math.max(o, a ?? p)), k = B(d);
   Y(() => {
-    k.current = y;
+    k.current = d;
   });
   const E = B(null), b = X(() => {
     E.current && (clearTimeout(E.current), E.current = null);
@@ -2756,23 +2758,23 @@ function li({
       $(f), P(f);
     },
     [$, P]
-  ), A = _a(y - i, o, n, i) !== y, g = _a(y + i, o, n, i) !== y, x = m ? m(y) : String(y);
+  ), A = _a(d - i, o, n, i) !== d, h = _a(d + i, o, n, i) !== d, x = m ? m(d) : String(d);
   return /* @__PURE__ */ T(
     "div",
     {
       ...v,
       role: "group",
       "data-slot": "stepper",
-      "data-size": s,
-      "data-disabled": l ? "true" : void 0,
-      className: I("may-stepper", h),
+      "data-size": l,
+      "data-disabled": s ? "true" : void 0,
+      className: I("may-stepper", g),
       children: [
         /* @__PURE__ */ e(
           at,
           {
             action: "decrement",
             label: u,
-            disabled: l,
+            disabled: s,
             atLimit: !A,
             onPress: () => D(-1),
             onRelease: b,
@@ -2783,9 +2785,9 @@ function li({
           at,
           {
             action: "increment",
-            label: d,
-            disabled: l,
-            atLimit: !g,
+            label: y,
+            disabled: s,
+            atLimit: !h,
             onPress: () => D(1),
             onRelease: b,
             onActivate: () => $(1)
@@ -2802,8 +2804,8 @@ const ci = R("Stepper", ri), mi = [ci], cl = C("Stepper", li, mi), di = '.may-st
   upcoming: "Not started",
   error: "Failed"
 };
-function ui({ item: a, index: t, status: r, last: o, clickable: n, markerRef: i, onSelect: s }) {
-  const l = n && r !== "upcoming", { pressProps: m } = W(!l), u = /* @__PURE__ */ e("span", { ref: i, className: "may-steps__marker", "aria-hidden": !0, children: a.icon ?? (r === "complete" ? /* @__PURE__ */ e(Fa, { className: "may-steps__check", "aria-hidden": !0, focusable: "false" }) : r === "error" ? /* @__PURE__ */ e(re, { "aria-hidden": !0, focusable: "false" }) : t + 1) }), d = /* @__PURE__ */ T(pa, { children: [
+function ui({ item: a, index: t, status: r, last: o, clickable: n, markerRef: i, onSelect: l }) {
+  const s = n && r !== "upcoming", { pressProps: m } = W(!s), u = /* @__PURE__ */ e("span", { ref: i, className: "may-steps__marker", "aria-hidden": !0, children: a.icon ?? (r === "complete" ? /* @__PURE__ */ e(Fa, { className: "may-steps__check", "aria-hidden": !0, focusable: "false" }) : r === "error" ? /* @__PURE__ */ e(re, { "aria-hidden": !0, focusable: "false" }) : t + 1) }), y = /* @__PURE__ */ T(pa, { children: [
     u,
     /* @__PURE__ */ T("span", { className: "may-steps__text", children: [
       /* @__PURE__ */ e("span", { className: "may-steps__title", children: a.title }),
@@ -2824,12 +2826,12 @@ function ui({ item: a, index: t, status: r, last: o, clickable: n, markerRef: i,
           {
             ...m,
             type: "button",
-            disabled: !l,
-            onClick: () => s == null ? void 0 : s(t),
+            disabled: !s,
+            onClick: () => l == null ? void 0 : l(t),
             className: "may-steps__body may-pressable may-hoverable",
-            children: d
+            children: y
           }
-        ) : /* @__PURE__ */ e("span", { className: "may-steps__body", children: d }),
+        ) : /* @__PURE__ */ e("span", { className: "may-steps__body", children: y }),
         !o && /* @__PURE__ */ e("span", { className: "may-steps__connector", "aria-hidden": !0 })
       ]
     }
@@ -2842,14 +2844,14 @@ function vi({
   clickable: o = !1,
   onStepChange: n,
   size: i = "md",
-  className: s,
-  "aria-label": l = "Progress",
+  className: l,
+  "aria-label": s = "Progress",
   ...m
 }) {
   const u = (_) => {
-    var y;
-    return ((y = a[_]) == null ? void 0 : y.status) ?? (_ < t ? "complete" : _ === t ? "current" : "upcoming");
-  }, { trackRef: d, thumbRef: h, registerItem: v, onPointerDown: p } = Lt({
+    var d;
+    return ((d = a[_]) == null ? void 0 : d.status) ?? (_ < t ? "complete" : _ === t ? "current" : "upcoming");
+  }, { trackRef: y, thumbRef: g, registerItem: v, onPointerDown: p } = Lt({
     axis: r === "vertical" ? "block" : "inline",
     itemCount: a.length,
     selectedIndex: t,
@@ -2861,28 +2863,28 @@ function vi({
     "ol",
     {
       ...m,
-      ref: d,
-      "aria-label": l,
+      ref: y,
+      "aria-label": s,
       "data-slot": "steps",
       "data-orientation": r,
       "data-size": i,
       "data-clickable": o ? "true" : void 0,
-      className: I("may-steps", s),
+      className: I("may-steps", l),
       onPointerDown: o ? p : void 0,
       children: [
-        o && /* @__PURE__ */ e("span", { ref: h, className: "may-steps__thumb", "aria-hidden": !0 }),
-        a.map((_, y) => /* @__PURE__ */ e(
+        o && /* @__PURE__ */ e("span", { ref: g, className: "may-steps__thumb", "aria-hidden": !0 }),
+        a.map((_, d) => /* @__PURE__ */ e(
           ui,
           {
             item: _,
-            index: y,
-            status: u(y),
-            last: y === a.length - 1,
+            index: d,
+            status: u(d),
+            last: d === a.length - 1,
             clickable: o,
-            markerRef: v(y),
+            markerRef: v(d),
             onSelect: n
           },
-          y
+          d
         ))
       ]
     }
@@ -2894,24 +2896,24 @@ const hi = R("Steps", di), gi = [hi], ml = C("Steps", vi, gi), fi = ".may-switch
   size: o = "md",
   labelPosition: n = "start",
   onCheckedChange: i,
-  onChange: s,
-  checked: l,
+  onChange: l,
+  checked: s,
   defaultChecked: m,
   disabled: u,
-  required: d,
-  id: h,
+  required: y,
+  id: g,
   className: v,
   style: p,
   "aria-describedby": _,
-  ...y
+  ...d
 }, k) {
-  const E = Ea({ id: h, required: d, disabled: u, "aria-describedby": _ }), b = !!E.disabled, { pressProps: $ } = W(b), [P, D] = U(!!m), A = l ?? P, g = B(null), x = B(null), f = B(null), c = B(!1), w = (S) => {
+  const E = Ea({ id: g, required: y, disabled: u, "aria-describedby": _ }), b = !!E.disabled, { pressProps: $ } = W(b), [P, D] = U(!!m), A = s ?? P, h = B(null), x = B(null), f = B(null), c = B(!1), w = (S) => {
     f.current = S, typeof k == "function" ? k(S) : k && (k.current = S);
   }, M = (S) => {
-    l === void 0 && D(S.target.checked), i == null || i(S.target.checked), s == null || s(S);
+    s === void 0 && D(S.target.checked), i == null || i(S.target.checked), l == null || l(S);
   };
   Y(() => {
-    const S = x.current, N = g.current;
+    const S = x.current, N = h.current;
     if (!S || !N || b) return;
     let L = 0, j = 0, F = 1;
     return ja(S, {
@@ -2947,7 +2949,7 @@ const hi = R("Steps", di), gi = [hi], ml = C("Steps", vi, gi), fi = ".may-switch
     "label",
     {
       ...$,
-      ref: g,
+      ref: h,
       "data-slot": "switch",
       "data-size": o,
       "data-checked": A ? "true" : void 0,
@@ -2961,7 +2963,7 @@ const hi = R("Steps", di), gi = [hi], ml = C("Steps", vi, gi), fi = ".may-switch
         /* @__PURE__ */ e(
           "input",
           {
-            ...y,
+            ...d,
             ref: w,
             id: E.id,
             type: "checkbox",
@@ -2971,7 +2973,7 @@ const hi = R("Steps", di), gi = [hi], ml = C("Steps", vi, gi), fi = ".may-switch
             required: E.required,
             "aria-describedby": E["aria-describedby"],
             onChange: M,
-            ...l !== void 0 ? { checked: l } : { defaultChecked: m }
+            ...s !== void 0 ? { checked: s } : { defaultChecked: m }
           }
         ),
         /* @__PURE__ */ e("span", { ref: x, className: "may-switch__track", "aria-hidden": !0, children: /* @__PURE__ */ e("span", { className: "may-switch__thumb" }) }),
@@ -3004,30 +3006,30 @@ function Ni({
   primaryIndex: o,
   selected: n,
   zebra: i,
-  onRowClick: s
+  onRowClick: l
 }) {
-  const l = !!s, { pressProps: m } = W(!l);
+  const s = !!l, { pressProps: m } = W(!s);
   return /* @__PURE__ */ e(
     "tr",
     {
-      ...l ? m : null,
-      onClick: l ? (d) => {
-        s && (d.target.closest("button, a, input, select, textarea, label") || s(a, t));
+      ...s ? m : null,
+      onClick: s ? (y) => {
+        l && (y.target.closest("button, a, input, select, textarea, label") || l(a, t));
       } : void 0,
-      "data-clickable": l ? "true" : void 0,
+      "data-clickable": s ? "true" : void 0,
       "data-selected": n ? "true" : void 0,
       "data-zebra": i ? "true" : void 0,
-      className: I("may-table__row", l && "may-hoverable"),
+      className: I("may-table__row", s && "may-hoverable"),
       style: { "--may-table-row-i": Math.min(t, Et) },
-      children: r.map((d, h) => {
-        const v = wa(d, a, t), p = h === o;
+      children: r.map((y, g) => {
+        const v = wa(y, a, t), p = g === o;
         return /* @__PURE__ */ e(
           "td",
           {
             className: "may-table__cell",
-            "data-align": At(d),
-            "data-numeric": d.numeric ? "true" : void 0,
-            children: l && p ? (
+            "data-align": At(y),
+            "data-numeric": y.numeric ? "true" : void 0,
+            children: s && p ? (
               // The activator carries no styling of its own: the row is what
               // lights up. It exists so the row is reachable by keyboard and
               // announced as activatable, which a <tr onClick> never is.
@@ -3036,7 +3038,7 @@ function Ni({
                 {
                   type: "button",
                   className: "may-table__activator",
-                  onClick: () => s == null ? void 0 : s(a, t),
+                  onClick: () => l == null ? void 0 : l(a, t),
                   children: [
                     v,
                     n && /* @__PURE__ */ e("span", { className: "may-sr-only", children: "Selected" })
@@ -3045,7 +3047,7 @@ function Ni({
               )
             ) : v
           },
-          d.key
+          y.key
         );
       })
     }
@@ -3058,33 +3060,33 @@ function $i({
   selectedKeys: o,
   onRowClick: n,
   size: i = "md",
-  stickyHeader: s = !1,
-  zebra: l = !1,
+  stickyHeader: l = !1,
+  zebra: s = !1,
   emptyState: m,
   caption: u,
-  maxHeight: d,
-  className: h,
+  maxHeight: y,
+  className: g,
   style: v,
   ...p
 }) {
-  const _ = va(), y = ta(), k = o ? new Set(o) : zi, E = t.length === 0, b = Math.max(
+  const _ = va(), d = ta(), k = o ? new Set(o) : zi, E = t.length === 0, b = Math.max(
     0,
-    a.findIndex((g) => g.primary)
+    a.findIndex((h) => h.primary)
   ), $ = {};
-  d !== void 0 && ($["--may-table-max"] = typeof d == "number" ? `${d}px` : String(d));
+  y !== void 0 && ($["--may-table-max"] = typeof y == "number" ? `${y}px` : String(y));
   const P = {
     "data-slot": "table",
     "data-size": i,
-    "data-sticky": s ? "true" : void 0,
-    "data-bounded": d !== void 0 ? "true" : void 0,
+    "data-sticky": l ? "true" : void 0,
+    "data-bounded": y !== void 0 ? "true" : void 0,
     style: { ...$, ...v }
-  }, D = u && /* @__PURE__ */ e("div", { className: "may-table__caption", id: y, children: u });
+  }, D = u && /* @__PURE__ */ e("div", { className: "may-table__caption", id: d, children: u });
   if (!_) {
-    const g = a.length < 2 ? -1 : b === a.length - 1 ? a.length - 2 : a.length - 1, x = a[b];
-    return /* @__PURE__ */ T("div", { ...p, ...P, "data-layout": "stacked", className: I("may-table", h), children: [
+    const h = a.length < 2 ? -1 : b === a.length - 1 ? a.length - 2 : a.length - 1, x = a[b];
+    return /* @__PURE__ */ T("div", { ...p, ...P, "data-layout": "stacked", className: I("may-table", g), children: [
       D,
-      /* @__PURE__ */ e(vt, { variant: "inset", "aria-labelledby": u ? y : void 0, children: E ? m && /* @__PURE__ */ e("div", { className: "may-table__empty", children: m }) : t.map((f, c) => {
-        const w = et(r, f, c), M = k.has(w), z = g >= 0 ? a[g] : void 0, O = a.filter((S, N) => N !== b && N !== g).map((S) => wa(S, f, c)).filter((S) => S != null && S !== "");
+      /* @__PURE__ */ e(vt, { variant: "inset", "aria-labelledby": u ? d : void 0, children: E ? m && /* @__PURE__ */ e("div", { className: "may-table__empty", children: m }) : t.map((f, c) => {
+        const w = et(r, f, c), M = k.has(w), z = h >= 0 ? a[h] : void 0, O = a.filter((S, N) => N !== b && N !== h).map((S) => wa(S, f, c)).filter((S) => S != null && S !== "");
         return /* @__PURE__ */ e(
           ht,
           {
@@ -3111,50 +3113,50 @@ function $i({
       }) })
     ] });
   }
-  const A = a.some((g) => g.width !== void 0);
-  return /* @__PURE__ */ T("div", { ...p, ...P, "data-layout": "table", className: I("may-table", h), children: [
+  const A = a.some((h) => h.width !== void 0);
+  return /* @__PURE__ */ T("div", { ...p, ...P, "data-layout": "table", className: I("may-table", g), children: [
     D,
     /* @__PURE__ */ e(
       "div",
       {
         className: "may-table__scroller",
         "data-slot": "scroll-area",
-        tabIndex: d !== void 0 && !n ? 0 : void 0,
+        tabIndex: y !== void 0 && !n ? 0 : void 0,
         children: /* @__PURE__ */ T(
           "table",
           {
             className: "may-table__table",
-            "aria-labelledby": u ? y : void 0,
+            "aria-labelledby": u ? d : void 0,
             "data-selectable": !0,
             children: [
-              A && /* @__PURE__ */ e("colgroup", { children: a.map((g) => /* @__PURE__ */ e(
+              A && /* @__PURE__ */ e("colgroup", { children: a.map((h) => /* @__PURE__ */ e(
                 "col",
                 {
-                  style: g.width !== void 0 ? { width: g.width } : void 0
+                  style: h.width !== void 0 ? { width: h.width } : void 0
                 },
-                g.key
+                h.key
               )) }),
-              /* @__PURE__ */ e("thead", { children: /* @__PURE__ */ e("tr", { children: a.map((g) => /* @__PURE__ */ e(
+              /* @__PURE__ */ e("thead", { children: /* @__PURE__ */ e("tr", { children: a.map((h) => /* @__PURE__ */ e(
                 "th",
                 {
                   scope: "col",
                   className: "may-table__head-cell",
-                  "data-align": At(g),
-                  children: g.header
+                  "data-align": At(h),
+                  children: h.header
                 },
-                g.key
+                h.key
               )) }) }),
-              /* @__PURE__ */ e("tbody", { children: E ? m && /* @__PURE__ */ e("tr", { children: /* @__PURE__ */ e("td", { className: "may-table__empty", colSpan: a.length, children: m }) }) : t.map((g, x) => {
-                const f = et(r, g, x);
+              /* @__PURE__ */ e("tbody", { children: E ? m && /* @__PURE__ */ e("tr", { children: /* @__PURE__ */ e("td", { className: "may-table__empty", colSpan: a.length, children: m }) }) : t.map((h, x) => {
+                const f = et(r, h, x);
                 return /* @__PURE__ */ e(
                   Ni,
                   {
-                    row: g,
+                    row: h,
                     index: x,
                     columns: a,
                     primaryIndex: b,
                     selected: k.has(f),
-                    zebra: l && x % 2 === 1,
+                    zebra: s && x % 2 === 1,
                     onRowClick: n
                   },
                   f
@@ -3181,18 +3183,18 @@ function Di({
   onValueChange: o,
   variant: n = "underline",
   orientation: i = "horizontal",
-  size: s = "md",
-  className: l,
+  size: l = "md",
+  className: s,
   ...m
 }) {
-  const [u, d] = U(r ?? ""), h = t ?? u, v = ta(m.id), p = X(
-    (y) => {
-      t === void 0 && d(y), y !== h && (o == null || o(y));
+  const [u, y] = U(r ?? ""), g = t ?? u, v = ta(m.id), p = X(
+    (d) => {
+      t === void 0 && y(d), d !== g && (o == null || o(d));
     },
-    [h, o, t]
+    [g, o, t]
   ), _ = ua(
-    () => ({ value: h, select: p, orientation: i, variant: n, baseId: v }),
-    [h, p, i, n, v]
+    () => ({ value: g, select: p, orientation: i, variant: n, baseId: v }),
+    [g, p, i, n, v]
   );
   return /* @__PURE__ */ e(Tt.Provider, { value: _, children: /* @__PURE__ */ e(
     "div",
@@ -3201,8 +3203,8 @@ function Di({
       "data-slot": "tabs",
       "data-variant": n,
       "data-orientation": i,
-      "data-size": s,
-      className: I("may-tabs", l),
+      "data-size": l,
+      className: I("may-tabs", s),
       children: a
     }
   ) });
@@ -3214,10 +3216,10 @@ function Pi({
   onKeyDown: o,
   "aria-label": n,
   "aria-labelledby": i,
-  ...s
+  ...l
 }) {
-  const { value: l, select: m, orientation: u, variant: d } = Ua("TabList"), h = oa(), v = u === "vertical" ? "block" : "inline", p = B(null), _ = B(null), y = B(!0), k = B(null), E = B(!1), b = B(null), $ = B(""), P = X(
-    (g) => {
+  const { value: s, select: m, orientation: u, variant: y } = Ua("TabList"), g = oa(), v = u === "vertical" ? "block" : "inline", p = B(null), _ = B(null), d = B(!0), k = B(null), E = B(!1), b = B(null), $ = B(""), P = X(
+    (h) => {
       const x = p.current, f = _.current;
       if (!x || !f) return;
       const c = x.querySelector('[data-slot="tab"][aria-selected="true"]');
@@ -3226,7 +3228,7 @@ function Pi({
         return;
       }
       f.style.opacity && (f.style.opacity = "");
-      const w = Rt(x, c, v), M = d === "pill" && w.width > 0 ? (v === "block" ? f.offsetWidth : f.offsetHeight) / 2 : 0;
+      const w = Rt(x, c, v), M = y === "pill" && w.width > 0 ? (v === "block" ? f.offsetWidth : f.offsetHeight) / 2 : 0;
       if (M > 0) {
         const z = `${M / w.width}px`, O = v === "block" ? `${M}px / ${z}` : `${z} / ${M}px`;
         O !== $.current && ($.current = O, f.style.borderRadius = O);
@@ -3235,16 +3237,16 @@ function Pi({
         axis: v,
         // The underline is a thin bar; a puff on it reads as noise, so only the
         // pill takes the press scale.
-        pressed: E.current && d === "pill",
+        pressed: E.current && y === "pill",
         pressScale: Ci,
-        reducedMotion: !g
+        reducedMotion: !h
       });
     },
-    [v, d]
-  ), D = (g) => {
+    [v, y]
+  ), D = (h) => {
     var w;
-    if (g.button !== 0) return;
-    const x = (w = g.target) == null ? void 0 : w.closest('[data-slot="tab"]');
+    if (h.button !== 0) return;
+    const x = (w = h.target) == null ? void 0 : w.closest('[data-slot="tab"]');
     if (!x || x.getAttribute("aria-selected") !== "true" || x.disabled) return;
     E.current = !0, P(!0);
     const f = new AbortController(), c = () => {
@@ -3254,43 +3256,43 @@ function Pi({
   };
   Ii(() => {
     var c;
-    const g = p.current;
-    if (!g) return;
-    const x = rt(g), f = x.find((w) => w.dataset.value === l) ?? null;
+    const h = p.current;
+    if (!h) return;
+    const x = rt(h), f = x.find((w) => w.dataset.value === s) ?? null;
     if (!f) {
       const w = (c = x.find((M) => !M.disabled)) == null ? void 0 : c.dataset.value;
       w && b.current !== w && (b.current = w, m(w)), P(!1);
       return;
     }
-    if (b.current = null, P(!y.current && !h), k.current !== l) {
-      const w = !y.current && !h;
-      k.current = l, f.scrollIntoView({
+    if (b.current = null, P(!d.current && !g), k.current !== s) {
+      const w = !d.current && !g;
+      k.current = s, f.scrollIntoView({
         behavior: w ? "smooth" : "auto",
         inline: "nearest",
         block: "nearest"
       });
     }
-    y.current = !1;
+    d.current = !1;
   }), Y(() => {
-    const g = p.current;
-    if (!g || typeof ResizeObserver > "u") return;
+    const h = p.current;
+    if (!h || typeof ResizeObserver > "u") return;
     const x = new ResizeObserver(() => P(!1));
-    return x.observe(g), () => x.disconnect();
+    return x.observe(h), () => x.disconnect();
   }, [P]);
-  const A = (g) => {
-    if (o == null || o(g), g.defaultPrevented || g.altKey || g.metaKey || g.ctrlKey) return;
+  const A = (h) => {
+    if (o == null || o(h), h.defaultPrevented || h.altKey || h.metaKey || h.ctrlKey) return;
     const x = rt(p.current);
     if (x.length === 0) return;
-    const f = u === "vertical" ? "ArrowDown" : "ArrowRight", c = u === "vertical" ? "ArrowUp" : "ArrowLeft", w = x.indexOf(document.activeElement), M = w >= 0 ? w : x.findIndex((S) => S.dataset.value === l);
+    const f = u === "vertical" ? "ArrowDown" : "ArrowRight", c = u === "vertical" ? "ArrowUp" : "ArrowLeft", w = x.indexOf(document.activeElement), M = w >= 0 ? w : x.findIndex((S) => S.dataset.value === s);
     let z = -1;
-    if (g.key === f || g.key === c) {
-      const S = g.key === f ? 1 : -1;
+    if (h.key === f || h.key === c) {
+      const S = h.key === f ? 1 : -1;
       z = M < 0 ? S > 0 ? -1 : 0 : M;
       for (let N = 0; N < x.length && (z = (z + S + x.length) % x.length, !!x[z].disabled); N++)
         ;
-    } else if (g.key === "Home")
+    } else if (h.key === "Home")
       z = x.findIndex((S) => !S.disabled);
-    else if (g.key === "End") {
+    else if (h.key === "End") {
       for (let S = x.length - 1; S >= 0; S--)
         if (!x[S].disabled) {
           z = S;
@@ -3299,11 +3301,11 @@ function Pi({
     } else
       return;
     if (z < 0 || x[z].disabled) return;
-    g.preventDefault(), x[z].focus();
+    h.preventDefault(), x[z].focus();
     const O = x[z].dataset.value;
     O && m(O);
   };
-  return /* @__PURE__ */ e("div", { ...s, "data-slot": "tab-list", className: I("may-tabs__list", r), children: /* @__PURE__ */ T(
+  return /* @__PURE__ */ e("div", { ...l, "data-slot": "tab-list", className: I("may-tabs__list", r), children: /* @__PURE__ */ T(
     "div",
     {
       ref: p,
@@ -3321,19 +3323,19 @@ function Pi({
     }
   ) });
 }
-function Mi({ value: a, children: t, icon: r, badge: o, className: n, disabled: i, ...s }) {
-  const { value: l, select: m, baseId: u } = Ua("Tab"), d = a === l, { pressProps: h } = W(i);
+function Mi({ value: a, children: t, icon: r, badge: o, className: n, disabled: i, ...l }) {
+  const { value: s, select: m, baseId: u } = Ua("Tab"), y = a === s, { pressProps: g } = W(i);
   return /* @__PURE__ */ T(
     "button",
     {
-      ...s,
-      ...h,
+      ...l,
+      ...g,
       type: "button",
       role: "tab",
       id: `${u}-tab-${a}`,
       "aria-controls": `${u}-panel-${a}`,
-      "aria-selected": d,
-      tabIndex: d ? 0 : -1,
+      "aria-selected": y,
+      tabIndex: y ? 0 : -1,
       disabled: i,
       "data-slot": "tab",
       "data-value": a,
@@ -3354,16 +3356,16 @@ function Li({
   className: o,
   ...n
 }) {
-  const { value: i, baseId: s } = Ua("TabPanel"), l = a === i;
-  return !l && !r ? null : /* @__PURE__ */ e(
+  const { value: i, baseId: l } = Ua("TabPanel"), s = a === i;
+  return !s && !r ? null : /* @__PURE__ */ e(
     "div",
     {
       ...n,
-      id: `${s}-panel-${a}`,
+      id: `${l}-panel-${a}`,
       role: "tabpanel",
-      "aria-labelledby": `${s}-tab-${a}`,
+      "aria-labelledby": `${l}-tab-${a}`,
       tabIndex: 0,
-      hidden: !l,
+      hidden: !s,
       "data-slot": "tab-panel",
       className: I("may-tabs__panel", o),
       children: t
@@ -3378,18 +3380,18 @@ function Bi({
   onRemove: o,
   removeLabel: n,
   leadingIcon: i,
-  className: s,
-  ...l
+  className: l,
+  ...s
 }) {
   const { pressProps: m } = W(!o), u = n ?? (typeof a == "string" ? `Remove ${a}` : "Remove");
   return /* @__PURE__ */ T(
     "span",
     {
-      ...l,
+      ...s,
       "data-slot": "tag",
       "data-tone": t,
       "data-size": r,
-      className: I("may-tag", s),
+      className: I("may-tag", l),
       children: [
         i && /* @__PURE__ */ e("span", { className: "may-tag__icon", "aria-hidden": !0, children: i }),
         a != null && /* @__PURE__ */ e("span", { className: "may-tag__label", children: a }),
@@ -3418,35 +3420,35 @@ const Gi = typeof window > "u" ? Y : sa, Ui = Z(function({
   fullWidth: o = !1,
   rows: n = 3,
   resize: i = "vertical",
-  autoGrow: s = !1,
-  wrapperClassName: l,
+  autoGrow: l = !1,
+  wrapperClassName: s,
   className: m,
   id: u,
-  required: d,
-  disabled: h,
+  required: y,
+  disabled: g,
   value: v,
   onChange: p,
   "aria-describedby": _,
-  style: y,
+  style: d,
   ...k
 }, E) {
-  const b = Ea({ id: u, invalid: r, required: d, disabled: h, "aria-describedby": _ }), $ = B(null), P = B(null), D = X(() => {
-    const g = $.current;
-    if (g) {
-      if (!s) {
-        g.style.height = "";
+  const b = Ea({ id: u, invalid: r, required: y, disabled: g, "aria-describedby": _ }), $ = B(null), P = B(null), D = X(() => {
+    const h = $.current;
+    if (h) {
+      if (!l) {
+        h.style.height = "";
         return;
       }
-      g.style.height = "auto", g.style.height = `${g.scrollHeight}px`;
+      h.style.height = "auto", h.style.height = `${h.scrollHeight}px`;
     }
-  }, [s]);
+  }, [l]);
   Gi(D, [D, v, n]), Y(() => {
-    if (!s || typeof ResizeObserver > "u" || !P.current) return;
-    const g = new ResizeObserver(D);
-    return g.observe(P.current), () => g.disconnect();
-  }, [s, D]);
-  const A = (g) => {
-    D(), p == null || p(g);
+    if (!l || typeof ResizeObserver > "u" || !P.current) return;
+    const h = new ResizeObserver(D);
+    return h.observe(P.current), () => h.disconnect();
+  }, [l, D]);
+  const A = (h) => {
+    D(), p == null || p(h);
   };
   return /* @__PURE__ */ e(
     "div",
@@ -3454,18 +3456,18 @@ const Gi = typeof window > "u" ? Y : sa, Ui = Z(function({
       ref: P,
       "data-slot": "textarea",
       "data-size": t,
-      "data-resize": s ? "none" : i,
-      "data-autogrow": s ? "true" : void 0,
+      "data-resize": l ? "none" : i,
+      "data-autogrow": l ? "true" : void 0,
       "data-invalid": b.invalid ? "true" : void 0,
       "data-disabled": b.disabled ? "true" : void 0,
-      className: I("may-textarea", o && "may-textarea--full", l),
-      style: y,
+      className: I("may-textarea", o && "may-textarea--full", s),
+      style: d,
       children: /* @__PURE__ */ e(
         "textarea",
         {
           ...k,
-          ref: (g) => {
-            $.current = g, Hi(E, g);
+          ref: (h) => {
+            $.current = h, Hi(E, h);
           },
           id: b.id,
           rows: n,
@@ -3498,55 +3500,55 @@ function as({
   offset: o = Xi,
   delay: n = 500,
   disabled: i = !1,
-  className: s
+  className: l
 }) {
-  const [l, m] = U(!1), u = oa(), d = Sa(l && !i, u ? 0 : Zi), h = B(null), v = B(null), p = B(null), _ = ta(), y = X(() => {
+  const [s, m] = U(!1), u = oa(), y = Sa(s && !i, u ? 0 : Zi), g = B(null), v = B(null), p = B(null), _ = ta(), d = X(() => {
     p.current && (clearTimeout(p.current), p.current = null);
   }, []), k = X(
     (D) => {
-      if (y(), D <= 0) {
+      if (d(), D <= 0) {
         m(!0);
         return;
       }
       p.current = setTimeout(() => m(!0), D);
     },
-    [y]
+    [d]
   ), E = X(() => {
-    y(), m(!1);
-  }, [y]);
-  Y(() => y, [y]);
+    d(), m(!1);
+  }, [d]);
+  Y(() => d, [d]);
   const b = X(() => {
-    const D = h.current, A = v.current;
+    const D = g.current, A = v.current;
     if (!D || !A) return;
-    const g = { width: A.offsetWidth, height: A.offsetHeight }, x = Bt(D.getBoundingClientRect(), g, r, o);
+    const h = { width: A.offsetWidth, height: A.offsetHeight }, x = Bt(D.getBoundingClientRect(), h, r, o);
     A.style.left = `${x.x}px`, A.style.top = `${x.y}px`, A.style.setProperty("--may-tooltip-anchor", `${x.anchorOffset}px`), A.dataset.side = x.side, A.dataset.positioned = "true";
   }, [r, o]);
   Ji(() => {
-    if (!d) return;
+    if (!y) return;
     b();
     const D = () => b();
     return window.addEventListener("scroll", D, !0), window.addEventListener("resize", D), () => {
       window.removeEventListener("scroll", D, !0), window.removeEventListener("resize", D);
     };
-  }, [d, l, b]), Y(() => {
-    if (!l) return;
+  }, [y, s, b]), Y(() => {
+    if (!s) return;
     const D = (A) => {
       A.key === "Escape" && E();
     };
     return document.addEventListener("keydown", D, !0), () => document.removeEventListener("keydown", D, !0);
-  }, [l, E]);
+  }, [s, E]);
   const $ = (D) => {
     D.pointerType !== "mouse" || !Qi() || k(n);
   }, P = za(a) ? it(a, {
     // Compose rather than replace: the control may already point at its own
     // help text, and dropping that would trade one description for another.
-    "aria-describedby": d ? [a.props["aria-describedby"], _].filter(Boolean).join(" ") : a.props["aria-describedby"]
+    "aria-describedby": y ? [a.props["aria-describedby"], _].filter(Boolean).join(" ") : a.props["aria-describedby"]
   }) : a;
   return /* @__PURE__ */ T(
     "span",
     {
       "data-slot": "tooltip",
-      className: I("may-tooltip", s),
+      className: I("may-tooltip", l),
       onPointerEnter: $,
       onPointerLeave: E,
       onPointerDown: E,
@@ -3555,15 +3557,15 @@ function as({
       },
       onBlur: E,
       children: [
-        /* @__PURE__ */ e("span", { ref: h, className: "may-tooltip__anchor", children: P }),
-        d && /* @__PURE__ */ e(
+        /* @__PURE__ */ e("span", { ref: g, className: "may-tooltip__anchor", children: P }),
+        y && /* @__PURE__ */ e(
           "span",
           {
             ref: v,
             id: _,
             role: "tooltip",
             "data-slot": "tooltip-surface",
-            "data-state": l && !i ? "open" : "closed",
+            "data-state": s && !i ? "open" : "closed",
             "data-positioned": "false",
             className: "may-tooltip__surface",
             children: t
@@ -3650,4 +3652,4 @@ export {
   Hs as y,
   Ks as z
 };
-//# sourceMappingURL=index-COd88-P5.js.map
+//# sourceMappingURL=index-DlQiMonJ.js.map
